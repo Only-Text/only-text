@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Article Title – Only Text Blog</title>
+  <meta name="description" content="Detailed article about text cleaning and formatting techniques.">
+  <link rel="canonical" href="https://example.com/blog/article.html">
+  <link rel="alternate" hreflang="en" href="https://example.com/blog/article.html">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <nav class="navbar is-spaced" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <strong>Only Text</strong>
+      </a>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarArticle">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="navbarArticle" class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="/">Home</a>
+        <a class="navbar-item" href="/blog/">Blog</a>
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <button id="darkToggle" class="button is-info">Dark Mode</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ARTICLE CONTENT -->
+  <section class="section">
+    <div class="container">
+      <article class="content">
+        <h1 class="title">Article Title Here</h1>
+        <p class="subtitle">January 15, 2025 &middot; Only Text Team</p>
+        <h2>Introduction</h2>
+        <p>This article explains text cleaning techniques and how our tool can help you achieve professional results.</p>
+        
+        <h2>Main Content</h2>
+        <h3>Subheading 1</h3>
+        <p>Detail information about various text cleaning methods. Use bullet points and numbered lists to illustrate features.</p>
+        <ul>
+          <li>Feature 1: Description.</li>
+          <li>Feature 2: Description.</li>
+          <li>Feature 3: Description.</li>
+        </ul>
+        <h3>Subheading 2</h3>
+        <p>Further details and examples regarding the cleaning process.</p>
+        
+        <h2>Conclusion</h2>
+        <p>Summarize the key points and invite readers to try the tool for themselves.</p>
+      </article>
+      <nav class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <a href="/blog/">← Back to Blog</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>&copy; 2025 Only Text. All rights reserved.</p>
+      <p>
+        <a href="/">Home</a> &middot;
+        <a href="/blog/">Blog</a> &middot;
+        <a href="https://example.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../main.js"></script>
+</body>
+</html>
