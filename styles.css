@@ -1,3 +1,77 @@
+/* HEADER & NAVIGATION */
+.header {
+  background-color: #002B5B; /* Primair: Donkerblauw */
+  padding: 1em;
+}
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.logo {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+.nav {
+  display: flex;
+  gap: 1em;
+  flex: 1;
+  justify-content: center; /* Centreert de links */
+}
+.nav a {
+  color: #FFFFFF;
+  font-weight: bold;
+  text-decoration: none;
+}
+.nav a:hover {
+  color: #007ACC; /* Accent: Helder Blauw */
+}
+.header-right .button {
+  background-color: #007ACC; /* Accent */
+  border: none;
+  padding: 0.5em 1em;
+  color: #FFFFFF;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.header-right .button:hover {
+  background-color: #005b99;
+}
+
+/* FOOTER */
+.footer {
+  background-color: #F5F5F5; /* Neutraal: Lichtgrijs */
+  padding: 1em;
+  margin-top: 2em;
+  text-align: center;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer-nav a {
+  color: #333333; /* Tekst: Donkergrijs */
+  text-decoration: none;
+  margin: 0 0.5em;
+}
+.footer-nav a:hover {
+  text-decoration: underline;
+}
+
+/* Dark Mode Overrides for Header & Footer */
+body.dark .header,
+body.dark .footer {
+  background-color: #002B5B;
+}
+body.dark .nav a,
+body.dark .logo,
+body.dark .footer-nav a {
+  color: #FFFFFF;
+}
+
 /* Basis resets en custom instellingen */
 body {
   font-family: Arial, sans-serif;
