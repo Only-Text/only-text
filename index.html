@@ -28,6 +28,12 @@
       gap: 1rem;
       width: 100%;
     }
+    .textarea-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
     textarea {
       flex: 1;
       height: 200px;
@@ -39,17 +45,26 @@
       white-space: pre-wrap;
       width: 100%;
     }
-    .textarea-wrapper {
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .textareas-and-buttons {
       display: flex;
       flex-direction: column;
       gap: 1rem;
       width: 100%;
     }
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
+    @media (min-width: 768px) {
+      .textareas {
+        flex-direction: row;
+      }
+      .textareas-and-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
     }
     button {
       padding: 0.7rem 1.5rem;
@@ -63,11 +78,6 @@
     button:hover {
       background-color: #0056b3;
     }
-    @media (min-width: 768px) {
-      .textareas {
-        flex-direction: row;
-      }
-    }
   </style>
 </head>
 <body>
@@ -75,13 +85,15 @@
   <p>Remove special characters and emojis from your text</p>
 
   <div class="container">
-    <div class="textareas">
-      <textarea id="input" placeholder="Paste your text here..."></textarea>
-      <textarea id="output" placeholder="Cleaned text will appear here..."></textarea>
-    </div>
-    <div class="buttons">
-      <button onclick="cleanText()">Only Text</button>
-      <button onclick="copyOutput()">Copy Result</button>
+    <div class="textareas-and-buttons">
+      <div class="textareas">
+        <textarea id="input" placeholder="Paste your text here..."></textarea>
+        <textarea id="output" placeholder="Cleaned text will appear here..."></textarea>
+      </div>
+      <div class="button-row">
+        <button onclick="cleanText()">Only Text</button>
+        <button onclick="copyOutput()">Copy Result</button>
+      </div>
     </div>
   </div>
 
