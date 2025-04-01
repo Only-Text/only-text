@@ -25,23 +25,24 @@
   const copyBtn = document.getElementById('copyBtn');
   const downloadBtn = document.getElementById('downloadBtn');
   const clearBtn = document.getElementById('clearBtn');
+  const fileInput = document.getElementById('fileInput');
   const inputStats = document.getElementById('inputStats');
   const outputStats = document.getElementById('outputStats');
 
   // ---- Update Output Functie ----
   function updateOutput() {
     let text = inputText.value;
-    // Zorg dat elke nieuwe regel geen beginspaties bevat
+    // Verwijder spaties aan het begin van elke nieuwe regel
     text = text.split("\n").map(line => line.trimStart()).join("\n");
     inputText.value = text;
     
-    // Update input statistieken
+    // Update statistieken voor input
     const inputCharCount = text.length;
     const inputWordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
     inputStats.textContent = `${inputCharCount} characters, ${inputWordCount} words`;
     
-    // Bouw regex dynamisch op basis van opties
-    let allowed = '\\p{L}\\p{N}\\s'; // behoud letters, nummers en whitespace
+    // Bouw de regex op basis van de opties
+    let allowed = '\\p{L}\\p{N}\\s';
     if (!removePunctuationCheckbox.checked) {
       allowed += '\\p{P}';
     }
@@ -52,7 +53,7 @@
     const cleaned = text.replace(regex, '');
     outputText.value = cleaned;
     
-    // Update output statistieken
+    // Update statistieken voor output
     const outCharCount = cleaned.length;
     const outWordCount = cleaned.trim() ? cleaned.trim().split(/\s+/).length : 0;
     outputStats.textContent = `${outCharCount} characters, ${outWordCount} words`;
@@ -81,6 +82,21 @@
           inputText.value = text;
           updateOutput();
         }
+      }
+    });
+  }
+
+  // ---- File Upload Functionaliteit ----
+  if (fileInput) {
+    fileInput.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          inputText.value = e.target.result;
+          updateOutput();
+        };
+        reader.readAsText(file);
       }
     });
   }
@@ -129,6 +145,6 @@
     });
   }
 
-  // Initialiseer de output bij pagina laden
+  // Initialiseer output bij het laden van de pagina
   updateOutput();
 })();
