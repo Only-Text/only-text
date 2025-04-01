@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Only Text – Remove Emojis and Special Characters</title>
-  <meta name="description" content="Only Text is a free online text cleaner tool that removes emojis, punctuation, and other special characters from your text." />
+  <meta name="description" content="Only Text is a free online text cleaner tool that removes emojis, punctuation, and special characters in real-time." />
   <link rel="canonical" href="https://example.com/" />
   <link rel="alternate" hreflang="en" href="https://example.com/" />
   <link rel="alternate" hreflang="nl" href="https://example.com/nl/" />
@@ -13,40 +13,43 @@
 <body>
   <!-- HEADER / NAVIGATION -->
   <header class="header">
-    <h1>Only Text</h1>
+    <div class="logo">Only Text</div>
     <nav class="nav">
       <a href="/">Home</a>
       <a href="/blog/">Blog</a>
       <a href="/nl/">Nederlands</a>
-      <button id="darkToggle" class="button" type="button">Dark Mode</button>
     </nav>
+    <div class="header-right">
+      <button id="darkToggle" class="button">Dark Mode</button>
+    </div>
   </header>
 
   <!-- MAIN CONTENT -->
   <main class="container">
-    <h2>Remove Emojis and Special Characters in Real-Time</h2>
-    <p>Paste or type your text in the left panel. The cleaned text will appear in the right panel as you type.</p>
+    <h1>Remove Emojis and Special Characters</h1>
+    <p>Paste or type your text in the left panel. The cleaned text will appear in the right panel in real-time.</p>
     
     <!-- Panels side by side -->
     <div class="panels">
       <!-- Input Panel -->
-      <div class="panel">
+      <div class="panel" id="panel-left">
         <label for="inputText">Input Text</label>
-        <textarea id="inputText" placeholder="Paste or type text here..."></textarea>
+        <textarea id="inputText" placeholder="Enter your text here..."></textarea>
         <div class="button-row">
-          <button id="pasteBtn" class="button" type="button">Paste</button>
+          <button id="pasteBtn" class="button">Paste</button>
+          <button id="clearBtn" class="button">Clear</button>
         </div>
         <div class="stats">
           <span id="inputStats">0 characters, 0 words</span>
         </div>
       </div>
       <!-- Output Panel -->
-      <div class="panel">
+      <div class="panel" id="panel-right">
         <label for="outputText">Cleaned Text</label>
         <textarea id="outputText" readonly placeholder="Cleaned text appears here..."></textarea>
         <div class="button-row">
-          <button id="copyBtn" class="button" type="button">Copy</button>
-          <button id="downloadBtn" class="button" type="button">Download</button>
+          <button id="copyBtn" class="button">Copy</button>
+          <button id="downloadBtn" class="button">Download</button>
         </div>
         <div class="stats">
           <span id="outputStats">0 characters, 0 words</span>
@@ -63,7 +66,7 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p>&copy; 2025 Only Text. This tool removes emojis and special characters in real-time.</p>
+    <p>&copy; 2025 Only Text. This tool cleans your text in real-time.</p>
   </footer>
 
   <script src="main.js"></script>
