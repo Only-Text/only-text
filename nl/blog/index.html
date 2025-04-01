@@ -2,34 +2,50 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Blog – Only Text</title>
-  <meta name="description" content="Lees artikelen over tekst opschonen, nieuws over de Only Text-tool en tips voor het schrijven van schone tekst." />
+  <meta name="description" content="Lees onze blogposts over het opschonen van tekst, updates over de Only Text tool en tips voor efficiënt werken." />
   <link rel="canonical" href="https://example.com/nl/blog/" />
   <link rel="alternate" hreflang="nl" href="https://example.com/nl/blog/" />
   <link rel="alternate" hreflang="en" href="https://example.com/blog/" />
   <link rel="stylesheet" href="../../styles.css" />
 </head>
 <body>
-  <header>
-    <nav class="top-nav">
-      <a href="/nl/" class="logo">Only Text</a>
-      <ul class="menu">
-        <li><a href="/nl/blog/">Blog</a></li>
-        <li><a href="/blog/">English</a></li>
-      </ul>
-      <button id="darkToggle" type="button">Donkere modus</button>
-    </nav>
+  <!-- HEADER / NAVIGATION -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">Only Text</div>
+      <nav class="nav">
+        <a href="/nl/">Home</a>
+        <a href="/nl/blog/">Blog</a>
+        <a href="/">English</a>
+      </nav>
+      <div class="header-right">
+        <button id="darkToggle" class="button dark-toggle" type="button">Donkere modus</button>
+      </div>
+    </div>
   </header>
-  <main>
+  
+  <!-- MAIN CONTENT -->
+  <main class="container">
     <h1>Blog</h1>
-    <p>Welkom op de Only Text blog. Hier vind je artikelen over het opschonen van tekst, updates over de Only Text-tool en tips voor het schrijven van heldere tekst.</p>
-    <ul class="post-list">
-      <li><a href="introductie-only-text.html">Introductie van Only Text: een tool voor schone tekst</a></li>
-      <li><a href="hoe-only-text-gebruiken.html">Hoe gebruik je de Only Text-tool effectief</a></li>
-    </ul>
+    <p>Welkom op de Only Text blog. Hier vind je artikelen over tekst opschonen, updates over onze tool en tips voor efficiënter werken.</p>
+    <div class="blog-list">
+      <article class="blog-post">
+        <h2><a href="introductie-only-text.html">Introductie van Only Text: Een tool voor schone tekst</a></h2>
+        <p class="meta">1 januari 2025 &middot; Only Text Team</p>
+        <p>Ontdek hoe Only Text je kan helpen om ongewenste emoji’s, leestekens en speciale tekens uit je tekst te verwijderen. Lees meer over de voordelen en functies.</p>
+      </article>
+      <article class="blog-post">
+        <h2><a href="hoe-only-text-gebruiken.html">Hoe gebruik je de Only Text-tool effectief</a></h2>
+        <p class="meta">10 januari 2025 &middot; Only Text Team</p>
+        <p>Stapsgewijze instructies en handige tips om het maximale uit de Only Text-tool te halen. Leer hoe je snel je tekst opschoont voor diverse toepassingen.</p>
+      </article>
+    </div>
   </main>
-  <footer>
+  
+  <!-- FOOTER -->
+  <footer class="footer">
     <p>&copy; 2025 Only Text.</p>
   </footer>
   <script src="../../main.js"></script>
