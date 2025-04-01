@@ -11,36 +11,21 @@
 </head>
 <body>
   <!-- HEADER -->
-  <nav class="navbar is-spaced" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="/">
-        <strong>Only Text</strong>
-      </a>
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarArticle">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-    <div id="navbarArticle" class="navbar-menu">
-      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-        <a class="navbar-item" href="/">Home</a>
-        <a class="navbar-item" href="/blog/">Blog</a>
-      </div>
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <button id="darkToggle" class="button is-info">Dark Mode</button>
-        </div>
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">Only Text</div>
+      <div class="header-right">
+        <button id="darkToggle" class="button dark-toggle" type="button">Dark Mode</button>
       </div>
     </div>
-  </nav>
+  </header>
 
   <!-- ARTICLE CONTENT -->
-  <section class="section">
-    <div class="container">
-      <article class="content">
-        <h1 class="title">Article Title Here</h1>
-        <p class="subtitle">January 15, 2025 &middot; Only Text Team</p>
+  <main class="container">
+    <article class="blog-article">
+      <h1 class="title has-text-centered">Article Title Here</h1>
+      <p class="subtitle has-text-centered">January 15, 2025 &middot; Only Text Team</p>
+      <section class="content">
         <h2>Introduction</h2>
         <p>This article explains text cleaning techniques and how our tool can help you achieve professional results.</p>
         
@@ -52,21 +37,20 @@
           <li>Feature 2: Description.</li>
           <li>Feature 3: Description.</li>
         </ul>
+        
         <h3>Subheading 2</h3>
         <p>Further details and examples regarding the cleaning process.</p>
         
         <h2>Conclusion</h2>
         <p>Summarize the key points and invite readers to try the tool for themselves.</p>
-      </article>
+      </section>
       <nav class="level">
-        <div class="level-left">
-          <div class="level-item">
-            <a href="/blog/">← Back to Blog</a>
-          </div>
+        <div class="level-item has-text-centered">
+          <a href="/blog/">← Back to Blog</a>
         </div>
       </nav>
-    </div>
-  </section>
+    </article>
+  </main>
 
   <!-- FOOTER -->
   <footer class="footer">
