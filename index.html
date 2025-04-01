@@ -13,34 +13,23 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- HEADER / NAVIGATION -->
-  <nav class="navbar is-spaced" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="/">
-        <strong>Only Text</strong>
-      </a>
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
-    <div id="navbarMain" class="navbar-menu">
-      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-        <a class="navbar-item" href="/">Home</a>
-        <a class="navbar-item" href="/blog/">Blog</a>
-      </div>
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <button id="darkToggle" class="button is-info">Dark Mode</button>
-        </div>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">Only Text</div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/blog/">Blog</a>
+      </nav>
+      <div class="header-right">
+        <button id="darkToggle" class="button dark-toggle" type="button">Dark Mode</button>
       </div>
     </div>
-  </nav>
+  </header>
 
   <!-- MAIN CONTENT -->
-  <section class="section">
-    <div class="container">
+  <main class="container">
+    <section class="tool-section">
       <h1 class="title">Remove Emojis and Special Characters</h1>
       <p class="subtitle">Paste or type your text in the left panel. The cleaned text will appear in the right panel in real-time.</p>
       
@@ -86,12 +75,10 @@
           </label>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- SEO CONTENT SECTION -->
-  <section class="section">
-    <div class="container">
+    <!-- SEO CONTENT -->
+    <section class="seo-content">
       <h2 class="title is-3">Key Takeaways</h2>
       <p>A text cleaner is designed to remove unwanted characters and formatting, enhancing the professionalism and clarity of text from various sources.</p>
       <p>The tool offers user-friendly features such as removing special characters, stripping HTML tags, and handling extra spacing, making text easier to manage.</p>
@@ -99,11 +86,11 @@
       
       <h2 class="title is-3">What is a Text Cleaner?</h2>
       <p>A text cleaner is an online tool designed to clean and format text by removing unwanted characters and performing complex text operations. Its primary purpose is to unformat text and eliminate unmeaningful characters, especially from content copied from various sources. This process is crucial for ensuring that the text is clear, professional, and free of distractions.</p>
-      <p>Text cleaners handle a variety of formatting issues. They can remove extra spaces, special characters, line breaks, and other unwanted elements. The tool can also change letter case, delete duplicate lines, strip HTML tags, and convert URLs into clickable links, making the text easier to work with.</p>
+      <p>Text cleaners handle a variety of formatting issues. They can remove extra spaces, special characters, line breaks, and other unwanted elements. The tool can also change letter case, delete duplicate lines, strip HTML tags, and convert URLs into clickable links, making text easier to work with.</p>
       
       <h2 class="title is-3">How to Use Our Text Cleaner Tool</h2>
       <h3 class="subtitle is-4">Input Your Text</h3>
-      <p>Start by pasting your text into the designated input box. This sets the stage for the cleaning process, identifying and removing all unwanted elements.</p>
+      <p>Start by pasting your text into the designated input box. This sets the stage for cleaning by identifying and removing all unwanted elements.</p>
       
       <h3 class="subtitle is-4">View Results</h3>
       <p>Once your text is processed, the cleaned version appears in the output box, ready for you to copy or download.</p>
@@ -117,12 +104,12 @@
       </ul>
       
       <h2 class="title is-3">Benefits of Using a Text Cleaner</h2>
-      <p>Using a text cleaner tool improves the clarity, consistency, and professionalism of your content while saving time on formatting tasks.</p>
+      <p>Using a text cleaner tool improves clarity, consistency, and professionalism while saving time on formatting tasks.</p>
       
       <h2 class="title is-3">Common Applications</h2>
       <p>Text cleaners are invaluable in web publishing, data processing, and social media analysis, ensuring that your content remains clear and professional.</p>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- FOOTER -->
   <footer class="footer">
