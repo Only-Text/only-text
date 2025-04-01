@@ -9,22 +9,29 @@ body {
   color: #333333; /* Tekst: Donkergrijs */
 }
 
-/* Header & Navigation */
+/* HEADER & NAVIGATION */
 .header {
+  background: #002B5B; /* Primair: Donkerblauw */
+  padding: 1em;
+}
+.header-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #002B5B; /* Primair: Donkerblauw */
-  color: #FFFFFF;
-  padding: 1em;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .logo {
   font-size: 1.8em;
   font-weight: bold;
+  color: #FFFFFF;
 }
 .nav {
   display: flex;
   gap: 1em;
+  flex: 1;
+  justify-content: center;
+  text-align: center;
 }
 .nav a {
   color: #FFFFFF;
@@ -34,10 +41,7 @@ body {
 .nav a:hover {
   color: #007ACC; /* Accent: Helder Blauw */
 }
-.header-right {
-  margin-left: auto;
-}
-.header-right .button {
+.dark-toggle {
   background: #007ACC; /* Accent */
   border: none;
   padding: 0.5em 1em;
@@ -45,18 +49,18 @@ body {
   border-radius: 4px;
   cursor: pointer;
 }
-.header-right .button:hover {
+.dark-toggle:hover {
   background: #005b99;
 }
 
-/* Container */
+/* CONTAINER */
 .container {
   max-width: 1200px;
   margin: 2em auto;
   padding: 0 1em;
 }
 
-/* Panels (side by side layout) */
+/* PANELS (side-by-side layout) */
 .panels {
   display: flex;
   gap: 1em;
@@ -69,18 +73,18 @@ body {
   background: #F5F5F5; /* Neutraal: Lichtgrijs */
   padding: 1em;
   border-radius: 4px;
-  /* Geen overbodige rand, focus op de inhoud */
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 .panel label {
+  display: block;
   font-size: 1.3em;
   margin-bottom: 0.5em;
-  display: block;
 }
 textarea {
   width: 100%;
   min-height: 250px;
   padding: 0.5em;
-  font-size: 1.2em;  /* Grotere tekst */
+  font-size: 1.2em; /* Grotere tekst */
   border: none;
   border-bottom: 2px solid #002B5B;
   outline: none;
@@ -89,6 +93,8 @@ textarea {
 textarea[readonly] {
   background: #FFFFFF;
 }
+
+/* BUTTONS & STATS */
 .button-row {
   margin-top: 0.5em;
   display: flex;
@@ -113,7 +119,7 @@ textarea[readonly] {
   color: #333333;
 }
 
-/* Options */
+/* OPTIONS */
 .options {
   margin-top: 1em;
   font-size: 1.2em;
@@ -122,17 +128,17 @@ textarea[readonly] {
   margin-right: 1em;
 }
 
-/* Footer */
+/* FOOTER */
 .footer {
   text-align: center;
   padding: 1em;
-  background: #F5F5F5; /* Neutraal */
+  background: #F5F5F5;
   color: #333333;
   margin-top: 2em;
   font-size: 1em;
 }
 
-/* Dark Mode Overrides */
+/* DARK MODE OVERRIDES */
 body.dark {
   background: #1e1e1e;
   color: #ccc;
