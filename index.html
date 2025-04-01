@@ -1,86 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Remove Special Characters and Emojis from Text – Online Text Cleaner</title>
-    <meta name="description" content="Free online text cleaner to remove emojis, punctuation, and other special characters from text in real-time. Paste your text and easily copy or download the cleaned result." />
-    <!-- Link to Tailwind CSS (if using a compiled CSS or CDN) -->
-    <!-- <link rel="stylesheet" href="/dist/output.css"> -->
-    <!-- The above line is an example. If using Vite, the CSS will be injected by the build. -->
-  </head>
-  <body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
-    <div class="container mx-auto p-4">
-      <!-- SEO-friendly H1 heading with keywords -->
-      <div class="flex flex-col-reverse md:flex-row md:justify-between md:items-center mb-4">
-        <h1 class="text-2xl md:text-3xl font-bold text-center md:text-left mt-2 md:mt-0">
-          Remove Special Characters and Emojis from Text – Online Text Cleaner
-        </h1>
-        <!-- Dark mode toggle (sun/moon icon) -->
-        <button id="themeToggle" class="self-end text-2xl md:text-3xl focus:outline-none" aria-label="Toggle dark mode">
-          🌙
-        </button>
-      </div>
+<div class="container">
+    <h1>Remove Special Characters and Emojis Online</h1>
+    <p>
+        Only Text is a free online tool that quickly removes special characters, symbols, and emojis from your text. 
+        Paste any text below, and get a clean, plain text output containing only standard letters, numbers, and spaces. 
+        It’s perfect for writers, AI users, or anyone needing to sanitize text. Your text is processed entirely in your browser and never sent to our servers.
+    </p>
 
-      <!-- Two text areas side by side (stack on mobile) -->
-      <div class="flex flex-col md:flex-row gap-6 mb-4">
-        <!-- Input Text Section -->
-        <div class="flex-1 flex flex-col">
-          <label for="inputText" class="font-semibold mb-2">Input Text</label>
-          <textarea id="inputText" rows="10" class="p-2 border rounded focus:outline-none focus:ring bg-white dark:bg-gray-800 dark:text-gray-100" placeholder="Enter text here..."></textarea>
-          <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            <span id="inputChars">0</span> characters, <span id="inputWords">0</span> words
-          </div>
-        </div>
-        <!-- Output Text Section -->
-        <div class="flex-1 flex flex-col">
-          <label for="outputText" class="font-semibold mb-2">Cleaned Output</label>
-          <textarea id="outputText" rows="10" class="p-2 border rounded focus:outline-none focus:ring bg-white dark:bg-gray-800 dark:text-gray-100" placeholder="Cleaned text will appear here..." readonly></textarea>
-          <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-            <span id="outputChars">0</span> characters, <span id="outputWords">0</span> words
-          </div>
-        </div>
-      </div>
+    <div class="tool-container">
+        <div class="text-area-section">
+            <div class="text-area-wrapper">
+                <label for="inputText">Input Text:</label>
+                <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+                <div id="inputCharCount" class="char-count">0 characters (0 without spaces)</div>
+                 <div class="file-controls">
+                     <label for="fileInput" class="file-input-label">Load .txt File</label>
+                     <input type="file" id="fileInput" class="file-input" accept=".txt">
+                     <span id="fileName"></span>
+                 </div>
+            </div>
 
-      <!-- Action buttons and Advanced Options -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
-        <!-- Copy and Download buttons -->
-        <div class="mb-4 md:mb-0">
-          <button id="copyBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded mr-2">
-            Copy Output
-          </button>
-          <button id="downloadBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded">
-            Download .txt
-          </button>
+            <div class="text-area-wrapper">
+                <label for="outputText">Cleaned Output:</label>
+                <textarea id="outputText" placeholder="Cleaned text will appear here..." readonly></textarea>
+                <div id="outputCharCount" class="char-count">0 characters (0 without spaces)</div>
+                 <div class="controls">
+                    <button id="copyButton" class="copy-button">Copy Result</button>
+                    <button id="downloadButton" class="download-button">Download Result</button>
+                </div>
+            </div>
         </div>
-        <!-- Advanced Options dropdown -->
-        <div class="relative">
-          <button id="toggleOptions" class="font-semibold focus:outline-none">
-            Advanced Options &#x25BE;
-          </button>
-          <div id="optionsPanel" class="absolute right-0 mt-2 w-52 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded shadow-lg hidden">
-            <label class="flex items-center mb-2">
-              <input id="removeEmoji" type="checkbox" class="mr-2" checked />
-              Remove Emojis
-            </label>
-            <label class="flex items-center">
-              <input id="removePunc" type="checkbox" class="mr-2" checked />
-              Remove Punctuation
-            </label>
-          </div>
-        </div>
-      </div>
+        
+         <div class="controls">
+             <button id="cleanButton">Clean Text Now</button>
+              </div>
 
-      <!-- Small descriptive paragraph (for SEO and user info) -->
-      <p class="text-sm text-gray-700 dark:text-gray-300">
-        This free online text cleaner removes emojis, punctuation, and other special characters from your text in real-time. 
-        Paste or type your content in the input box, and the cleaned text will appear on the right. 
-        You can then easily copy the result or download it as a <code>.txt</code> file. 
-        The tool works entirely in your browser (no data is stored), and you can switch between light and dark mode for comfort.
-      </p>
     </div>
 
-    <!-- Include the script bundle (generated by Vite) -->
-    <script type="module" src="/main.js"></script>
-  </body>
-</html>
+    <h2>How it Works & Examples</h2>
+    <p>
+        Simply paste your text into the 'Input Text' box. If you don't enable real-time cleaning (coming soon!), click the "Clean Text Now" button. The tool uses JavaScript to remove characters that are not standard letters (a-z, A-Z), numbers (0-9), or spaces. The cleaned text appears instantly in the 'Cleaned Output' box.
+    </p>
+    <p><strong>Example:</strong></p>
+    <p>Input: <code>Hello @$wørld✨! (123)</code></p>
+    <p>Output: <code>Hello world 123</code></p>
+
+     <h2>Why Use Only Text?</h2>
+     <ul>
+        <li><strong>Fast & Simple:</strong> Get clean text with one click or instantly.</li>
+        <li><strong>Privacy Focused:</strong> All processing happens in your browser. Your data stays private.</li>
+        <li><strong>Free to Use:</strong> No sign-up required.</li>
+        <li><strong>Versatile:</strong> Useful for cleaning text for social media, coding, data analysis, AI prompts, and more.</li>
+     </ul>
+    
+</div>
