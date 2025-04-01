@@ -1,160 +1,132 @@
-/* HEADER & NAVIGATION */
+/* Basis styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #F0F0F0; /* Secundair */
+  color: #333333; /* Tekst */
+  margin: 0;
+}
+
+/* HEADER */
 .header {
-  background-color: #002B5B; /* Primair: Donkerblauw */
+  background-color: #36454F; /* Primair */
   padding: 1em;
 }
 .header-container {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 .logo {
-  font-size: 1.8em;
+  font-size: 2rem;
   font-weight: bold;
   color: #FFFFFF;
 }
 .nav {
-  display: flex;
-  gap: 1em;
-  flex: 1;
-  justify-content: center; /* Centreert de links */
+  /* Geen links: we verwijderen deze, alleen het logo blijft in de header */
 }
-.nav a {
-  color: #FFFFFF;
-  font-weight: bold;
-  text-decoration: none;
-}
-.nav a:hover {
-  color: #007ACC; /* Accent: Helder Blauw */
-}
-.header-right .button {
-  background-color: #007ACC; /* Accent */
+.header-right .dark-toggle {
+  background-color: #008CBA; /* Accent */
   border: none;
   padding: 0.5em 1em;
   color: #FFFFFF;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
-.header-right .button:hover {
-  background-color: #005b99;
+.header-right .dark-toggle:hover {
+  background-color: #006f9a;
 }
 
-/* FOOTER */
-.footer {
-  background-color: #F5F5F5; /* Neutraal: Lichtgrijs */
-  padding: 1em;
-  margin-top: 2em;
+/* CONTAINER */
+.container {
+  max-width: 1200px;
+  margin: 2em auto;
+  padding: 0 1em;
+}
+
+/* TOOL SECTION */
+.tool-section {
   text-align: center;
 }
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
+.tool-section .title {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
 }
-.footer-nav a {
-  color: #333333; /* Tekst: Donkergrijs */
-  text-decoration: none;
-  margin: 0 0.5em;
-}
-.footer-nav a:hover {
-  text-decoration: underline;
+.tool-section .subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1.5em;
 }
 
-/* Dark Mode Overrides for Header & Footer */
-body.dark .header,
-body.dark .footer {
-  background-color: #002B5B;
-}
-body.dark .nav a,
-body.dark .logo,
-body.dark .footer-nav a {
-  color: #FFFFFF;
-}
-
-/* Basis resets en custom instellingen */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #FFFFFF; /* Secondary: Wit */
-  color: #333333; /* Tekst: Donkergrijs */
-}
-
-/* Header & Navbar */
-.navbar {
-  background-color: #002B5B; /* Primair: Donkerblauw */
-}
-.navbar .navbar-item,
-.navbar .navbar-brand .navbar-item {
-  color: #FFFFFF;
-  font-weight: bold;
-}
-.navbar .navbar-item:hover {
-  color: #007ACC; /* Accent */
-}
-.navbar .navbar-menu {
-  align-items: center;
-}
-.navbar .navbar-end .button {
-  background-color: #007ACC; /* Accent */
-  border: none;
-  color: #FFFFFF;
-}
-.navbar .navbar-end .button:hover {
-  background-color: #005b99;
-}
-
-/* Container */
-.container {
+/* Panels (zij-aan-zij) */
+.columns {
   margin-top: 2em;
 }
-
-/* Tool Section */
 .box {
+  background-color: #FFFFFF; /* Wit voor de content vakken */
+  padding: 1.5em;
   border-radius: 4px;
-  background-color: #F5F5F5; /* Neutraal: Lichtgrijs */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 .textarea {
-  font-size: 1.2rem;
-  min-height: 250px;
+  font-size: 12pt; /* 12pt tekst in de textarea */
+  min-height: 18em; /* Minimaal 18em hoog */
 }
-.buttons {
+.button-row {
   margin-top: 0.5em;
 }
 .has-text-grey {
   font-size: 1rem;
 }
 
+/* Options */
+.field.is-grouped .control .checkbox {
+  font-size: 1.2rem;
+}
+
 /* SEO Content Section */
 .seo-content {
-  margin-top: 2em;
+  margin-top: 3em;
+  text-align: left;
+  background-color: #FFFFFF;
+  padding: 2em;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-.seo-content h2.title {
-  margin-top: 1.5em;
-}
-.seo-content h3.subtitle {
+.seo-content .title.is-3 {
   margin-top: 1em;
+  font-size: 1.75rem;
+}
+.seo-content .subtitle.is-4 {
+  font-size: 1.25rem;
 }
 
-/* Footer */
+/* FOOTER */
 .footer {
-  background-color: #F5F5F5;
+  background-color: #36454F;
+  color: #FFFFFF;
   padding: 1em;
-  margin-top: 2em;
+  text-align: center;
+  margin-top: 3em;
 }
-.footer .content p {
-  margin: 0.2em 0;
+.footer a {
+  color: #FFFFFF;
+  text-decoration: none;
+  margin: 0 0.5em;
+}
+.footer a:hover {
+  text-decoration: underline;
 }
 
-/* Dark Mode Overrides */
+/* DARK MODE OVERRIDES */
 body.dark {
   background-color: #1e1e1e;
   color: #ccc;
 }
-body.dark .navbar {
-  background-color: #002B5B;
-}
-body.dark .navbar .navbar-item {
-  color: #FFFFFF;
+body.dark .header,
+body.dark .footer {
+  background-color: #36454F;
 }
 body.dark .box {
   background-color: #2a2a2a;
@@ -162,8 +134,10 @@ body.dark .box {
 body.dark .textarea {
   background-color: #3a3a3a;
   color: #eee;
+  border: none;
+  border-bottom: 2px solid #008CBA;
 }
-body.dark .footer {
-  background-color: #002B5B;
-  color: #ddd;
+body.dark .seo-content {
+  background-color: #2a2a2a;
+  color: #ccc;
 }
