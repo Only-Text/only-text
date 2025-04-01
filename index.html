@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Only Text – Remove Emojis and Special Characters</title>
-  <meta name="description" content="Only Text is a free online text cleaner tool that removes unwanted emojis, punctuation and special characters in real-time.">
+  <meta name="description" content="Only Text is a free online text cleaner tool that removes unwanted emojis, punctuation, and special characters in real-time.">
   <link rel="canonical" href="https://example.com/">
   <link rel="alternate" hreflang="en" href="https://example.com/">
   <!-- Bulma CSS via CDN -->
@@ -38,6 +38,10 @@
             <div class="buttons mt-2">
               <button id="pasteBtn" class="button is-link">Paste</button>
               <button id="clearBtn" class="button is-warning">Clear</button>
+              <label class="button is-link">
+                Upload File
+                <input type="file" id="fileInput" accept=".txt" style="display: none;">
+              </label>
             </div>
             <p class="has-text-grey" id="inputStats">0 characters, 0 words</p>
           </div>
