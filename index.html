@@ -4,10 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Only Text – Remove Emojis and Special Characters</title>
-  <meta name="description" content="Only Text is a free online text cleaner tool that removes emojis, punctuation, and other special characters in real-time." />
+  <meta name="description" content="Only Text is a free online text cleaner tool that removes emojis, punctuation and other unwanted characters in real-time." />
   <link rel="canonical" href="https://example.com/" />
   <link rel="alternate" hreflang="en" href="https://example.com/" />
-  <link rel="alternate" hreflang="nl" href="https://example.com/nl/" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -18,55 +17,98 @@
       <nav class="nav">
         <a href="/">Home</a>
         <a href="/blog/">Blog</a>
-        <a href="/nl/">Nederlands</a>
       </nav>
-      <button id="darkToggle" class="button dark-toggle" type="button">Dark Mode</button>
+      <div class="header-right">
+        <button id="darkToggle" class="button dark-toggle" type="button">Dark Mode</button>
+      </div>
     </div>
   </header>
 
   <!-- MAIN CONTENT -->
   <main class="container">
-    <h1>Remove Emojis and Special Characters</h1>
-    <p>Paste or type your text in the left panel. The cleaned text will appear in the right panel in real-time.</p>
-    
-    <!-- Panels side by side -->
-    <div class="panels">
-      <!-- Input Panel -->
-      <div class="panel" id="panel-left">
-        <label for="inputText">Input Text</label>
-        <textarea id="inputText" placeholder="Enter your text here..."></textarea>
-        <div class="button-row">
-          <button id="pasteBtn" class="button" type="button">Paste</button>
-          <button id="clearBtn" class="button" type="button">Clear</button>
+    <!-- Tool Section -->
+    <section class="tool-section">
+      <h1>Remove Emojis and Special Characters</h1>
+      <p>Paste or type your text in the left panel. The cleaned text will appear in the right panel in real-time.</p>
+      
+      <div class="panels">
+        <!-- Input Panel -->
+        <div class="panel" id="panel-left">
+          <label for="inputText">Input Text</label>
+          <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+          <div class="button-row">
+            <button id="pasteBtn" class="button" type="button">Paste</button>
+            <button id="clearBtn" class="button" type="button">Clear</button>
+          </div>
+          <div class="stats">
+            <span id="inputStats">0 characters, 0 words</span>
+          </div>
         </div>
-        <div class="stats">
-          <span id="inputStats">0 characters, 0 words</span>
+        <!-- Output Panel -->
+        <div class="panel" id="panel-right">
+          <label for="outputText">Cleaned Text</label>
+          <textarea id="outputText" readonly placeholder="Cleaned text appears here..."></textarea>
+          <div class="button-row">
+            <button id="copyBtn" class="button" type="button">Copy</button>
+            <button id="downloadBtn" class="button" type="button">Download</button>
+          </div>
+          <div class="stats">
+            <span id="outputStats">0 characters, 0 words</span>
+          </div>
         </div>
       </div>
-      <!-- Output Panel -->
-      <div class="panel" id="panel-right">
-        <label for="outputText">Cleaned Text</label>
-        <textarea id="outputText" readonly placeholder="Cleaned text appears here..."></textarea>
-        <div class="button-row">
-          <button id="copyBtn" class="button" type="button">Copy</button>
-          <button id="downloadBtn" class="button" type="button">Download</button>
-        </div>
-        <div class="stats">
-          <span id="outputStats">0 characters, 0 words</span>
-        </div>
+      
+      <!-- Advanced Options -->
+      <div class="options">
+        <label><input type="checkbox" id="removeEmoji" checked> Remove Emojis</label>
+        <label><input type="checkbox" id="removePunctuation" checked> Remove Punctuation</label>
       </div>
-    </div>
+    </section>
 
-    <!-- Advanced Options -->
-    <div class="options">
-      <label><input type="checkbox" id="removeEmoji" checked> Remove Emojis</label>
-      <label><input type="checkbox" id="removePunctuation" checked> Remove Punctuation</label>
-    </div>
+    <!-- SEO Content Section -->
+    <section class="seo-content">
+      <h2>Key Takeaways</h2>
+      <p>A text cleaner is designed to remove unwanted characters and formatting, enhancing the professionalism and clarity of text from various sources.</p>
+      <p>The tool offers user-friendly features such as removing special characters, stripping HTML tags, and handling extra spacing, making text easier to manage.</p>
+      <p>Advanced functionalities like ‘Find and Replace’ and case conversion ensure a tailored text cleaning process, improving readability and consistency in formatting.</p>
+      
+      <h2>What is a Text Cleaner?</h2>
+      <p>A text cleaner is an online tool designed to clean and format text by removing unwanted characters and performing complex text operations. Its primary purpose is to unformat text and eliminate unmeaningful characters, especially from content copied from various sources. This process is crucial for ensuring that the text is clear, professional, and free of distractions.</p>
+      <p>Text cleaners handle a variety of formatting issues. They can remove extra spaces, special characters, line breaks, and other unwanted elements. The tool can also change letter case, delete duplicate lines, strip HTML tags, and convert URLs into clickable links, making text easier to work with.</p>
+      
+      <h2>How to Use Our Text Cleaner Tool</h2>
+      <h3>Input Your Text</h3>
+      <p>Start by pasting your text into the designated input box. This sets the stage for cleaning by identifying and removing all unwanted elements.</p>
+      
+      <h3>View Results</h3>
+      <p>Once the text is entered, click the ‘Clean Text’ button (or use the live update) to process the text. The cleaned version will appear in the output box, ready for review and use.</p>
+      
+      <h2>Features of Our Text Cleaner Tool</h2>
+      <ul>
+        <li>Removes unwanted characters and extra spaces.</li>
+        <li>Strips HTML tags and unwanted formatting.</li>
+        <li>Offers advanced options like Find and Replace and case conversion.</li>
+        <li>Ensures consistency and professional text formatting.</li>
+      </ul>
+      
+      <h2>Benefits of Using a Text Cleaner</h2>
+      <p>Text cleaner tools significantly improve text clarity and consistency while saving time on formatting tasks. They ensure that your content is professional and ready for any application, from web publishing to data processing.</p>
+      
+      <h2>Common Applications</h2>
+      <p>Text cleaners are invaluable in social media analysis, content preparation, and AI text preprocessing. They remove extraneous formatting so your content remains clear and professional.</p>
+    </section>
   </main>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p>&copy; 2025 Only Text. This tool cleans your text in real-time.</p>
+    <div class="footer-container">
+      <p>&copy; 2025 Only Text. All rights reserved.</p>
+      <nav class="footer-nav">
+        <a href="/">Home</a>
+        <a href="/blog/">Blog</a>
+        <a href="https://example.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
+      </nav>
+    </div>
   </footer>
 
   <script src="main.js"></script>
