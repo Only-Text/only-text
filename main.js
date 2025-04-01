@@ -16,7 +16,7 @@
     });
   }
 
-  // ---- Elements for the Text Cleaner Tool ----
+  // ---- Element References voor de Text Cleaner Tool ----
   const inputText = document.getElementById('inputText');
   const outputText = document.getElementById('outputText');
   const removeEmojiCheckbox = document.getElementById('removeEmoji');
@@ -31,16 +31,17 @@
   // ---- Update Output Function ----
   function updateOutput() {
     let text = inputText.value;
-    // Zorg dat elke nieuwe regel geen beginspaties heeft:
+    // Zorg dat nieuwe regels geen beginspaties bevatten
     text = text.split("\n").map(line => line.trimStart()).join("\n");
     inputText.value = text;
-    // Update input stats
+    
+    // Bereken statistieken voor input
     const inputCharCount = text.length;
     const inputWordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
     inputStats.textContent = `${inputCharCount} characters, ${inputWordCount} words`;
-
-    // Bouw regex dynamisch op basis van de opties:
-    let allowed = '\\p{L}\\p{N}\\s';
+    
+    // Bouw dynamisch de regex op basis van opties
+    let allowed = '\\p{L}\\p{N}\\s'; // behoud letters, nummers en whitespace
     if (!removePunctuationCheckbox.checked) {
       allowed += '\\p{P}';
     }
@@ -50,7 +51,8 @@
     const regex = new RegExp(`[^${allowed}]`, 'gu');
     const cleaned = text.replace(regex, '');
     outputText.value = cleaned;
-    // Update output stats
+    
+    // Bereken statistieken voor output
     const outCharCount = cleaned.length;
     const outWordCount = cleaned.trim() ? cleaned.trim().split(/\s+/).length : 0;
     outputStats.textContent = `${outCharCount} characters, ${outWordCount} words`;
