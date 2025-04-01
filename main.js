@@ -16,7 +16,7 @@
     });
   }
 
-  // ---- Elementen voor de Text Cleaner ----
+  // ---- Elements for the Text Cleaner Tool ----
   const inputText = document.getElementById('inputText');
   const outputText = document.getElementById('outputText');
   const removeEmojiCheckbox = document.getElementById('removeEmoji');
@@ -28,20 +28,18 @@
   const inputStats = document.getElementById('inputStats');
   const outputStats = document.getElementById('outputStats');
 
-  // ---- Update Output functie ----
+  // ---- Update Output Function ----
   function updateOutput() {
     let text = inputText.value;
     // Zorg dat elke nieuwe regel geen beginspaties heeft:
     text = text.split("\n").map(line => line.trimStart()).join("\n");
     inputText.value = text;
-
-    // Update input stat:
+    // Update input stats
     const inputCharCount = text.length;
     const inputWordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
     inputStats.textContent = `${inputCharCount} characters, ${inputWordCount} words`;
 
-    // Bouw regex op basis van opties:
-    // Basis: behoud letters, nummers en whitespace.
+    // Bouw regex dynamisch op basis van de opties:
     let allowed = '\\p{L}\\p{N}\\s';
     if (!removePunctuationCheckbox.checked) {
       allowed += '\\p{P}';
@@ -49,12 +47,10 @@
     if (!removeEmojiCheckbox.checked) {
       allowed += '\\p{Extended_Pictographic}';
     }
-    // Verwijder alles wat NIET is toegestaan:
     const regex = new RegExp(`[^${allowed}]`, 'gu');
     const cleaned = text.replace(regex, '');
     outputText.value = cleaned;
-
-    // Update output stat:
+    // Update output stats
     const outCharCount = cleaned.length;
     const outWordCount = cleaned.trim() ? cleaned.trim().split(/\s+/).length : 0;
     outputStats.textContent = `${outCharCount} characters, ${outWordCount} words`;
@@ -66,7 +62,7 @@
     removePunctuationCheckbox.addEventListener('change', updateOutput);
   }
 
-  // ---- Paste Functionaliteit ----
+  // ---- Paste Functionality ----
   if (pasteBtn) {
     pasteBtn.addEventListener('click', async () => {
       if (navigator.clipboard && window.isSecureContext) {
@@ -87,7 +83,7 @@
     });
   }
 
-  // ---- Clear Functionaliteit ----
+  // ---- Clear Functionality ----
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       inputText.value = '';
@@ -96,7 +92,7 @@
     });
   }
 
-  // ---- Copy Functionaliteit ----
+  // ---- Copy Functionality ----
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
       const cleaned = outputText.value;
@@ -115,7 +111,7 @@
     alert('Copied to clipboard!');
   }
 
-  // ---- Download Functionaliteit ----
+  // ---- Download Functionality ----
   if (downloadBtn) {
     downloadBtn.addEventListener('click', () => {
       const cleaned = outputText.value;
@@ -131,6 +127,6 @@
     });
   }
 
-  // Initialiseer de output bij het laden van de pagina.
+  // Initial update on page load
   updateOutput();
 })();
