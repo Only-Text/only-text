@@ -102,10 +102,13 @@
       const input = document.getElementById('input').value;
 
       // Remove emojis and special characters
-      const cleaned = input
+      let cleaned = input
         .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '') // emojis
         .replace(/[^a-zA-Z0-9.,\s\n]/g, '') // keep spaces and line breaks
         .replace(/[ ]{2,}/g, ' '); // collapse multiple spaces
+
+      // Remove leading spaces on each line
+      cleaned = cleaned.split('\n').map(line => line.replace(/^\s+/, '')).join('\n');
 
       document.getElementById('output').value = cleaned.trim();
     }
