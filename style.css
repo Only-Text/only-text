@@ -1,9 +1,226 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Custom styles (if any) */
-:focus {
-  outline: none;
+/* Globale stijlen */
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    color: #333;
 }
-/* (You can add a transition for dark mode toggle or other small custom styles if desired) */
+
+.container {
+    width: 90%;
+    max-width: 960px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    flex-grow: 1; /* Zorgt dat container groeit om footer naar beneden te duwen */
+}
+
+/* Header & Navigatie */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+}
+
+nav {
+    width: 90%;
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover, nav ul li a.active { /* Voeg 'active' class toe met JS indien gewenst */
+    background-color: #555;
+}
+
+.lang-switch a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+}
+.lang-switch a:hover {
+    background-color: #fff;
+    color: #333;
+}
+
+
+/* Main content */
+main {
+   padding: 20px 0; /* Extra padding voor main */
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto; /* Duwt footer naar beneden */
+}
+
+
+/* Tool specifieke stijlen (voor index.html) */
+.tool-container {
+    display: flex;
+    flex-direction: column; /* Standaard onder elkaar */
+    gap: 20px; /* Ruimte tussen elementen */
+}
+
+.text-area-section {
+    display: flex;
+    flex-direction: column; /* Input/Output onder elkaar op mobiel */
+    gap: 15px;
+}
+
+.text-area-wrapper {
+    flex: 1; /* Neemt beschikbare ruimte */
+    display: flex;
+    flex-direction: column;
+}
+
+.text-area-wrapper label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+textarea {
+    width: 100%; /* Volledige breedte van wrapper */
+    min-height: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Voorkomt dat padding de box groter maakt */
+    font-family: monospace; /* Goed voor code/tekst */
+    resize: vertical; /* Alleen verticaal resizen */
+}
+
+.controls, .file-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap; /* Knoppen op volgende regel indien nodig */
+}
+
+button, .file-input-label {
+    padding: 10px 15px;
+    background-color: #5cb85c; /* Groen */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+.copy-button {
+    background-color: #337ab7; /* Blauw */
+}
+.copy-button:hover {
+    background-color: #286090;
+}
+.download-button {
+    background-color: #f0ad4e; /* Oranje */
+}
+.download-button:hover {
+    background-color: #ec971f;
+}
+
+.char-count {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Stijl voor het verbergen van de standaard file input */
+.file-input {
+    display: none;
+}
+.file-input-label {
+    background-color: #5bc0de; /* Lichtblauw */
+    display: inline-block; /* Om padding etc. toe te passen */
+}
+.file-input-label:hover {
+     background-color: #46b8da;
+}
+#file-name {
+    font-size: 0.9em;
+    color: #555;
+    margin-left: 10px;
+}
+
+/* Blog stijlen */
+.blog-list li {
+    margin-bottom: 10px;
+}
+.blog-list li a {
+    text-decoration: none;
+    color: #337ab7;
+}
+.blog-list li a:hover {
+    text-decoration: underline;
+}
+
+.blog-post article {
+    margin-top: 20px;
+}
+.blog-post h1 {
+    margin-bottom: 10px;
+}
+.blog-post .post-meta {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .tool-container {
+        /* Eventueel naast elkaar op grotere schermen */
+    }
+    .text-area-section {
+        flex-direction: row; /* Input/Output naast elkaar */
+    }
+    nav {
+        /* Misschien navigatie anders tonen */
+    }
+}
