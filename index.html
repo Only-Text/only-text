@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Only Text - Verwijder Speciale Tekens</title>
+  <title>Only Text - Clean Up Special Characters</title>
   <style>
     body {
       font-family: sans-serif;
@@ -40,6 +40,7 @@
     .buttons {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 1rem;
     }
     button {
@@ -63,16 +64,16 @@
 </head>
 <body>
   <h1>Only Text</h1>
-  <p>Verwijder speciale tekens en emoji's uit tekst</p>
+  <p>Remove special characters and emojis from your text</p>
 
   <div class="container">
     <div class="textareas">
-      <textarea id="input" placeholder="Plak hier je tekst..."></textarea>
-      <textarea id="output" placeholder="Schoongemaakte tekst verschijnt hier..."></textarea>
+      <textarea id="input" placeholder="Paste your text here..."></textarea>
+      <textarea id="output" placeholder="Cleaned text will appear here..."></textarea>
     </div>
     <div class="buttons">
-      <button onclick="cleanText()">Opschonen</button>
-      <button onclick="copyOutput()">Kopieer resultaat</button>
+      <button onclick="cleanText()">Only Text</button>
+      <button onclick="copyOutput()">Copy Result</button>
     </div>
   </div>
 
@@ -80,11 +81,11 @@
     function cleanText() {
       const input = document.getElementById('input').value;
 
-      // Regex om speciale tekens en emoji's te verwijderen
+      // Remove emojis and special characters
       const cleaned = input
-        .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '') // emoji's
-        .replace(/[^a-zA-Z0-9.,\s\n]/g, '') // behoud spaties en enters
-        .replace(/[ ]{2,}/g, ' '); // dubbele spaties naar 1 (maar geen enters strippen)
+        .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '') // emojis
+        .replace(/[^a-zA-Z0-9.,\s\n]/g, '') // keep spaces and line breaks
+        .replace(/[ ]{2,}/g, ' '); // collapse multiple spaces
 
       document.getElementById('output').value = cleaned.trim();
     }
@@ -93,7 +94,7 @@
       const output = document.getElementById('output');
       output.select();
       document.execCommand('copy');
-      alert('Tekst gekopieerd!');
+      alert('Text copied!');
     }
   </script>
 </body>
