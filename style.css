@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles (if any) */
+:focus {
+  outline: none;
+}
+/* (You can add a transition for dark mode toggle or other small custom styles if desired) */
