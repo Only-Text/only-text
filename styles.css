@@ -1,0 +1,205 @@
+/* Algemene basisstijl */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: sans-serif;
+  line-height: 1.6;
+  background: #ffffff;
+  color: #000000;
+}
+body.dark {
+  background: #121212;
+  color: #e0e0e0;
+}
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+body.dark a {
+  color: #4da3ff;
+}
+
+/* Navigatiebalk */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+  background: #f5f5f5;
+}
+body.dark .top-nav {
+  background: #333;
+}
+.top-nav .logo {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: inherit;
+  text-decoration: none;
+}
+.top-nav .menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1em;
+}
+.top-nav .menu a {
+  color: #333;
+}
+body.dark .top-nav .menu a {
+  color: #ddd;
+}
+.top-nav .menu a:hover {
+  text-decoration: underline;
+}
+#darkToggle {
+  background: none;
+  border: 1px solid #333;
+  color: #333;
+  padding: 0.3em 0.6em;
+  border-radius: 3px;
+  cursor: pointer;
+}
+body.dark #darkToggle {
+  border-color: #ddd;
+  color: #ddd;
+}
+
+/* Hoofdinhoud */
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1em;
+}
+h1, h2, h3 {
+  font-weight: 600;
+}
+h1 {
+  margin-top: 0.2em;
+}
+p {
+  margin-bottom: 1em;
+}
+ul, ol {
+  margin-bottom: 1em;
+  padding-left: 1.2em;
+}
+li {
+  margin-bottom: 0.5em;
+}
+
+/* Tool-sectie (tekstvelden en knoppen) */
+.textareas {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin: 1em 0;
+}
+.textareas .input-section,
+.textareas .output-section {
+  flex: 1;
+}
+.textareas label {
+  font-weight: 600;
+}
+textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 0.5em;
+  font-family: sans-serif;
+  font-size: 1em;
+}
+textarea[readonly] {
+  background: #f9f9f9;
+}
+body.dark textarea[readonly] {
+  background: #2c2c2c;
+  color: #e0e0e0;
+}
+.toggles {
+  margin: 0.5em 0;
+}
+.toggles label {
+  margin-right: 1em;
+}
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+}
+.actions .buttons {
+  display: flex;
+  gap: 0.5em;
+}
+button {
+  padding: 0.5em 1em;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+}
+button:hover {
+  background: #005fc5;
+}
+body.dark button {
+  background: #005fc5;
+}
+body.dark button:hover {
+  background: #007bff;
+}
+.stats {
+  margin-top: 0.5em;
+  font-size: 0.9em;
+  color: #555;
+}
+body.dark .stats {
+  color: #ccc;
+}
+
+/* Bloglijst */
+.post-list li {
+  margin-bottom: 0.5em;
+}
+.post-list a {
+  color: #007bff;
+}
+.post-list a:hover {
+  text-decoration: underline;
+}
+body.dark .post-list a {
+  color: #4da3ff;
+}
+
+/* Blogpost artikel */
+article .meta {
+  color: #777;
+  font-size: 0.9em;
+  margin-bottom: 1em;
+}
+body.dark article .meta {
+  color: #aaa;
+}
+
+/* Voettekst */
+footer {
+  text-align: center;
+  padding: 1em;
+  background: #f5f5f5;
+  color: #333;
+}
+body.dark footer {
+  background: #333;
+  color: #ddd;
+}
+footer p {
+  margin: 0;
+  font-size: 0.9em;
+}
