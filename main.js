@@ -1,5 +1,5 @@
 (function() {
-  // ----- Dark Mode Functionaliteit -----
+  // ---- Dark Mode Toggle ----
   const darkToggleBtn = document.getElementById('darkToggle');
   const body = document.body;
   let isDark = false;
@@ -16,7 +16,7 @@
     });
   }
 
-  // ----- Elementen voor de Only Text Tool -----
+  // ---- Elementen voor de Text Cleaner ----
   const inputText = document.getElementById('inputText');
   const outputText = document.getElementById('outputText');
   const removeEmojiCheckbox = document.getElementById('removeEmoji');
@@ -24,38 +24,37 @@
   const pasteBtn = document.getElementById('pasteBtn');
   const copyBtn = document.getElementById('copyBtn');
   const downloadBtn = document.getElementById('downloadBtn');
+  const clearBtn = document.getElementById('clearBtn');
   const inputStats = document.getElementById('inputStats');
   const outputStats = document.getElementById('outputStats');
 
-  // ----- Update Functionaliteit -----
+  // ---- Update Output functie ----
   function updateOutput() {
     let text = inputText.value;
-    // Update input stats
+    // Zorg dat elke nieuwe regel geen beginspaties heeft:
+    text = text.split("\n").map(line => line.trimStart()).join("\n");
+    inputText.value = text;
+
+    // Update input stat:
     const inputCharCount = text.length;
     const inputWordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
     inputStats.textContent = `${inputCharCount} characters, ${inputWordCount} words`;
 
-    // Bouw regex dynamisch op basis van de opties
-    // Basis: letters, nummers en whitespace worden altijd behouden.
+    // Bouw regex op basis van opties:
+    // Basis: behoud letters, nummers en whitespace.
     let allowed = '\\p{L}\\p{N}\\s';
-    // Als Remove Punctuation is aangevinkt, verwijder leestekens
-    if (removePunctuationCheckbox.checked) {
-      // Do nothing: leestekens worden verwijderd door de regex hieronder
-    } else {
+    if (!removePunctuationCheckbox.checked) {
       allowed += '\\p{P}';
     }
-    // Als Remove Emojis is aangevinkt, verwijder emoji's
-    if (removeEmojiCheckbox.checked) {
-      // Emoji's vallen onder Extended Pictographic
-      // (We gebruiken hier Unicode property escapes; dit werkt in moderne browsers)
-    } else {
+    if (!removeEmojiCheckbox.checked) {
       allowed += '\\p{Extended_Pictographic}';
     }
-    // Regex: alles wat niet in de allowed set zit wordt verwijderd.
+    // Verwijder alles wat NIET is toegestaan:
     const regex = new RegExp(`[^${allowed}]`, 'gu');
     const cleaned = text.replace(regex, '');
     outputText.value = cleaned;
-    // Update output stats
+
+    // Update output stat:
     const outCharCount = cleaned.length;
     const outWordCount = cleaned.trim() ? cleaned.trim().split(/\s+/).length : 0;
     outputStats.textContent = `${outCharCount} characters, ${outWordCount} words`;
@@ -67,7 +66,7 @@
     removePunctuationCheckbox.addEventListener('change', updateOutput);
   }
 
-  // ----- Paste Functionaliteit -----
+  // ---- Paste Functionaliteit ----
   if (pasteBtn) {
     pasteBtn.addEventListener('click', async () => {
       if (navigator.clipboard && window.isSecureContext) {
@@ -76,7 +75,7 @@
           inputText.value = clipText;
           updateOutput();
         } catch (err) {
-          console.error('Failed to read clipboard contents:', err);
+          console.error('Clipboard read failed:', err);
         }
       } else {
         const text = prompt('Paste your text here:');
@@ -88,7 +87,16 @@
     });
   }
 
-  // ----- Copy Functionaliteit -----
+  // ---- Clear Functionaliteit ----
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      inputText.value = '';
+      outputText.value = '';
+      updateOutput();
+    });
+  }
+
+  // ---- Copy Functionaliteit ----
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
       const cleaned = outputText.value;
@@ -107,7 +115,7 @@
     alert('Copied to clipboard!');
   }
 
-  // ----- Download Functionaliteit -----
+  // ---- Download Functionaliteit ----
   if (downloadBtn) {
     downloadBtn.addEventListener('click', () => {
       const cleaned = outputText.value;
@@ -123,6 +131,6 @@
     });
   }
 
-  // Initialiseer de output bij pagina laden
+  // Initialiseer de output bij het laden van de pagina.
   updateOutput();
 })();
