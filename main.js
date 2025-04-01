@@ -16,7 +16,7 @@
     });
   }
 
-  // ---- Element References voor de Text Cleaner Tool ----
+  // ---- Elementen voor de Text Cleaner Tool ----
   const inputText = document.getElementById('inputText');
   const outputText = document.getElementById('outputText');
   const removeEmojiCheckbox = document.getElementById('removeEmoji');
@@ -28,19 +28,19 @@
   const inputStats = document.getElementById('inputStats');
   const outputStats = document.getElementById('outputStats');
 
-  // ---- Update Output Function ----
+  // ---- Update Output Functie ----
   function updateOutput() {
     let text = inputText.value;
-    // Zorg dat nieuwe regels geen beginspaties bevatten
+    // Zorg dat elke nieuwe regel geen beginspaties bevat
     text = text.split("\n").map(line => line.trimStart()).join("\n");
     inputText.value = text;
     
-    // Bereken statistieken voor input
+    // Update input statistieken
     const inputCharCount = text.length;
     const inputWordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
     inputStats.textContent = `${inputCharCount} characters, ${inputWordCount} words`;
     
-    // Bouw dynamisch de regex op basis van opties
+    // Bouw regex dynamisch op basis van opties
     let allowed = '\\p{L}\\p{N}\\s'; // behoud letters, nummers en whitespace
     if (!removePunctuationCheckbox.checked) {
       allowed += '\\p{P}';
@@ -52,7 +52,7 @@
     const cleaned = text.replace(regex, '');
     outputText.value = cleaned;
     
-    // Bereken statistieken voor output
+    // Update output statistieken
     const outCharCount = cleaned.length;
     const outWordCount = cleaned.trim() ? cleaned.trim().split(/\s+/).length : 0;
     outputStats.textContent = `${outCharCount} characters, ${outWordCount} words`;
@@ -64,7 +64,7 @@
     removePunctuationCheckbox.addEventListener('change', updateOutput);
   }
 
-  // ---- Paste Functionality ----
+  // ---- Paste Functionaliteit ----
   if (pasteBtn) {
     pasteBtn.addEventListener('click', async () => {
       if (navigator.clipboard && window.isSecureContext) {
@@ -85,7 +85,7 @@
     });
   }
 
-  // ---- Clear Functionality ----
+  // ---- Clear Functionaliteit ----
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       inputText.value = '';
@@ -94,7 +94,7 @@
     });
   }
 
-  // ---- Copy Functionality ----
+  // ---- Copy Functionaliteit ----
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
       const cleaned = outputText.value;
@@ -113,7 +113,7 @@
     alert('Copied to clipboard!');
   }
 
-  // ---- Download Functionality ----
+  // ---- Download Functionaliteit ----
   if (downloadBtn) {
     downloadBtn.addEventListener('click', () => {
       const cleaned = outputText.value;
@@ -129,6 +129,6 @@
     });
   }
 
-  // Initial update on page load
+  // Initialiseer de output bij pagina laden
   updateOutput();
 })();
