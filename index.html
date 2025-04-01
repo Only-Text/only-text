@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Only Text – Remove Emojis and Special Characters</title>
-  <meta name="description" content="Only Text is a free online text cleaner tool that removes emojis, punctuation, and special characters in real-time." />
+  <meta name="description" content="Only Text is a free online text cleaner tool that removes emojis, punctuation, and other special characters in real-time." />
   <link rel="canonical" href="https://example.com/" />
   <link rel="alternate" hreflang="en" href="https://example.com/" />
   <link rel="alternate" hreflang="nl" href="https://example.com/nl/" />
@@ -13,14 +13,14 @@
 <body>
   <!-- HEADER / NAVIGATION -->
   <header class="header">
-    <div class="logo">Only Text</div>
-    <nav class="nav">
-      <a href="/">Home</a>
-      <a href="/blog/">Blog</a>
-      <a href="/nl/">Nederlands</a>
-    </nav>
-    <div class="header-right">
-      <button id="darkToggle" class="button">Dark Mode</button>
+    <div class="header-container">
+      <div class="logo">Only Text</div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/blog/">Blog</a>
+        <a href="/nl/">Nederlands</a>
+      </nav>
+      <button id="darkToggle" class="button dark-toggle" type="button">Dark Mode</button>
     </div>
   </header>
 
@@ -36,8 +36,8 @@
         <label for="inputText">Input Text</label>
         <textarea id="inputText" placeholder="Enter your text here..."></textarea>
         <div class="button-row">
-          <button id="pasteBtn" class="button">Paste</button>
-          <button id="clearBtn" class="button">Clear</button>
+          <button id="pasteBtn" class="button" type="button">Paste</button>
+          <button id="clearBtn" class="button" type="button">Clear</button>
         </div>
         <div class="stats">
           <span id="inputStats">0 characters, 0 words</span>
@@ -48,8 +48,8 @@
         <label for="outputText">Cleaned Text</label>
         <textarea id="outputText" readonly placeholder="Cleaned text appears here..."></textarea>
         <div class="button-row">
-          <button id="copyBtn" class="button">Copy</button>
-          <button id="downloadBtn" class="button">Download</button>
+          <button id="copyBtn" class="button" type="button">Copy</button>
+          <button id="downloadBtn" class="button" type="button">Download</button>
         </div>
         <div class="stats">
           <span id="outputStats">0 characters, 0 words</span>
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-    <!-- Options for advanced cleaning -->
+    <!-- Advanced Options -->
     <div class="options">
       <label><input type="checkbox" id="removeEmoji" checked> Remove Emojis</label>
       <label><input type="checkbox" id="removePunctuation" checked> Remove Punctuation</label>
