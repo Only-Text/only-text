@@ -2,42 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>How to Use the Only Text Tool Effectively – Only Text Blog</title>
-  <meta name="description" content="Tips and step-by-step instructions on using the Only Text tool to clean up your text quickly and effectively." />
+  <meta name="description" content="Learn step-by-step how to use Only Text to clean your text quickly and effectively." />
   <link rel="canonical" href="https://example.com/blog/how-to-use-only-text.html" />
   <link rel="alternate" hreflang="en" href="https://example.com/blog/how-to-use-only-text.html" />
   <link rel="alternate" hreflang="nl" href="https://example.com/nl/blog/hoe-only-text-gebruiken.html" />
-<link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <header>
-    <nav class="top-nav">
-      <a href="/" class="logo">Only Text</a>
-      <ul class="menu">
-        <li><a href="/blog/">Blog</a></li>
-        <li><a href="/nl/blog/hoe-only-text-gebruiken.html">Nederlands</a></li>
-      </ul>
-      <button id="darkToggle" type="button">Dark Mode</button>
-    </nav>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo">Only Text</div>
+      <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/blog/">Blog</a>
+        <a href="/nl/">Nederlands</a>
+      </nav>
+      <div class="header-right">
+        <button id="darkToggle" class="button dark-toggle" type="button">Dark Mode</button>
+      </div>
+    </div>
   </header>
-  <main>
-    <article>
+  
+  <!-- ARTICLE CONTENT -->
+  <main class="container">
+    <article class="blog-article">
       <h1>How to Use the Only Text Tool Effectively</h1>
       <p class="meta">January 10, 2025 &middot; Only Text Team</p>
-      <p>The Only Text tool is very straightforward to use, but here are some tips to ensure you get the most out of it. Whether you want to quickly sanitize text for a plain-text application or prepare text for further processing, these steps will guide you through the process.</p>
-      <h2>Steps to Clean Your Text:</h2>
-      <ol>
-        <li><strong>Open the Only Text tool:</strong> Navigate to the Only Text homepage where the tool is available (no download or install required).</li>
-        <li><strong>Paste your text:</strong> In the "Enter text" box, paste or type the text that you want to clean up.</li>
-        <li><strong>Set the options:</strong> By default, the tool will remove emojis and punctuation. You can uncheck "Remove Emojis" or "Remove Punctuation" if you want to keep those in your text.</li>
-        <li><strong>Get the cleaned text:</strong> As you type or paste, the "Cleaned text" box will show the result in real-time. You’ll also see a count of characters and words update.</li>
-        <li><strong>Copy or download:</strong> Use the "Copy" button to copy the cleaned text to your clipboard, or hit "Download" to save it as a text file.</li>
-      </ol>
-      <p>That’s it! Following these steps, you can quickly convert any snippet of text to plain text. The live preview and counters help ensure you get exactly what you need. With Only Text, text cleanup is just a matter of seconds.</p>
+      <section class="content">
+        <p>The Only Text tool is designed to make cleaning text fast and simple. Follow these steps for best results:</p>
+        <ol>
+          <li><strong>Open the tool:</strong> Navigate to the Only Text homepage.</li>
+          <li><strong>Paste your text:</strong> Enter or paste your text into the input field.</li>
+          <li><strong>Select options:</strong> Choose whether to remove emojis and punctuation using the provided checkboxes.</li>
+          <li><strong>View live output:</strong> The cleaned text appears in real-time in the output field.</li>
+          <li><strong>Copy or download:</strong> Use the buttons to copy the cleaned text or download it as a .txt file.</li>
+        </ol>
+        <p>By following these simple steps, you can quickly transform any text into clean, plain text ready for use in any application.</p>
+      </section>
+      <nav class="article-nav">
+        <a href="/blog/">← Back to Blog</a>
+      </nav>
     </article>
   </main>
-  <footer>
+  
+  <!-- FOOTER -->
+  <footer class="footer">
     <p>&copy; 2025 Only Text.</p>
   </footer>
   <script src="../main.js"></script>
