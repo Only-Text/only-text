@@ -1,129 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Only Text – Remove Emojis and Special Characters</title>
-  <meta name="description" content="Only Text is a free online text cleaner tool that removes unwanted emojis, punctuation, and special characters in real-time.">
-  <link rel="canonical" href="https://example.com/">
-  <link rel="alternate" hreflang="en" href="https://example.com/">
-  <!-- Bulma CSS via CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Only Text - Free Tool to Remove Emojis, Bullet Points & Formatting</title>
+    <meta name="description" content="Only Text is a free online tool that removes unwanted symbols from any text, leaving you with just plain text. Remove emojis, special characters, and bullet points in seconds.">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-container">
-      <div class="logo">Only Text</div>
-      <div class="header-right">
-        <button id="darkToggle" class="button dark-toggle" type="button">Dark Mode</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN TOOL SECTION -->
-  <main class="container">
-    <section class="tool-section">
-      <h1 class="title has-text-centered">Remove Emojis and Special Characters</h1>
-      
-      <div class="columns">
-        <!-- Input Panel -->
-        <div class="column">
-          <div class="box">
-            <label class="label" for="inputText">Input Text</label>
-            <textarea id="inputText" class="textarea" placeholder="Enter your text here..." style="min-height: 18em; font-size: 12pt;"></textarea>
-            <div class="buttons mt-2">
-              <button id="pasteBtn" class="button is-link">Paste</button>
-              <button id="clearBtn" class="button is-warning">Clear</button>
-              <label class="button is-link">
-                Upload File
-                <input type="file" id="fileInput" accept=".txt" style="display: none;">
-              </label>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="/">
+                    <img src="img/logo.svg" alt="Only Text Logo">
+                    <span>Only Text</span>
+                </a>
             </div>
-            <p class="has-text-grey" id="inputStats">0 characters, 0 words</p>
-          </div>
+            <nav>
+                <ul>
+                    <li><a href="#tool" class="active">Tool</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
         </div>
-        <!-- Output Panel -->
-        <div class="column">
-          <div class="box">
-            <label class="label" for="outputText">Cleaned Text</label>
-            <textarea id="outputText" class="textarea" readonly placeholder="Cleaned text appears here..." style="min-height: 18em; font-size: 12pt;"></textarea>
-            <div class="buttons mt-2">
-              <button id="copyBtn" class="button is-link">Copy</button>
-              <button id="downloadBtn" class="button is-link">Download</button>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Only Text – Free Tool to Remove Emojis, Bullet Points & Formatting</h1>
+                <p class="lead">Only Text is a free online tool that removes unwanted symbols from any text, leaving you with just plain text. In other words, it's an all-in-one emoji remover, special characters remover, and bullet point remover.</p>
             </div>
-            <p class="has-text-grey" id="outputStats">0 characters, 0 words</p>
-          </div>
+        </section>
+
+        <section id="tool" class="tool-section">
+            <div class="container">
+                <div class="text-converter">
+                    <div class="text-area-container">
+                        <div class="text-area-header">
+                            <div class="dropdown">
+                                <span>Input Text</span>
+                            </div>
+                            <button id="clear-btn" class="small-btn">Clear</button>
+                        </div>
+                        <textarea id="input-text" placeholder="Type, paste text, or drop document here."></textarea>
+                        <div class="text-area-footer">
+                            <label class="file-upload">
+                                <input type="file" id="file-upload" accept=".txt,.md,.html,.doc,.docx">
+                                <span>Upload Document</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="converter-arrow">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+
+                    <div class="text-area-container">
+                        <div class="text-area-header">
+                            <div class="dropdown">
+                                <span>Clean Text</span>
+                            </div>
+                            <div class="actions">
+                                <button id="copy-btn" class="small-btn">Copy</button>
+                                <button id="download-btn" class="small-btn">Download</button>
+                            </div>
+                        </div>
+                        <textarea id="output-text" readonly placeholder="Clean text will appear here"></textarea>
+                    </div>
+                </div>
+
+                <div class="settings">
+                    <h3>Cleaning Options</h3>
+                    <div class="settings-grid">
+                        <label class="toggle">
+                            <input type="checkbox" id="remove-emojis" checked>
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-label">Remove Emojis</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" id="remove-bullets" checked>
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-label">Remove Bullet Points</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" id="remove-special-chars" checked>
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-label">Remove Special Characters</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" id="remove-extra-spaces" checked>
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-label">Remove Extra Spaces</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" id="fix-hyphenation" checked>
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-label">Convert Hyphens to Spaces</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" id="trim-lines" checked>
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-label">Trim Line Spaces</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="benefits-section">
+            <div class="container">
+                <h2>Why Use Only Text?</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">⏱️</div>
+                        <h3>Save Time</h3>
+                        <p>No more manual deleting. Remove emoji from text, bullet points, and other unwanted characters in seconds.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📝</div>
+                        <h3>Plain Text Anywhere</h3>
+                        <p>Get a clean plain text output that's ready to use in emails, documents, or any platform – without weird formatting issues.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🤖</div>
+                        <h3>AI‑Proof Your Text</h3>
+                        <p>Remove any AI symbols or formatting quirks left by text generators so your content looks natural and professional.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">✨</div>
+                        <h3>Free & Easy</h3>
+                        <p>100% free online tool with no sign-up or installation. Just paste, click, and copy your cleaned text.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="blog-section">
+            <div class="container">
+                <h2>From the Blog</h2>
+                <div class="blog-grid">
+                    <article class="blog-card">
+                        <h3>Why AI Outputs Need Cleaning</h3>
+                        <p>AI-generated text isn't always ready to use out-of-the-box. Whether you use ChatGPT or another AI writer, the output often contains extras like lists, bullet points, emojis, or strange formatting that can clutter your content.</p>
+                        <p>In this blog post, we explore why cleaning up AI outputs is so important. From improving readability to avoiding hidden AI markers, discover how a quick clean-up can make AI-generated text more reliable and easier to work with.</p>
+                        <a href="#" class="read-more">Read more...</a>
+                    </article>
+                    <article class="blog-card">
+                        <h3>How to Quickly Get Plain Text from LinkedIn Posts</h3>
+                        <p>Ever tried to copy a LinkedIn post, only to paste a mess of icons, formatting, and odd characters? You're not alone. LinkedIn posts often contain emojis and special symbols that don't transfer well into emails or documents.</p>
+                        <p>In this article, we show you how to instantly remove formatting from text copied from LinkedIn or any other platform. With the right tool, you can convert rich text into plain text in just a few clicks.</p>
+                        <a href="#" class="read-more">Read more...</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials-section">
+            <div class="container">
+                <h2>What Users Are Saying</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p>"Finally, a simple text tool that does exactly what I need. Only Text saves me a ton of editing time!"</p>
+                        <cite>— John D., Content Creator</cite>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"I use Only Text after every ChatGPT session. It quickly removes all the formatting and emojis, leaving me with clean plain text ready to publish."</p>
+                        <cite>— Emily R., AI Enthusiast</cite>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#blog">Blog</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Contact</a>
+                </div>
+                <p class="copyright">© 2025 Only Text. All rights reserved. Only Text is provided as-is and is not affiliated with OpenAI, LinkedIn, or any other platform.</p>
+            </div>
         </div>
-      </div>
-      
-      <!-- Advanced Options -->
-      <div class="field is-grouped is-grouped-multiline">
-        <div class="control">
-          <label class="checkbox">
-            <input type="checkbox" id="removeEmoji" checked>
-            Remove Emojis
-          </label>
-        </div>
-        <div class="control">
-          <label class="checkbox">
-            <input type="checkbox" id="removePunctuation" checked>
-            Remove Punctuation
-          </label>
-        </div>
-      </div>
-    </section>
+    </footer>
 
-          <p class="subtitle has-text-centered">Paste or type your text in the left panel. The cleaned text will appear in the right panel in real-time.</p>
-
-
-    <!-- SEO CONTENT SECTION -->
-    <section class="seo-content">
-      <h2 class="title is-3">Key Takeaways</h2>
-      <p>A text cleaner is designed to remove unwanted characters and formatting, enhancing the professionalism and clarity of text from various sources.</p>
-      <p>The tool offers user-friendly features such as removing special characters, stripping HTML tags, and handling extra spacing, making text easier to manage.</p>
-      <p>Advanced functionalities like ‘Find and Replace’ and case conversion ensure a tailored text cleaning process, improving readability and consistency in formatting.</p>
-      
-      <h2 class="title is-3">What is a Text Cleaner?</h2>
-      <p>A text cleaner is an online tool designed to clean and format text by removing unwanted characters and performing complex text operations. Its primary purpose is to unformat text and eliminate unmeaningful characters, especially from content copied from various sources. This process is crucial for ensuring that the text is clear, professional, and free of distractions.</p>
-      <p>Text cleaners handle a variety of formatting issues. They can remove extra spaces, special characters, line breaks, and other unwanted elements. The tool can also change letter case, delete duplicate lines, strip HTML tags, and convert URLs into clickable links, making text easier to work with.</p>
-      
-      <h2 class="title is-3">How to Use Our Text Cleaner Tool</h2>
-      <h3 class="subtitle is-4">Input Your Text</h3>
-      <p>Start by pasting your text into the designated input box. This sets the stage for cleaning by identifying and removing all unwanted elements.</p>
-      <h3 class="subtitle is-4">View Results</h3>
-      <p>Once your text is processed, the cleaned version appears in the output box, ready for you to copy or download.</p>
-      
-      <h2 class="title is-3">Features of Our Text Cleaner Tool</h2>
-      <ul>
-        <li>Removes unwanted characters and extra spaces.</li>
-        <li>Strips HTML tags and redundant formatting.</li>
-        <li>Offers advanced options like Find and Replace and case conversion.</li>
-        <li>Ensures professional and consistent text formatting.</li>
-      </ul>
-      
-      <h2 class="title is-3">Benefits of Using a Text Cleaner</h2>
-      <p>Using a text cleaner tool improves clarity, consistency, and professionalism while saving time on formatting tasks.</p>
-      
-      <h2 class="title is-3">Common Applications</h2>
-      <p>Text cleaners are invaluable in web publishing, data processing, and social media analysis, ensuring that your content remains clear and professional.</p>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="content has-text-centered">
-      <p>&copy; 2025 Only Text. All rights reserved.</p>
-      <p>
-        <a href="/">Home</a> &middot;
-        <a href="/blog/">Blog</a> &middot;
-        <a href="https://example.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
-      </p>
-    </div>
-  </footer>
-
-  <script src="main.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
