@@ -32,7 +32,7 @@
   // ---- Update Output Functie ----
   function updateOutput() {
     let text = inputText.value;
-    // Verwijder spaties aan het begin van elke nieuwe regel
+    // Verwijder spaties aan het begin van elke regel
     text = text.split("\n").map(line => line.trimStart()).join("\n");
     inputText.value = text;
     
@@ -145,6 +145,6 @@
     });
   }
 
-  // Initialiseer output bij het laden van de pagina
+  // Initialiseer de output bij het laden van de pagina
   updateOutput();
 })();
