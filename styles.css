@@ -1,14 +1,14 @@
 /* Basis styling */
 body {
   font-family: Arial, sans-serif;
-  background-color: #F0F0F0; /* Secundair */
-  color: #333333; /* Tekst */
+  background-color: #F0F0F0; /* Secundair: Lichtgrijs */
+  color: #333333; /* Tekst: Donkergrijs */
   margin: 0;
 }
 
 /* HEADER */
 .header {
-  background-color: #36454F; /* Primair */
+  background-color: #36454F; /* Primair: Donkerblauw */
   padding: 1em;
 }
 .header-container {
@@ -23,11 +23,8 @@ body {
   font-weight: bold;
   color: #FFFFFF;
 }
-.nav {
-  /* In deze versie hebben we geen navigatie-links; alleen een logo wordt getoond */
-}
 .header-right .dark-toggle {
-  background-color: #008CBA; /* Accent */
+  background-color: #008CBA; /* Accent: Helder Blauw */
   border: none;
   padding: 0.5em 1em;
   color: #FFFFFF;
@@ -51,38 +48,36 @@ body {
   text-align: center;
 }
 .tool-section .title {
-  font-size: 2rem;
-  margin-bottom: 0.5em;
+  font-size: 2.5rem;
+  margin-bottom: 0.75em; /* Grotere afstand vanaf h1 */
 }
 .tool-section .subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 1.5em;
+  font-size: 1.2rem; /* Iets kleiner dan de h1 */
+  margin-top: 0; /* Geen extra marge boven */
+  margin-bottom: 2em; /* Grotere afstand tot de tool */
 }
 
-/* Panels (zij-aan-zij) */
+/* Columns en Boxes */
 .columns {
   margin-top: 2em;
 }
 .box {
-  background-color: #FFFFFF; /* Wit */
+  background-color: #FFFFFF; /* Wit voor content vakken */
   padding: 1.5em;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 .textarea {
-  font-size: 12pt;
-  min-height: 18em;
+  font-size: 12pt; /* Tekst in 12pt */
+  min-height: 20em; /* 2em groter dan 18em */
 }
-.button-row {
+
+/* Buttons en Statistieken */
+.button-row, .buttons {
   margin-top: 0.5em;
 }
 .has-text-grey {
   font-size: 1rem;
-}
-
-/* Options */
-.field.is-grouped .control .checkbox {
-  font-size: 1.2rem;
 }
 
 /* SEO Content Section */
@@ -97,9 +92,11 @@ body {
 }
 .seo-content .title.is-3 {
   margin-top: 1em;
+  text-align: center;
   font-size: 1.75rem;
 }
-.seo-content .subtitle.is-4 {
+.seo-content .subtitle {
+  text-align: center;
   font-size: 1.25rem;
 }
 
@@ -129,13 +126,18 @@ body.dark .header,
 body.dark .footer {
   background-color: #36454F;
 }
+body.dark .logo {
+  color: #dddddd; /* Lichtere header tekst in dark mode */
+}
+body.dark .dark-toggle {
+  background-color: #008CBA;
+}
 body.dark .box {
   background-color: #2a2a2a;
 }
 body.dark .textarea {
   background-color: #3a3a3a;
   color: #eee;
-  border: none;
   border-bottom: 2px solid #008CBA;
 }
 body.dark .seo-content {
