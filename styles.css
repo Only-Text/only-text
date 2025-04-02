@@ -1,14 +1,14 @@
-/* Basis styling */
+/* Global Settings */
 body {
   font-family: Arial, sans-serif;
-  background-color: #F0F0F0; /* Secundair: Lichtgrijs */
-  color: #333333; /* Tekst: Donkergrijs */
+  background-color: #F0F0F0; /* Secundair */
+  color: #333333; /* Tekst */
   margin: 0;
 }
 
 /* HEADER */
 .header {
-  background-color: #36454F; /* Primair: Donkerblauw */
+  background-color: #36454F; /* Primair */
   padding: 1em;
 }
 .header-container {
@@ -24,7 +24,7 @@ body {
   color: #FFFFFF;
 }
 .header-right .dark-toggle {
-  background-color: #008CBA; /* Accent: Helder Blauw */
+  background-color: #008CBA; /* Accent */
   border: none;
   padding: 0.5em 1em;
   color: #FFFFFF;
@@ -36,68 +36,38 @@ body {
   background-color: #006f9a;
 }
 
-/* CONTAINER */
+/* MAIN CONTENT */
 .container {
   max-width: 1200px;
   margin: 2em auto;
   padding: 0 1em;
 }
-
-/* TOOL SECTION */
 .tool-section {
-  text-align: center;
-}
-.tool-section .title {
-  font-size: 2.5rem;
-  margin-bottom: 0.75em; /* Grotere afstand vanaf h1 */
-}
-.tool-section .subtitle {
-  font-size: 1.2rem; /* Iets kleiner dan de h1 */
-  margin-top: 0; /* Geen extra marge boven */
-  margin-bottom: 2em; /* Grotere afstand tot de tool */
+  margin-bottom: 2em;
 }
 
-/* Columns en Boxes */
-.columns {
-  margin-top: 2em;
-}
-.box {
-  background-color: #FFFFFF; /* Wit voor content vakken */
-  padding: 1.5em;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+/* Override Bulma's textarea */
 .textarea {
   font-size: 12pt; /* Tekst in 12pt */
   min-height: 20em; /* 2em groter dan 18em */
 }
 
-/* Buttons en Statistieken */
-.button-row, .buttons {
-  margin-top: 0.5em;
-}
-.has-text-grey {
-  font-size: 1rem;
-}
-
 /* SEO Content Section */
 .seo-content {
-  margin-top: 3em;
+  margin-top: 2em;
   padding: 2em;
-  background-color: #FFFFFF;
+  background-color: #FFFFFF; /* Wit */
   border-left: 5px solid #008CBA; /* Accent border */
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   text-align: left;
 }
-.seo-content .title.is-3 {
+.seo-content .title {
   margin-top: 1em;
   text-align: center;
-  font-size: 1.75rem;
 }
 .seo-content .subtitle {
   text-align: center;
-  font-size: 1.25rem;
 }
 
 /* FOOTER */
@@ -106,7 +76,7 @@ body {
   color: #FFFFFF;
   padding: 1em;
   text-align: center;
-  margin-top: 3em;
+  margin-top: 2em;
 }
 .footer a {
   color: #FFFFFF;
@@ -117,7 +87,7 @@ body {
   text-decoration: underline;
 }
 
-/* DARK MODE OVERRIDES */
+/* DARK MODE */
 body.dark {
   background-color: #1e1e1e;
   color: #ccc;
