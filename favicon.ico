@@ -1,0 +1,27 @@
+%%bash
+python - <<'EOF'
+from PIL import Image, ImageDraw, ImageFont
+
+# Create a 64x64 white background image
+img_size = (64, 64)
+background_color = (255, 255, 255)
+text_color = (0, 0, 0)
+
+image = Image.new("RGB", img_size, background_color)
+draw = ImageDraw.Draw(image)
+
+# Attempt to load a sans-serif font (Arial) with size 40, fallback to default if unavailable
+try:
+    font = ImageFont.truetype("arial.ttf", 40)
+except Exception as e:
+    font = ImageFont.load_default()
+
+# Use "OT" as the initials for Only Text
+text = "OT"
+text_width, text_height = draw.textsize(text, font=font)
+position = ((img_size[0] - text_width) // 2, (img_size[1] - text_height) // 2)
+draw.text(position, text, fill=text_color, font=font)
+
+# Save the image as favicon.ico in ICO format
+image.save("favicon.ico", format="ICO")
+EOF
