@@ -1,4 +1,4 @@
-/* Global Settings */
+/* Basis styling */
 body {
   font-family: Arial, sans-serif;
   background-color: #F0F0F0; /* Secundair */
@@ -23,6 +23,9 @@ body {
   font-weight: bold;
   color: #FFFFFF;
 }
+.nav {
+  /* In deze versie hebben we geen navigatie-links; alleen een logo wordt getoond */
+}
 .header-right .dark-toggle {
   background-color: #008CBA; /* Accent */
   border: none;
@@ -36,38 +39,68 @@ body {
   background-color: #006f9a;
 }
 
-/* MAIN CONTENT */
+/* CONTAINER */
 .container {
   max-width: 1200px;
   margin: 2em auto;
   padding: 0 1em;
 }
+
+/* TOOL SECTION */
 .tool-section {
-  margin-bottom: 2em;
+  text-align: center;
+}
+.tool-section .title {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+}
+.tool-section .subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1.5em;
 }
 
-/* Override Bulma's textarea */
+/* Panels (zij-aan-zij) */
+.columns {
+  margin-top: 2em;
+}
+.box {
+  background-color: #FFFFFF; /* Wit */
+  padding: 1.5em;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 .textarea {
-  font-size: 12pt; /* Tekst in 12pt */
-  min-height: 20em; /* 2em groter dan 18em */
+  font-size: 12pt;
+  min-height: 18em;
+}
+.button-row {
+  margin-top: 0.5em;
+}
+.has-text-grey {
+  font-size: 1rem;
+}
+
+/* Options */
+.field.is-grouped .control .checkbox {
+  font-size: 1.2rem;
 }
 
 /* SEO Content Section */
 .seo-content {
-  margin-top: 2em;
+  margin-top: 3em;
   padding: 2em;
-  background-color: #FFFFFF; /* Wit */
+  background-color: #FFFFFF;
   border-left: 5px solid #008CBA; /* Accent border */
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   text-align: left;
 }
-.seo-content .title {
+.seo-content .title.is-3 {
   margin-top: 1em;
-  text-align: center;
+  font-size: 1.75rem;
 }
-.seo-content .subtitle {
-  text-align: center;
+.seo-content .subtitle.is-4 {
+  font-size: 1.25rem;
 }
 
 /* FOOTER */
@@ -76,7 +109,7 @@ body {
   color: #FFFFFF;
   padding: 1em;
   text-align: center;
-  margin-top: 2em;
+  margin-top: 3em;
 }
 .footer a {
   color: #FFFFFF;
@@ -87,7 +120,7 @@ body {
   text-decoration: underline;
 }
 
-/* DARK MODE */
+/* DARK MODE OVERRIDES */
 body.dark {
   background-color: #1e1e1e;
   color: #ccc;
@@ -96,18 +129,13 @@ body.dark .header,
 body.dark .footer {
   background-color: #36454F;
 }
-body.dark .logo {
-  color: #dddddd; /* Lichtere header tekst in dark mode */
-}
-body.dark .dark-toggle {
-  background-color: #008CBA;
-}
 body.dark .box {
   background-color: #2a2a2a;
 }
 body.dark .textarea {
   background-color: #3a3a3a;
   color: #eee;
+  border: none;
   border-bottom: 2px solid #008CBA;
 }
 body.dark .seo-content {
