@@ -32,16 +32,16 @@
   // ---- Update Output Functie ----
   function updateOutput() {
     let text = inputText.value;
-    // Verwijder spaties aan het begin van elke nieuwe regel
+    // Verwijder spaties aan het begin van elke regel
     text = text.split("\n").map(line => line.trimStart()).join("\n");
     inputText.value = text;
     
-    // Update statistieken voor input
+    // Update input statistieken
     const inputCharCount = text.length;
     const inputWordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
     inputStats.textContent = `${inputCharCount} characters, ${inputWordCount} words`;
     
-    // Bouw de regex op basis van de opties
+    // Bouw de regex op basis van opties
     let allowed = '\\p{L}\\p{N}\\s';
     if (!removePunctuationCheckbox.checked) {
       allowed += '\\p{P}';
@@ -53,7 +53,7 @@
     const cleaned = text.replace(regex, '');
     outputText.value = cleaned;
     
-    // Update statistieken voor output
+    // Update output statistieken
     const outCharCount = cleaned.length;
     const outWordCount = cleaned.trim() ? cleaned.trim().split(/\s+/).length : 0;
     outputStats.textContent = `${outCharCount} characters, ${outWordCount} words`;
@@ -145,6 +145,6 @@
     });
   }
 
-  // Initialiseer output bij het laden van de pagina
+  // Initialiseer de output bij het laden van de pagina
   updateOutput();
 })();
