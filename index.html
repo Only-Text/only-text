@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Only Text – Text Cleaner Tool</title>
+  <title>Only Text – Remove Emojis and Special Characters</title>
   <meta name="description" content="Only Text is a free online text cleaner tool that removes unwanted emojis, punctuation, and special characters in real-time.">
   <link rel="canonical" href="https://example.com/">
   <link rel="alternate" hreflang="en" href="https://example.com/">
@@ -26,20 +26,22 @@
   <!-- MAIN TOOL SECTION -->
   <main class="container">
     <section class="tool-section">
-      <!-- Tool Panels -->
+      <h1 class="title has-text-centered">Remove Emojis and Special Characters</h1>
+      <p class="subtitle has-text-centered">Paste or type your text in the left panel. The cleaned text will appear in the right panel in real-time.</p>
+      
       <div class="columns">
         <!-- Input Panel -->
         <div class="column">
           <div class="box">
             <label class="label" for="inputText">Input Text</label>
-            <textarea id="inputText" class="textarea" placeholder="Enter your text here..."></textarea>
+            <textarea id="inputText" class="textarea" placeholder="Enter your text here..." style="min-height: 18em; font-size: 12pt;"></textarea>
             <div class="buttons mt-2">
               <button id="pasteBtn" class="button is-link">Paste</button>
+              <button id="clearBtn" class="button is-warning">Clear</button>
               <label class="button is-link">
                 Upload File
                 <input type="file" id="fileInput" accept=".txt" style="display: none;">
               </label>
-              <button id="clearBtn" class="button is-warning">Clear</button>
             </div>
             <p class="has-text-grey" id="inputStats">0 characters, 0 words</p>
           </div>
@@ -48,7 +50,7 @@
         <div class="column">
           <div class="box">
             <label class="label" for="outputText">Cleaned Text</label>
-            <textarea id="outputText" class="textarea" readonly placeholder="Cleaned text appears here..."></textarea>
+            <textarea id="outputText" class="textarea" readonly placeholder="Cleaned text appears here..." style="min-height: 18em; font-size: 12pt;"></textarea>
             <div class="buttons mt-2">
               <button id="copyBtn" class="button is-link">Copy</button>
               <button id="downloadBtn" class="button is-link">Download</button>
@@ -57,24 +59,64 @@
           </div>
         </div>
       </div>
+      
+      <!-- Advanced Options -->
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" id="removeEmoji" checked>
+            Remove Emojis
+          </label>
+        </div>
+        <div class="control">
+          <label class="checkbox">
+            <input type="checkbox" id="removePunctuation" checked>
+            Remove Punctuation
+          </label>
+        </div>
+      </div>
     </section>
 
-    <!-- SEO CONTENT SECTION (Onder de tool) -->
+    <!-- SEO CONTENT SECTION -->
     <section class="seo-content">
-      <h1 class="title is-3 has-text-centered">Key Takeaways</h1>
-      <h2 class="subtitle has-text-centered">What is a Text Cleaner?</h2>
+      <h2 class="title is-3">Key Takeaways</h2>
       <p>A text cleaner is designed to remove unwanted characters and formatting, enhancing the professionalism and clarity of text from various sources.</p>
       <p>The tool offers user-friendly features such as removing special characters, stripping HTML tags, and handling extra spacing, making text easier to manage.</p>
       <p>Advanced functionalities like ‘Find and Replace’ and case conversion ensure a tailored text cleaning process, improving readability and consistency in formatting.</p>
+      
+      <h2 class="title is-3">What is a Text Cleaner?</h2>
+      <p>A text cleaner is an online tool designed to clean and format text by removing unwanted characters and performing complex text operations. Its primary purpose is to unformat text and eliminate unmeaningful characters, especially from content copied from various sources. This process is crucial for ensuring that the text is clear, professional, and free of distractions.</p>
+      <p>Text cleaners handle a variety of formatting issues. They can remove extra spaces, special characters, line breaks, and other unwanted elements. The tool can also change letter case, delete duplicate lines, strip HTML tags, and convert URLs into clickable links, making text easier to work with.</p>
+      
+      <h2 class="title is-3">How to Use Our Text Cleaner Tool</h2>
+      <h3 class="subtitle is-4">Input Your Text</h3>
+      <p>Start by pasting your text into the designated input box. This sets the stage for cleaning by identifying and removing all unwanted elements.</p>
+      <h3 class="subtitle is-4">View Results</h3>
+      <p>Once your text is processed, the cleaned version appears in the output box, ready for you to copy or download.</p>
+      
+      <h2 class="title is-3">Features of Our Text Cleaner Tool</h2>
+      <ul>
+        <li>Removes unwanted characters and extra spaces.</li>
+        <li>Strips HTML tags and redundant formatting.</li>
+        <li>Offers advanced options like Find and Replace and case conversion.</li>
+        <li>Ensures professional and consistent text formatting.</li>
+      </ul>
+      
+      <h2 class="title is-3">Benefits of Using a Text Cleaner</h2>
+      <p>Using a text cleaner tool improves clarity, consistency, and professionalism while saving time on formatting tasks.</p>
+      
+      <h2 class="title is-3">Common Applications</h2>
+      <p>Text cleaners are invaluable in web publishing, data processing, and social media analysis, ensuring that your content remains clear and professional.</p>
     </section>
   </main>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-container">
+    <div class="content has-text-centered">
       <p>&copy; 2025 Only Text. All rights reserved.</p>
       <p>
         <a href="/">Home</a> &middot;
+        <a href="/blog/">Blog</a> &middot;
         <a href="https://example.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
       </p>
     </div>
