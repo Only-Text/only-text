@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileInput = document.getElementById('file-input');
     const copyBtn = document.getElementById('copy-btn');
     const downloadBtn = document.getElementById('download-btn');
+    const clearBtn = document.getElementById('clear-btn');
     
     // Toggle buttons
     const emojiBtn = document.getElementById('emoji-btn');
@@ -14,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const aiBtn = document.getElementById('ai-btn');
     const dotsBtn = document.getElementById('dots-btn');
     const codeBtn = document.getElementById('code-btn');
+
+    // Store original text for safe reprocessing
+    let originalText = '';
     
     // CTA button scroll
     const ctaButton = document.querySelector('.cta-button');
@@ -26,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Toggle button functionality
+    // Toggle button functionality - improved to handle state better
     function toggleButton(button) {
         if (button.classList.contains('red')) {
             button.classList.remove('red');
@@ -35,6 +39,15 @@ document.addEventListener('DOMContentLoaded', function() {
             button.classList.remove('green');
             button.classList.add('red');
         }
+        
+        // Special animation for AI button
+        if (button === aiBtn && button.classList.contains('red')) {
+            button.classList.add('orange');
+            setTimeout(() => {
+                button.classList.remove('orange');
+            }, 1500);
+        }
+        
         processText();
     }
     
@@ -46,11 +59,18 @@ document.addEventListener('DOMContentLoaded', function() {
     dotsBtn.addEventListener('click', () => toggleButton(dotsBtn));
     codeBtn.addEventListener('click', () => toggleButton(codeBtn));
     
+    // Clear button functionality
+    clearBtn.addEventListener('click', () => {
+        textInput.value = '';
+        originalText = '';
+    });
+    
     // Paste from clipboard
     pasteBtn.addEventListener('click', async () => {
         try {
             const text = await navigator.clipboard.readText();
             textInput.value = text;
+            originalText = text;
             processText();
         } catch (err) {
             alert('Failed to read clipboard. Please paste manually.');
@@ -68,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const reader = new FileReader();
             reader.onload = (e) => {
                 textInput.value = e.target.result;
+                originalText = e.target.result;
                 processText();
             };
             reader.readAsText(file);
@@ -78,7 +99,11 @@ document.addEventListener('DOMContentLoaded', function() {
     copyBtn.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(textInput.value);
-            alert('Text copied to clipboard!');
+            // Flash effect instead of alert
+            textInput.style.backgroundColor = '#e6ffec';
+            setTimeout(() => {
+                textInput.style.backgroundColor = '';
+            }, 300);
         } catch (err) {
             alert('Failed to copy text. Please copy manually.');
         }
@@ -97,91 +122,112 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     });
+
+    // List of emojis for random selection
+    const emojis = [
+        '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇',
+        '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚',
+        '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩'
+    ];
+
+    // Get random emoji from list
+    function getRandomEmoji() {
+        return emojis[Math.floor(Math.random() * emojis.length)];
+    }
     
-    // Process text based on active toggles
+    // Process text based on active toggles - completely reworked
     function processText() {
+        // Start with original text or current input if there's no original
         let text = textInput.value;
         
-        // Remove emoji if toggle is red
-        if (emojiBtn.classList.contains('red')) {
-            text = removeEmojis(text);
-        }
+        // Split text into lines for better processing
+        let lines = text.split('\n');
         
-        // Remove special characters if toggle is red
-        if (specialCharsBtn.classList.contains('red')) {
-            text = removeSpecialChars(text);
-        }
+        // Process each line based on active toggles
+        lines = lines.map(line => {
+            let processedLine = line;
+            
+            // EMOJI BUTTON
+            if (emojiBtn.classList.contains('red')) {
+                // Remove emojis and any space after emoji at line start
+                if (/^\p{Emoji}\s/.test(processedLine)) {
+                    processedLine = processedLine.replace(/^\p{Emoji}\s+/, '');
+                }
+                // Remove other emojis
+                processedLine = processedLine.replace(/\p{Emoji}/gu, '');
+            } else {
+                // Add random emoji at the beginning if line is not empty
+                if (processedLine.trim() !== '') {
+                    processedLine = getRandomEmoji() + ' ' + processedLine;
+                }
+            }
+            
+            // SPECIAL CHARACTERS BUTTON
+            if (specialCharsBtn.classList.contains('red')) {
+                // Handle the specific case: "word - word" to "word, word"
+                processedLine = processedLine.replace(/\s+\-\s+/g, ', ');
+                
+                // Remove other special characters but keep basic punctuation
+                processedLine = processedLine.replace(/[^\w\s.,?!()'";\-:]/g, '');
+            }
+            
+            // BULLETS BUTTON
+            if (bulletsBtn.classList.contains('red')) {
+                // Remove bullet points, numbers, etc. at beginning of lines, including any space after
+                processedLine = processedLine.replace(/^[\s]*[•\-\*\+\◦\○\●\■\□\▪\▫\♦\♣\♠\♥\d+\.]\s*/g, '');
+            } else {
+                // Add bullet point to non-empty lines only if it doesn't already start with one
+                if (processedLine.trim() !== '' && !/^[\s]*[•]/.test(processedLine)) {
+                    processedLine = '• ' + processedLine;
+                }
+            }
+            
+            return processedLine;
+        });
         
-        // Handle bullets
-        if (bulletsBtn.classList.contains('red')) {
-            // Remove bullet points
-            text = removeBulletPoints(text);
-        } else {
-            // Add bullet points at the beginning of each line
-            text = addBulletPoints(text);
-        }
+        // Get the processed text
+        let processedText = lines.join('\n');
         
-        // Remove AI-specific markers if toggle is red
+        // AI BUTTON (removing invisible markers)
         if (aiBtn.classList.contains('red')) {
-            text = removeAIMarkers(text);
+            // Remove common AI markers, both visible and invisible
+            processedText = processedText.replace(/\[AI\]|\<AI\>|\{AI\}|[\u200B-\u200F\uFEFF]/gi, '');
+            // Normalize whitespace
+            processedText = processedText.replace(/\s+/g, ' ').replace(/\n\s+/g, '\n');
         }
         
-        // Handle dots/periods
+        // DOTS BUTTON
         if (dotsBtn.classList.contains('red')) {
-            text = removeDots(text);
-        }
-        
-        // Handle code formatting
-        if (codeBtn.classList.contains('green')) {
-            // Keep code formatting
+            // Remove all periods
+            processedText = processedText.replace(/\./g, '');
         } else {
-            // Remove code formatting
-            text = removeCodeFormatting(text);
+            // If dots are enabled, make sure non-empty lines end with a period
+            lines = processedText.split('\n');
+            lines = lines.map(line => {
+                if (line.trim() !== '' && !/[.!?]$/.test(line.trim())) {
+                    return line.trimEnd() + '.';
+                }
+                return line;
+            });
+            processedText = lines.join('\n');
         }
         
-        // Update textarea without triggering another process
-        if (textInput.value !== text) {
-            textInput.value = text;
+        // CODE BUTTON
+        if (codeBtn.classList.contains('red')) {
+            // Remove code blocks, inline code markers, and common code syntax
+            processedText = processedText.replace(/```[\s\S]*?```/g, '');
+            processedText = processedText.replace(/`([^`]*)`/g, '$1');
+            processedText = processedText.replace(/\{|\}|\[|\]|\<|\>|\/\/|\/\*|\*\/|#include|import\s+|function|class|def|return|if|else|for|while|\$/g, ' ');
         }
+        
+        // Update textarea with processed text
+        textInput.value = processedText;
     }
     
-    // Functions for text processing
-    function removeEmojis(text) {
-        // Remove emoji using regex
-        return text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
-    }
-    
-    function removeSpecialChars(text) {
-        // Remove special characters but keep basic punctuation
-        return text.replace(/[^\w\s.,?!()'";\-:]/g, '');
-    }
-    
-    function removeBulletPoints(text) {
-        // Remove bullet points, dashes, asterisks at line beginnings
-        return text.replace(/^[\s]*[•\-\*\+\◦\○\●\■\□\▪\▫\♦\♣\♠\♥][\s]*/gm, '');
-    }
-    
-    function addBulletPoints(text) {
-        // Add bullet points at the beginning of each non-empty line
-        return text.replace(/^(?=\S)/gm, '• ');
-    }
-    
-    function removeAIMarkers(text) {
-        // Remove AI markers like [AI], <AI>, etc.
-        return text.replace(/\[AI\]|\<AI\>|\{AI\}/gi, '');
-    }
-    
-    function removeDots(text) {
-        // Remove all periods
-        return text.replace(/\./g, '');
-    }
-    
-    function removeCodeFormatting(text) {
-        // Remove code blocks, inline code markers
-        return text.replace(/```[\s\S]*?```/g, '')
-                  .replace(/`([^`]*)`/g, '$1');
-    }
-    
-    // Process initial text and setup event listening
-    textInput.addEventListener('input', processText);
+    // Process text when user types
+    textInput.addEventListener('input', function() {
+        // Store the original text when user types
+        originalText = textInput.value;
+        processText();
+    });
 });
