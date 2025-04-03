@@ -3,166 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Only Text - Remove Emojis, Bullet Points & Formatting</title>
-    <meta name="description" content="Free online tool to remove emojis, bullet points, and formatting from text. Clean up AI-generated content and get plain text instantly.">
+    <title>Only Text - Free Text Cleaning Tool</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo">Only Text</div>
-            <nav>
-                <ul>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+    <div class="tool-container">
+        <div class="tool-header">
+            <h1>Only Text</h1>
         </div>
-    </header>
-
-    <main>
-        <section class="tool-section">
-            <div class="tool-container">
-                <div class="tool-header">
-                    <h1>Only Text</h1>
+        <div class="editor-container">
+            <div class="button-row">
+                <div class="left-buttons">
+                    <button id="paste-btn" class="action-btn">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNsaXBib2FyZC1wYXN0ZSI+PHBhdGggZD0iTT4gNUg2YTIgMiAwIDAgMC0yIDJ2MTJhMiAyIDAgMCAwIDIgMmgxMmEyIDIgMCAwIDAgMi0ydi0yIi8+PHBhdGggZD0iTTEzIDNoMyBhMiAyIDAgMCAxIDIgMnYzbTE0LTN2Nm0tNSAwdi0yYTIgMiAwIDAgMCAyLTJoMmEyIDIgMCAwIDEgMiAydjJIMTNtLTIuOS0yLjlhMi4xIDIuMSAwIDAgMSAzIDNMMTAgMTNoLTF2LTFsNC45LTQuOSI+PC9wYXRoPjwvc3ZnPg==" alt="Paste" class="btn-icon">
+                        <span>Paste</span>
+                    </button>
+                    <button id="import-btn" class="action-btn">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWRvd25sb2FkIj48cGF0aCBkPSJNMjEgMTV2NGEyIDIgMCAwIDEtMiAySDVhMiAyIDAgMCAxLTItMnYtNCI+PC9wYXRoPjxwb2x5bGluZSBwb2ludHM9IjcgMTAgMTIgMTUgMTcgMTAiPjwvcG9seWxpbmU+PGxpbmUgeDE9IjEyIiB5MT0iMTUiIHgyPSIxMiIgeTI9IjMiPjwvbGluZT48L3N2Zz4=" alt="Import" class="btn-icon">
+                        <span>Import</span>
+                    </button>
+                    <input type="file" id="file-input" accept=".txt" style="display: none;">
                 </div>
-                <div class="tool-content">
-                    <div class="text-container">
-                        <div class="text-box-container">
-                            <div class="text-box-header">
-                                <div class="left-actions">
-                                    <button id="paste-btn" title="Paste from clipboard"><i class="far fa-clipboard"></i></button>
-                                    <button id="upload-btn" title="Upload document">Upload</button>
-                                    <button id="clear-btn" title="Clear text">Clear</button>
-                                </div>
-                            </div>
-                            <textarea id="input-text" placeholder="Type, paste text, or drop document here..."></textarea>
-                        </div>
-
-                        <div class="arrow-container">
-                            <div class="arrow">»</div>
-                        </div>
-
-                        <div class="text-box-container">
-                            <div class="text-box-header">
-                                <div class="right-actions">
-                                    <button id="copy-btn" title="Copy to clipboard">Copy</button>
-                                    <button id="download-btn" title="Download as text file">Download</button>
-                                </div>
-                            </div>
-                            <textarea id="output-text" readonly placeholder="Cleaned text appears here..."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="options-container">
-                        <div class="option">
-                            <input type="checkbox" id="remove-emoji" checked>
-                            <label for="remove-emoji">Remove emojis</label>
-                        </div>
-                        <div class="option">
-                            <input type="checkbox" id="remove-bullets" checked>
-                            <label for="remove-bullets">Remove bullet points</label>
-                        </div>
-                        <div class="option">
-                            <input type="checkbox" id="remove-special" checked>
-                            <label for="remove-special">Remove special characters</label>
-                        </div>
-                        <div class="option">
-                            <input type="checkbox" id="replace-hyphens" checked>
-                            <label for="replace-hyphens">Replace hyphens with spaces</label>
-                        </div>
-                    </div>
+                <div class="right-buttons">
+                    <button id="copy-btn" class="action-btn">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNvcHkiPjxyZWN0IHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgeD0iOCIgeT0iOCIgcng9IjIiIHJ5PSIyIi8+PHBhdGggZD0iTTQgMTZjLTEuMSAwLTIgLjktMiAydi0xYTIgMiAwIDAgMSAyLTJoMiI+PC9wYXRoPjxwYXRoIGQ9Ik00IDE5YTIgMiAwIDAgMS0yLTJ2LTFhMiAyIDAgMCAxIDItMmgyIj48L3BhdGg+PHBhdGggZD0iTTQgOGMtMS4xIDAtMiAuOS0yIDJ2MWEyIDIgMCAwIDAgMiAyaDIiPjwvcGF0aD48cGF0aCBkPSJNNCAyYTIgMiAwIDAgMC0yIDJ2MWEyIDIgMCAwIDAgMiAyaDIiPjwvcGF0aD48L3N2Zz4=" alt="Copy" class="btn-icon">
+                        <span>Copy</span>
+                    </button>
+                    <button id="download-btn" class="action-btn">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWRvd25sb2FkIj48cGF0aCBkPSJNMjEgMTV2NGEyIDIgMCAwIDEtMiAySDVhMiAyIDAgMCAxLTItMnYtNCI+PC9wYXRoPjxwb2x5bGluZSBwb2ludHM9IjcgMTAgMTIgMTUgMTcgMTAiPjwvcG9seWxpbmU+PGxpbmUgeDE9IjEyIiB5MT0iMTUiIHgyPSIxMiIgeTI9IjMiPjwvbGluZT48L3N2Zz4=" alt="Download" class="btn-icon">
+                        <span>Download</span>
+                    </button>
                 </div>
-                <div class="tool-footer">
-                    <div class="footer-message">
-                        <div>Enjoy Only Text For Free</div>
-                        <div>No Ads, No Registration</div>
-                    </div>
-                    <div class="footer-tagline">
-                        Just A Simple Quick Tool
-                    </div>
+            </div>
+            <div class="text-area-container">
+                <textarea id="text-input" placeholder="Paste your text with Emoji's and characters here..."></textarea>
+            </div>
+        </div>
+        <div class="tools-row">
+            <button id="emoji-btn" class="toggle-btn active red">
+                <span class="emoji-icon">😁</span>
+            </button>
+            <button id="special-chars-btn" class="toggle-btn active red">
+                <span>*_</span>
+            </button>
+            <button id="bullets-btn" class="toggle-btn active red">
+                <span>•</span>
+                <span>•</span>
+            </button>
+            <button id="ai-btn" class="toggle-btn active red">
+                <span>AI</span>
+            </button>
+            <button id="dots-btn" class="toggle-btn green">
+                <span>.</span>
+            </button>
+            <button id="code-btn" class="toggle-btn green">
+                <span>{}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- SEO Content -->
+    <div class="content-container">
+        <section class="hero-section">
+            <h1>Only Text – Free Tool to Remove Emojis, Bullet Points & Formatting</h1>
+            <p>Only Text is a free online tool that removes unwanted symbols from any text, leaving you with just plain text. In other words, it's an all-in-one emoji remover, special characters remover, and bullet point remover. Quickly strip out bullet points, emojis, special characters, even AI-specific markers, from your text. Perfect for cleaning up AI-generated content or text from emails, documents, and LinkedIn posts so you're left with only the text you need.</p>
+            <button class="cta-button">Use the Tool</button>
+        </section>
+
+        <section class="benefits-section">
+            <h2>Why Use Only Text?</h2>
+            <ul>
+                <li><strong>Save Time:</strong> No more manual deleting. Remove emoji from text, bullet points, and other unwanted characters in seconds.</li>
+                <li><strong>Plain Text Anywhere:</strong> Get a clean plain text output that's ready to use in emails, documents, or any platform – without weird formatting issues.</li>
+                <li><strong>AI‑Proof Your Text:</strong> Remove any AI symbols or formatting quirks left by text generators so your content looks natural and professional.</li>
+                <li><strong>Free & Easy:</strong> 100% free online tool with no sign-up or installation. Just paste, click, and copy your cleaned text.</li>
+            </ul>
+        </section>
+
+        <section class="blog-section">
+            <h2>From the Blog</h2>
+            <div class="blog-cards">
+                <div class="blog-card">
+                    <h3>Why AI Outputs Need Cleaning</h3>
+                    <p>AI-generated text isn't always ready to use out-of-the-box. Whether you use ChatGPT or another AI writer, the output often contains extras like lists, bullet points, emojis, or strange formatting that can clutter your content. In this blog post, we explore why cleaning up AI outputs is so important. From improving readability to avoiding hidden AI markers, discover how a quick clean-up can make AI-generated text more reliable and easier to work with. It's all about ensuring the quality and integrity of AI content before you use it. By making a few simple tweaks, you can ensure your AI-written content is polished and ready to go.</p>
+                </div>
+                <div class="blog-card">
+                    <h3>How to Quickly Get Plain Text from LinkedIn Posts</h3>
+                    <p>Ever tried to copy a LinkedIn post, only to paste a mess of icons, formatting, and odd characters? You're not alone. LinkedIn posts often contain emojis and special symbols that don't transfer well into emails or documents. In this article, we show you how to instantly remove formatting from text copied from LinkedIn or any other platform. With the right tool, you can convert rich text into plain text in just a few clicks — perfect for saving or sharing without the clutter. For content creators and professionals, this simple trick can save a lot of cleanup time.</p>
                 </div>
             </div>
         </section>
 
-        <section id="hero" class="hero-section">
-            <div class="container">
-                <h1>Only Text – Free Tool to Remove Emojis, Bullet Points & Formatting</h1>
-                <p>Only Text is a free online tool that removes unwanted symbols from any text, leaving you with just plain text. In other words, it's an all-in-one emoji remover, special characters remover, and bullet point remover. Quickly strip out bullet points, emojis, special characters, even AI-specific markers, from your text. Perfect for cleaning up AI-generated content or text from emails, documents, and LinkedIn posts so you're left with only the text you need.</p>
-                <a href="#tool" class="cta-button">Use the Tool</a>
+        <section class="testimonials-section">
+            <h2>What Users Are Saying</h2>
+            <div class="testimonials">
+                <blockquote>
+                    <p>"Finally, a simple text tool that does exactly what I need. Only Text saves me a ton of editing time!"</p>
+                    <cite>— John D., Content Creator</cite>
+                </blockquote>
+                <blockquote>
+                    <p>"I use Only Text after every ChatGPT session. It quickly removes all the formatting and emojis, leaving me with clean plain text ready to publish."</p>
+                    <cite>— Emily R., AI Enthusiast</cite>
+                </blockquote>
             </div>
         </section>
-
-        <section id="benefits" class="benefits-section">
-            <div class="container">
-                <h2>Why Use Only Text?</h2>
-                <div class="benefits-container">
-                    <div class="benefit">
-                        <h3><i class="far fa-clock"></i> Save Time</h3>
-                        <p>No more manual deleting. Remove emoji from text, bullet points, and other unwanted characters in seconds.</p>
-                    </div>
-                    <div class="benefit">
-                        <h3><i class="far fa-file-alt"></i> Plain Text Anywhere</h3>
-                        <p>Get a clean plain text output that's ready to use in emails, documents, or any platform – without weird formatting issues.</p>
-                    </div>
-                    <div class="benefit">
-                        <h3><i class="fas fa-robot"></i> AI-Proof Your Text</h3>
-                        <p>Remove any AI symbols or formatting quirks left by text generators so your content looks natural and professional.</p>
-                    </div>
-                    <div class="benefit">
-                        <h3><i class="fas fa-gift"></i> Free & Easy</h3>
-                        <p>100% free online tool with no sign-up or installation. Just paste, click, and copy your cleaned text.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="blog" class="blog-section">
-            <div class="container">
-                <h2>From the Blog</h2>
-                <div class="blog-posts">
-                    <article class="blog-post">
-                        <h3>Why AI Outputs Need Cleaning</h3>
-                        <p>AI-generated text isn't always ready to use out-of-the-box. Whether you use ChatGPT or another AI writer, the output often contains extras like lists, bullet points, emojis, or strange formatting that can clutter your content. In this blog post, we explore why cleaning up AI outputs is so important.</p>
-                        <a href="#" class="read-more">Read more...</a>
-                    </article>
-                    <article class="blog-post">
-                        <h3>How to Quickly Get Plain Text from LinkedIn Posts</h3>
-                        <p>Ever tried to copy a LinkedIn post, only to paste a mess of icons, formatting, and odd characters? You're not alone. LinkedIn posts often contain emojis and special symbols that don't transfer well into emails or documents. In this article, we show you how to instantly remove formatting from text copied from LinkedIn or any other platform.</p>
-                        <a href="#" class="read-more">Read more...</a>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section id="testimonials" class="testimonials-section">
-            <div class="container">
-                <h2>What Users Are Saying</h2>
-                <div class="testimonials">
-                    <div class="testimonial">
-                        <p>"Finally, a simple text tool that does exactly what I need. Only Text saves me a ton of editing time!"</p>
-                        <p class="author">— John D., Content Creator</p>
-                    </div>
-                    <div class="testimonial">
-                        <p>"I use Only Text after every ChatGPT session. It quickly removes all the formatting and emojis, leaving me with clean plain text ready to publish."</p>
-                        <p class="author">— Emily R., AI Enthusiast</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    </div>
 
     <footer>
-        <div class="container">
-            <div class="footer-links">
-                <a href="#blog">Blog</a>
-                <a href="#privacy">Privacy Policy</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <p class="disclaimer">© 2025 Only Text. All rights reserved. Only Text is provided as-is and is not affiliated with OpenAI, LinkedIn, or any other platform.</p>
+        <div class="footer-links">
+            <a href="#">Blog</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Contact</a>
         </div>
+        <p class="copyright">© 2025 Only Text. All rights reserved. Only Text is provided as-is and is not affiliated with OpenAI, LinkedIn, or any other platform.</p>
     </footer>
 
     <script src="script.js"></script>
