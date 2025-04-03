@@ -1,190 +1,187 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Get DOM elements
-    const inputText = document.getElementById('input-text');
-    const outputText = document.getElementById('output-text');
+    // DOM Elements
+    const textInput = document.getElementById('text-input');
     const pasteBtn = document.getElementById('paste-btn');
-    const uploadBtn = document.getElementById('upload-btn');
-    const clearBtn = document.getElementById('clear-btn');
+    const importBtn = document.getElementById('import-btn');
+    const fileInput = document.getElementById('file-input');
     const copyBtn = document.getElementById('copy-btn');
     const downloadBtn = document.getElementById('download-btn');
-    const removeEmoji = document.getElementById('remove-emoji');
-    const removeBullets = document.getElementById('remove-bullets');
-    const removeSpecial = document.getElementById('remove-special');
-    const replaceHyphens = document.getElementById('replace-hyphens');
-
-    // Process text function
-    function processText() {
-        let text = inputText.value;
-        
-        if (text.trim() === '') {
-            outputText.value = '';
-            return;
-        }
-        
-        // Remove emojis
-        if (removeEmoji.checked) {
-            // This regex range covers most common emoji Unicode ranges
-            text = text.replace(/[\u{1F000}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
-        }
-        
-        // Remove bullet points
-        if (removeBullets.checked) {
-            // Common bullet point characters and markdown bullets
-            text = text.replace(/[•‣⁃⁌⁍∙◦→⇒◆◇◈★☆✦✧✩✪✫✬✭✮✯❋❃❂]/g, '');
-            text = text.replace(/^\s*[\*\-\+]\s+/gm, ''); // Markdown bullets
-            text = text.replace(/^\s*\d+\.\s+/gm, ''); // Numbered lists
-        }
-        
-        // Remove special characters
-        if (removeSpecial.checked) {
-            // Preserve essential punctuation while removing other special characters
-            text = text.replace(/[^\w\s.,;:!?()'"\/\-]/g, '');
-        }
-        
-        // Replace hyphens in words with spaces
-        if (replaceHyphens.checked) {
-            text = text.replace(/(\w+)-(\w+)/g, '$1 $2');
-        }
-        
-        // Normalize spacing: replace multiple spaces with single space
-        text = text.replace(/\s+/g, ' ');
-        
-        // Remove spaces at the beginning of lines
-        text = text.replace(/^\s+/gm, '');
-        
-        // Clean up extra spaces around punctuation
-        text = text.replace(/\s+([.,;:!?])/g, '$1');
-        
-        outputText.value = text.trim();
+    
+    // Toggle buttons
+    const emojiBtn = document.getElementById('emoji-btn');
+    const specialCharsBtn = document.getElementById('special-chars-btn');
+    const bulletsBtn = document.getElementById('bullets-btn');
+    const aiBtn = document.getElementById('ai-btn');
+    const dotsBtn = document.getElementById('dots-btn');
+    const codeBtn = document.getElementById('code-btn');
+    
+    // CTA button scroll
+    const ctaButton = document.querySelector('.cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     }
 
-    // Event listeners
-    inputText.addEventListener('input', processText);
+    // Toggle button functionality
+    function toggleButton(button) {
+        if (button.classList.contains('red')) {
+            button.classList.remove('red');
+            button.classList.add('green');
+        } else {
+            button.classList.remove('green');
+            button.classList.add('red');
+        }
+        processText();
+    }
     
-    // Toggle options event listeners
-    removeEmoji.addEventListener('change', processText);
-    removeBullets.addEventListener('change', processText);
-    removeSpecial.addEventListener('change', processText);
-    replaceHyphens.addEventListener('change', processText);
-
-    // Paste button functionality
-    pasteBtn.addEventListener('click', async function() {
+    // Event listeners for toggle buttons
+    emojiBtn.addEventListener('click', () => toggleButton(emojiBtn));
+    specialCharsBtn.addEventListener('click', () => toggleButton(specialCharsBtn));
+    bulletsBtn.addEventListener('click', () => toggleButton(bulletsBtn));
+    aiBtn.addEventListener('click', () => toggleButton(aiBtn));
+    dotsBtn.addEventListener('click', () => toggleButton(dotsBtn));
+    codeBtn.addEventListener('click', () => toggleButton(codeBtn));
+    
+    // Paste from clipboard
+    pasteBtn.addEventListener('click', async () => {
         try {
             const text = await navigator.clipboard.readText();
-            inputText.value = text;
+            textInput.value = text;
             processText();
         } catch (err) {
-            alert('Unable to paste from clipboard. Please paste manually or check permissions.');
+            alert('Failed to read clipboard. Please paste manually.');
         }
     });
-
-    // Upload button functionality
-    uploadBtn.addEventListener('click', function() {
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = '.txt,.docx,.doc,.rtf,.md';
-        
-        fileInput.onchange = function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                inputText.value = e.target.result;
-                processText();
-            };
-            
-            reader.readAsText(file);
-        };
-        
+    
+    // Import text file
+    importBtn.addEventListener('click', () => {
         fileInput.click();
     });
-
-    // Clear button functionality
-    clearBtn.addEventListener('click', function() {
-        inputText.value = '';
-        outputText.value = '';
-    });
-
-    // Copy button functionality
-    copyBtn.addEventListener('click', async function() {
-        if (outputText.value.trim() === '') return;
-        
-        try {
-            await navigator.clipboard.writeText(outputText.value);
-            
-            // Visual feedback for copy
-            const originalText = copyBtn.textContent;
-            copyBtn.textContent = 'Copied!';
-            setTimeout(() => {
-                copyBtn.textContent = originalText;
-            }, 1500);
-        } catch (err) {
-            alert('Unable to copy to clipboard. Please copy manually or check permissions.');
+    
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                textInput.value = e.target.result;
+                processText();
+            };
+            reader.readAsText(file);
         }
     });
-
-    // Download button functionality
-    downloadBtn.addEventListener('click', function() {
-        if (outputText.value.trim() === '') return;
-        
-        const blob = new Blob([outputText.value], { type: 'text/plain' });
+    
+    // Copy to clipboard
+    copyBtn.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(textInput.value);
+            alert('Text copied to clipboard!');
+        } catch (err) {
+            alert('Failed to copy text. Please copy manually.');
+        }
+    });
+    
+    // Download as text file
+    downloadBtn.addEventListener('click', () => {
+        const text = textInput.value;
+        const blob = new Blob([text], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        
         a.href = url;
-        a.download = 'cleaned-text.txt';
+        a.download = 'cleaned_text.txt';
         document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+    
+    // Process text based on active toggles
+    function processText() {
+        let text = textInput.value;
         
-        setTimeout(() => {
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }, 0);
-    });
-
-    // File drag and drop handling
-    inputText.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        inputText.style.borderColor = var(--secondary-color);
-    });
-
-    inputText.addEventListener('dragleave', function() {
-        inputText.style.borderColor = var(--border-color);
-    });
-
-    inputText.addEventListener('drop', function(e) {
-        e.preventDefault();
-        inputText.style.borderColor = var(--border-color);
+        // Remove emoji if toggle is red
+        if (emojiBtn.classList.contains('red')) {
+            text = removeEmojis(text);
+        }
         
-        const file = e.dataTransfer.files[0];
-        if (!file) return;
+        // Remove special characters if toggle is red
+        if (specialCharsBtn.classList.contains('red')) {
+            text = removeSpecialChars(text);
+        }
         
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            inputText.value = e.target.result;
-            processText();
-        };
+        // Handle bullets
+        if (bulletsBtn.classList.contains('red')) {
+            // Remove bullet points
+            text = removeBulletPoints(text);
+        } else {
+            // Add bullet points at the beginning of each line
+            text = addBulletPoints(text);
+        }
         
-        reader.readAsText(file);
-    });
-
-    // Handle scroll sync between textareas
-    inputText.addEventListener('scroll', function() {
-        const percentage = inputText.scrollTop / (inputText.scrollHeight - inputText.clientHeight);
-        outputText.scrollTop = percentage * (outputText.scrollHeight - outputText.clientHeight);
-    });
-
-    outputText.addEventListener('scroll', function() {
-        const percentage = outputText.scrollTop / (outputText.scrollHeight - outputText.clientHeight);
-        inputText.scrollTop = percentage * (inputText.scrollHeight - inputText.clientHeight);
-    });
-
-    // Scroll to tool when 'Use the Tool' button is clicked
-    document.querySelector('.cta-button').addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelector('.tool-section').scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
+        // Remove AI-specific markers if toggle is red
+        if (aiBtn.classList.contains('red')) {
+            text = removeAIMarkers(text);
+        }
+        
+        // Handle dots/periods
+        if (dotsBtn.classList.contains('red')) {
+            text = removeDots(text);
+        }
+        
+        // Handle code formatting
+        if (codeBtn.classList.contains('green')) {
+            // Keep code formatting
+        } else {
+            // Remove code formatting
+            text = removeCodeFormatting(text);
+        }
+        
+        // Update textarea without triggering another process
+        if (textInput.value !== text) {
+            textInput.value = text;
+        }
+    }
+    
+    // Functions for text processing
+    function removeEmojis(text) {
+        // Remove emoji using regex
+        return text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
+    }
+    
+    function removeSpecialChars(text) {
+        // Remove special characters but keep basic punctuation
+        return text.replace(/[^\w\s.,?!()'";\-:]/g, '');
+    }
+    
+    function removeBulletPoints(text) {
+        // Remove bullet points, dashes, asterisks at line beginnings
+        return text.replace(/^[\s]*[•\-\*\+\◦\○\●\■\□\▪\▫\♦\♣\♠\♥][\s]*/gm, '');
+    }
+    
+    function addBulletPoints(text) {
+        // Add bullet points at the beginning of each non-empty line
+        return text.replace(/^(?=\S)/gm, '• ');
+    }
+    
+    function removeAIMarkers(text) {
+        // Remove AI markers like [AI], <AI>, etc.
+        return text.replace(/\[AI\]|\<AI\>|\{AI\}/gi, '');
+    }
+    
+    function removeDots(text) {
+        // Remove all periods
+        return text.replace(/\./g, '');
+    }
+    
+    function removeCodeFormatting(text) {
+        // Remove code blocks, inline code markers
+        return text.replace(/```[\s\S]*?```/g, '')
+                  .replace(/`([^`]*)`/g, '$1');
+    }
+    
+    // Process initial text and setup event listening
+    textInput.addEventListener('input', processText);
 });
