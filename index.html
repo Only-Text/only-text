@@ -8,32 +8,34 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="tool-container">
         <div class="tool-header">
             <h1>Only Text</h1>
+            <button id="clear-btn" class="clear-btn">Clear</button>
         </div>
         <div class="editor-container">
             <div class="button-row">
                 <div class="left-buttons">
                     <button id="paste-btn" class="action-btn">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNsaXBib2FyZC1wYXN0ZSI+PHBhdGggZD0iTT4gNUg2YTIgMiAwIDAgMC0yIDJ2MTJhMiAyIDAgMCAwIDIgMmgxMmEyIDIgMCAwIDAgMi0ydi0yIi8+PHBhdGggZD0iTTEzIDNoMyBhMiAyIDAgMCAxIDIgMnYzbTE0LTN2Nm0tNSAwdi0yYTIgMiAwIDAgMCAyLTJoMmEyIDIgMCAwIDEgMiAydjJIMTNtLTIuOS0yLjlhMi4xIDIuMSAwIDAgMSAzIDNMMTAgMTNoLTF2LTFsNC45LTQuOSI+PC9wYXRoPjwvc3ZnPg==" alt="Paste" class="btn-icon">
+                        <i class="fas fa-paste btn-icon"></i>
                         <span>Paste</span>
                     </button>
                     <button id="import-btn" class="action-btn">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWRvd25sb2FkIj48cGF0aCBkPSJNMjEgMTV2NGEyIDIgMCAwIDEtMiAySDVhMiAyIDAgMCAxLTItMnYtNCI+PC9wYXRoPjxwb2x5bGluZSBwb2ludHM9IjcgMTAgMTIgMTUgMTcgMTAiPjwvcG9seWxpbmU+PGxpbmUgeDE9IjEyIiB5MT0iMTUiIHgyPSIxMiIgeTI9IjMiPjwvbGluZT48L3N2Zz4=" alt="Import" class="btn-icon">
+                        <i class="fas fa-file-import btn-icon"></i>
                         <span>Import</span>
                     </button>
                     <input type="file" id="file-input" accept=".txt" style="display: none;">
                 </div>
                 <div class="right-buttons">
                     <button id="copy-btn" class="action-btn">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNvcHkiPjxyZWN0IHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgeD0iOCIgeT0iOCIgcng9IjIiIHJ5PSIyIi8+PHBhdGggZD0iTTQgMTZjLTEuMSAwLTIgLjktMiAydi0xYTIgMiAwIDAgMSAyLTJoMiI+PC9wYXRoPjxwYXRoIGQ9Ik00IDE5YTIgMiAwIDAgMS0yLTJ2LTFhMiAyIDAgMCAxIDItMmgyIj48L3BhdGg+PHBhdGggZD0iTTQgOGMtMS4xIDAtMiAuOS0yIDJ2MWEyIDIgMCAwIDAgMiAyaDIiPjwvcGF0aD48cGF0aCBkPSJNNCAyYTIgMiAwIDAgMC0yIDJ2MWEyIDIgMCAwIDAgMiAyaDIiPjwvcGF0aD48L3N2Zz4=" alt="Copy" class="btn-icon">
+                        <i class="fas fa-copy btn-icon"></i>
                         <span>Copy</span>
                     </button>
                     <button id="download-btn" class="action-btn">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWRvd25sb2FkIj48cGF0aCBkPSJNMjEgMTV2NGEyIDIgMCAwIDEtMiAySDVhMiAyIDAgMCAxLTItMnYtNCI+PC9wYXRoPjxwb2x5bGluZSBwb2ludHM9IjcgMTAgMTIgMTUgMTcgMTAiPjwvcG9seWxpbmU+PGxpbmUgeDE9IjEyIiB5MT0iMTUiIHgyPSIxMiIgeTI9IjMiPjwvbGluZT48L3N2Zz4=" alt="Download" class="btn-icon">
+                        <i class="fas fa-download btn-icon"></i>
                         <span>Download</span>
                     </button>
                 </div>
@@ -89,10 +91,12 @@
                 <div class="blog-card">
                     <h3>Why AI Outputs Need Cleaning</h3>
                     <p>AI-generated text isn't always ready to use out-of-the-box. Whether you use ChatGPT or another AI writer, the output often contains extras like lists, bullet points, emojis, or strange formatting that can clutter your content. In this blog post, we explore why cleaning up AI outputs is so important. From improving readability to avoiding hidden AI markers, discover how a quick clean-up can make AI-generated text more reliable and easier to work with. It's all about ensuring the quality and integrity of AI content before you use it. By making a few simple tweaks, you can ensure your AI-written content is polished and ready to go.</p>
+                    <a href="#" class="read-more">Read more...</a>
                 </div>
                 <div class="blog-card">
                     <h3>How to Quickly Get Plain Text from LinkedIn Posts</h3>
                     <p>Ever tried to copy a LinkedIn post, only to paste a mess of icons, formatting, and odd characters? You're not alone. LinkedIn posts often contain emojis and special symbols that don't transfer well into emails or documents. In this article, we show you how to instantly remove formatting from text copied from LinkedIn or any other platform. With the right tool, you can convert rich text into plain text in just a few clicks — perfect for saving or sharing without the clutter. For content creators and professionals, this simple trick can save a lot of cleanup time.</p>
+                    <a href="#" class="read-more">Read more...</a>
                 </div>
             </div>
         </section>
