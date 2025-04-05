@@ -12,11 +12,11 @@ body {
     line-height: 1.6;
 }
 
-/* Tool container with added margin */
+/* Tool container with adjusted margin */
 .tool-container {
     width: 100%;
     max-width: 1200px;
-    margin: 20vh auto 0; /* Added 20vh top margin as requested */
+    margin: 10vh auto 0; /* Changed from 20vh to 10vh as requested */
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -32,20 +32,21 @@ body {
 }
 
 .tool-header h1 {
-    font-size: 24px;
+    font-size: 28px; /* Increased text size for "Only Text" */
     font-weight: 600;
 }
 
 .clear-btn {
     position: absolute;
     left: 50%;
-    bottom: -15px;
+    bottom: -20px; /* Adjusted to be more centered in the blue bar */
     transform: translateX(-50%);
     background-color: white;
     color: #1e3a8a;
     border: 2px solid #1e3a8a;
     border-radius: 20px;
-    padding: 5px 15px;
+    padding: 8px 20px; /* Increased padding to make button larger */
+    font-size: 16px; /* Increased font size */
     font-weight: 600;
     cursor: pointer;
     z-index: 10;
