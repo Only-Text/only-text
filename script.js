@@ -33,7 +33,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Updated toggle button functionality based on new requirements
     function toggleButton(button) {
         // Special case for buttons that can only be red (off)
-        if (button === aiBtn || button === specialCharsBtn || button === codeBtn) {
+        if (button === specialCharsBtn || button === codeBtn) {
+            // Special chars and code buttons animation: red -> orange -> red
+            button.classList.add('orange');
+            setTimeout(() => {
+                button.classList.remove('orange');
+            }, 1500);
+            
+            // Make sure they stay red
+            if (!button.classList.contains('red')) {
+                button.classList.remove('green');
+                button.classList.add('red');
+            }
+        } 
+        // Special case for AI button - only animation, no functionality
+        else if (button === aiBtn) {
             // AI button special animation: red -> orange -> red
             button.classList.add('orange');
             setTimeout(() => {
@@ -45,7 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.classList.remove('green');
                 button.classList.add('red');
             }
-        } 
+            
+            // No processText() call for AI button - it has no functionality
+            return;
+        }
         // Normal toggle buttons (can be green or red)
         else {
             if (button.classList.contains('red')) {
@@ -218,14 +235,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get the processed text
         let processedText = lines.join('\n');
         
-        // AI BUTTON - This button should do nothing functional per requirements
-        // but we'll keep the existing code for invisible markers removal
-        if (aiBtn.classList.contains('red')) {
-            // Remove common AI markers, both visible and invisible
-            processedText = processedText.replace(/\[AI\]|\<AI\>|\{AI\}|[\u200B-\u200F\uFEFF]/gi, '');
-            // Normalize whitespace
-            processedText = processedText.replace(/\s+/g, ' ').replace(/\n\s+/g, '\n');
-        }
+        // AI BUTTON - Removed all functionality
+        // The AI button now only has animation but does no text processing
         
         // Update textarea with processed text
         textInput.value = processedText;
