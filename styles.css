@@ -161,13 +161,14 @@ body {
 
 /* AI button animation */
 .toggle-btn.orange {
-    animation: pulseOrange 0.75s forwards;
+    animation: pulseOrange 1.5s forwards;
 }
 
 @keyframes pulseOrange {
     0% { background-color: #e63946; }
     50% { background-color: #ff9f1c; }
     100% { background-color: #e63946; }
+}
 
 /* SEO Content Styles */
 .content-container {
