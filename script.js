@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
             button.classList.add('orange');
             setTimeout(() => {
                 button.classList.remove('orange');
-            }, 1500);
+            }, 750); // Changed from 1500ms to 750ms (50% faster)
             
             // Make sure they stay red
             if (!button.classList.contains('red')) {
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
             button.classList.add('orange');
             setTimeout(() => {
                 button.classList.remove('orange');
-            }, 1500);
+            }, 750); // Changed from 1500ms to 750ms (50% faster)
             
             // Make sure it stays red
             if (!button.classList.contains('red')) {
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
         lines = lines.map(line => {
             let processedLine = line;
             
-            // EMOJI BUTTON - Fixed to properly handle emoji + space as a group
+            // EMOJI BUTTON - Fixed to properly toggle functionality
             if (emojiBtn.classList.contains('red')) {
                 // Remove emojis and space after them if at beginning of line
                 processedLine = processedLine.replace(/^\p{Emoji}\s/gu, '');
@@ -181,18 +181,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 processedLine = processedLine.replace(/\p{Emoji}/gu, '');
             } else {
                 // Add random emoji at the beginning if line is not empty and doesn't already have emoji
-                if (processedLine.trim() !== '' && !/^\p{Emoji}/u.test(processedLine)) {
+                if (processedLine.trim() !== '') {
+                    // First remove any existing emoji at the beginning
+                    processedLine = processedLine.replace(/^\p{Emoji}\s/gu, '');
+                    // Then add a new random emoji
                     processedLine = getRandomEmoji() + ' ' + processedLine;
                 }
             }
             
-            // SPECIAL CHARACTERS BUTTON - Modified to preserve {} code brackets
+            // SPECIAL CHARACTERS BUTTON - Modified to also remove ;!
             if (specialCharsBtn.classList.contains('red')) {
                 // Handle the specific case: "word - word" to "word, word"
                 processedLine = processedLine.replace(/\s+\-\s+/g, ', ');
                 
                 // Remove punctuation marks except periods, commas, and {} brackets
-                processedLine = processedLine.replace(/[^\w\s.,?!{};:'"-]/g, '');
+                // Added ; and ! to the characters that get removed
+                processedLine = processedLine.replace(/[^\w\s.,{}"-]/g, '');
             }
             
             // BULLETS BUTTON - Fixed to show only one bullet and prevent conflicts
