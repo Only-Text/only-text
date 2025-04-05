@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Updated process text based on new requirements
     function processText() {
-        // Start with current input
+        // Get the current content
         let text = textInput.value;
         
         // Split text into lines for better processing
@@ -173,18 +173,18 @@ document.addEventListener('DOMContentLoaded', function() {
         lines = lines.map(line => {
             let processedLine = line;
             
-            // EMOJI BUTTON - Fixed to properly toggle functionality
+            // EMOJI BUTTON - Fixed implementation
             if (emojiBtn.classList.contains('red')) {
                 // Remove emojis and space after them if at beginning of line
-                processedLine = processedLine.replace(/^\p{Emoji}\s/gu, '');
-                // Remove other emojis anywhere in the text but don't touch bullet points
+                processedLine = processedLine.replace(/^\p{Emoji}\s*/gu, '');
+                // Remove other emojis anywhere in the text
                 processedLine = processedLine.replace(/\p{Emoji}/gu, '');
             } else {
-                // Add random emoji at the beginning if line is not empty and doesn't already have emoji
+                // When emoji button is green (active)
                 if (processedLine.trim() !== '') {
-                    // First remove any existing emoji at the beginning
-                    processedLine = processedLine.replace(/^\p{Emoji}\s/gu, '');
-                    // Then add a new random emoji
+                    // First remove any existing emojis at the beginning to prevent stacking
+                    processedLine = processedLine.replace(/^\p{Emoji}\s*/gu, '');
+                    // Then add a new random emoji at the beginning
                     processedLine = getRandomEmoji() + ' ' + processedLine;
                 }
             }
@@ -195,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 processedLine = processedLine.replace(/\s+\-\s+/g, ', ');
                 
                 // Remove punctuation marks except periods, commas, and {} brackets
-                // Added ; and ! to the characters that get removed
                 processedLine = processedLine.replace(/[^\w\s.,{}"-]/g, '');
             }
             
