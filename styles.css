@@ -161,7 +161,7 @@ body {
 
 /* AI button animation */
 .toggle-btn.orange {
-    animation: pulseOrange 1.5s forwards;
+    animation: pulseOrange 0.75s forwards;
 }
 
 @keyframes pulseOrange {
