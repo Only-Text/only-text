@@ -39,7 +39,7 @@ body {
 .clear-btn {
     position: absolute;
     left: 50%;
-    bottom: -20px; /* Adjusted to be more centered in the blue bar */
+    bottom: 205px; /* Adjusted to be more centered in the blue bar */
     transform: translateX(-50%);
     background-color: white;
     color: #1e3a8a;
