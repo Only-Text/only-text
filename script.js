@@ -1,4 +1,3 @@
-
 // script.js
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -34,25 +33,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function toggleButton(button) {
-        if (button === specialCharsBtn || button === codeBtn) {
+        if (button === specialCharsBtn || button === codeBtn || button === aiBtn) {
             button.classList.add('orange');
             setTimeout(() => {
                 button.classList.remove('orange');
-            }, 750);
+            }, 1000); // Changed to 1 second animation
             if (!button.classList.contains('red')) {
                 button.classList.remove('green');
                 button.classList.add('red');
             }
-        } else if (button === aiBtn) {
-            button.classList.add('orange');
-            setTimeout(() => {
-                button.classList.remove('orange');
-            }, 750);
-            if (!button.classList.contains('red')) {
-                button.classList.remove('green');
-                button.classList.add('red');
-            }
-            return;
         } else {
             if (button.classList.contains('red')) {
                 button.classList.remove('red');
@@ -141,60 +130,69 @@ document.addEventListener('DOMContentLoaded', function() {
         return emojis[Math.floor(Math.random() * emojis.length)];
     }
 
-    // ✅ Verbeterde processText functie
+    // Fixed processText function
     function processText() {
         let text = textInput.value;
+        let processedLines = [];
         let lines = text.split('\n');
 
-        lines = lines.map(line => {
-            let cleanLine = line.trim();
-
-            cleanLine = cleanLine.replace(/^[\s]*[•\-\*\+\◦\○\●\■\□\▪\▫\♦\♣\♠\♥\d+\.]\s*/g, '');
-            cleanLine = cleanLine.replace(/^\p{Emoji}\s*/gu, '');
-            cleanLine = cleanLine.replace(/\.\s*$/, '');
-
-            if (emojiBtn.classList.contains('green')) {
-                if (cleanLine !== '') {
-                    cleanLine = getRandomEmoji() + ' ' + cleanLine;
-                }
-            } else {
-                cleanLine = cleanLine.replace(/\p{Emoji}/gu, '');
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim();
+            
+            // First remove existing bullet points and emojis
+            line = line.replace(/^[\s]*[•\-\*\+\◦\○\●\■\□\▪\▫\♦\♣\♠\♥\d+\.]\s*/g, '');
+            line = line.replace(/^\p{Emoji}\s*/gu, '');
+            
+            // Remove trailing dots if needed
+            if (!dotsBtn.classList.contains('green')) {
+                line = line.replace(/\.\s*$/, '');
             }
-
-            if (bulletsBtn.classList.contains('green')) {
-                if (cleanLine !== '') {
-                    cleanLine = '• ' + cleanLine;
-                }
+            
+            // Remove emoji if needed
+            if (emojiBtn.classList.contains('red')) {
+                line = line.replace(/\p{Emoji}/gu, '');
             }
-
-            if (dotsBtn.classList.contains('green')) {
-                if (cleanLine !== '' && !/[.!?]$/.test(cleanLine)) {
-                    cleanLine += '.';
-                }
-            }
-
-            if (specialCharsBtn.classList.contains('red')) {
-                cleanLine = cleanLine.replace(/\s+\-\s+/g, ', ');
-                cleanLine = cleanLine.replace(/[^\w\s.,{}"-]/g, '');
-                cleanLine = cleanLine.replace(/\s{2,}/g, ' ');
-            }
-
+            
+            // Clean AI markers if needed
             if (aiBtn.classList.contains('red')) {
-                cleanLine = cleanLine.replace(/\[\[\w+\]\]/g, '');
-                cleanLine = cleanLine.replace(/\{(\w+):[^}]*\}/g, '');
-                cleanLine = cleanLine.replace(/[\u200B-\u200D\uFEFF]/g, '');
+                line = line.replace(/\[\[\w+\]\]/g, '');
+                line = line.replace(/\{(\w+):[^}]*\}/g, '');
+                line = line.replace(/[\u200B-\u200D\uFEFF]/g, '');
             }
-
+            
+            // Clean special characters if needed
+            if (specialCharsBtn.classList.contains('red')) {
+                line = line.replace(/\s+\-\s+/g, ', ');
+                line = line.replace(/[^\w\s.,{}"-]/g, '');
+                line = line.replace(/\s{2,}/g, ' ');
+            }
+            
+            // Clean code symbols if needed
             if (codeBtn.classList.contains('red')) {
-                cleanLine = cleanLine.replace(/\{\}/g, '');
-                cleanLine = cleanLine.replace(/\{|\}/g, '');
-                cleanLine = cleanLine.replace(/`{1,3}[^`]*`{1,3}/g, '');
+                line = line.replace(/\{\}/g, '');
+                line = line.replace(/\{|\}/g, '');
+                line = line.replace(/`{1,3}[^`]*`{1,3}/g, '');
             }
-
-            return cleanLine;
-        });
-
-        textInput.value = lines.join('\n');
+            
+            // Add a dot if needed and line is not empty
+            if (dotsBtn.classList.contains('green') && line !== '' && !/[.!?]$/.test(line)) {
+                line += '.';
+            }
+            
+            // Add bullet point if needed and line is not empty
+            if (bulletsBtn.classList.contains('green') && line !== '') {
+                line = '• ' + line;
+            }
+            
+            // Add emoji if needed and line is not empty
+            if (emojiBtn.classList.contains('green') && line !== '') {
+                line = getRandomEmoji() + ' ' + line;
+            }
+            
+            processedLines.push(line);
+        }
+        
+        textInput.value = processedLines.join('\n');
     }
 
     textInput.addEventListener('input', function() {
