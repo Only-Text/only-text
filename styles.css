@@ -80,17 +80,22 @@ body {
 
 /* Overschrijf de clear button positionering voor tablet en mobiel */
 @media (max-width: 768px) {
-    .clear-btn {
-        /* Stel de positionering in zoals in je oude CSS.
-           Hier wordt de absolute positionering verwijderd zodat de button 
-           volgens de normale documentflow wordt geplaatst.
-           Pas de margins of andere properties aan als dat nodig is! */
-        position: static;
-        margin: 10px auto;
-        top: auto;
-        left: auto;
-        transform: none;
-    }
+    /* Repositioned clear button to match screenshot */
+.clear-btn {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    background-color: white;
+    color: #1e3a8a;
+    border: 2px solid #1e3a8a;
+    border-radius: 20px;
+    padding: 8px 30px; /* Increased horizontal padding */
+    font-size: 18px; /* Increased font size */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: fit-content; /* Ensures the button size matches content */
+}
 }
 
 /* Editor container styles */
