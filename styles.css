@@ -12,11 +12,11 @@ body {
     line-height: 1.6;
 }
 
-/* Tool container with adjusted margin and padding for mobile */
+/* Tool container with adjusted margin and padding */
 .tool-container {
     width: 100%;
     max-width: 1200px;
-    margin: 10vh auto 0; /* Op desktop: 10vh boven, auto zijkanten, 0 onder */
+    margin: 10vh auto 0; /* Op desktop: 10vh boven */
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -24,22 +24,18 @@ body {
     padding: 0;
 }
 
-/* Op tablets: bovenmarge even klein als de zijkanten (20px) */
-@media (max-width: 1240px) {
+/* Pas tool-container marge en breedte pas aan wanneer de clear button een andere positie krijgt */
+@media (max-width: 768px) {
     .tool-container {
-        margin: 20px auto 0; /* 20px top en zijkant */
-        margin-left: 20px;
-        margin-right: 20px;
+        margin: 20px auto 0;  /* Tablet: bovenmarge gelijk aan de zijmarges (20px) */
         width: calc(100% - 40px);
     }
 }
 
-/* Op mobieltjes: bovenmarge even klein als de zijkanten (15px) */
+/* Op zeer kleine schermen (mobiel) */
 @media (max-width: 576px) {
     .tool-container {
-        margin: 15px auto 0; /* 15px top en zijkant */
-        margin-left: 15px;
-        margin-right: 15px;
+        margin: 15px auto 0;  /* Mobiel: bovenmarge gelijk aan de zijmarges (15px) */
         width: calc(100% - 30px);
     }
 }
@@ -80,7 +76,7 @@ body {
     color: white;
 }
 
-/* Clear button aanpassen voor tablet en mobiel (oude css-stijl) */
+/* Clear button: op tablet/mobiel (max-width: 768px) in de normale documentflow */
 @media (max-width: 768px) {
     .clear-btn {
         position: static;
