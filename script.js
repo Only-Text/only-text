@@ -37,23 +37,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function toggleButton(button) {
-        // Special handling voor codeBtn: alleen animatie wanneer hij wordt aangezet (van groen naar rood)
+        // Voor codeKnop: standaard groen = geen verwijdering; togglen naar rood (uit) gebeurt direct, togglen weer aan gebeurt met animatie (0,5 sec totaal, 0,25 sec vertraging)
         if (button === codeBtn) {
-            if (!button.classList.contains('red')) {
-                // Knop wordt aangezet, dus animatie (0,5 sec)
+            if (button.classList.contains('green')) {
+                // Schakel direct uit: van groen naar rood ({} worden verwijderd)
+                button.classList.remove('green');
+                button.classList.add('red');
+            } else { // momenteel rood, dus togglen naar groen met animatie
                 button.classList.add('orange');
                 setTimeout(() => {
                     button.classList.remove('orange');
-                }, 500);
-                button.classList.remove('green');
-                button.classList.add('red');
-            } else {
-                // Uitzetten: geen animatie
-                button.classList.remove('red');
-                button.classList.add('green');
+                    button.classList.remove('red');
+                    button.classList.add('green');
+                }, 250); // 0.25 sec vertraging, dus in totaal 0.5 sec animatie (2x sneller dan voor de andere knoppen)
             }
         }
-        // Speciale knoppen waarvoor de standaard 1 sec animatie geldt (specialChars en AI)
+        // Voor specialChars en AI knoppen, behoud de bestaande animatie (1 sec)
         else if (button === specialCharsBtn || button === aiBtn) {
             button.classList.add('orange');
             setTimeout(() => {
@@ -66,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // Voor de overige knoppen (emoji, bullets, dots)
         else {
-            // Voor dots-knop: als dit de eerste keer is, markeer dat hij getoggled is
+            // Voor de dots-knop: als dit de eerste keer is, markeer dat hij getoggled is
             if (button === dotsBtn) {
                 dotsToggled = true;
             }
@@ -189,12 +188,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Dots-processing:
             if (dotsToggled) {
                 if (dotsBtn.classList.contains('green')) {
-                    // Als de dots-knop "aan" staat: voeg een punt toe aan het einde als dat er nog niet is
+                    // Als de dots-knop "aan" staat: voeg een punt toe aan het einde als er nog geen eindpunctuation is
                     if (line !== '' && !/[.!?]$/.test(line)) {
                         line += '.';
                     }
                 } else if (dotsBtn.classList.contains('red')) {
-                    // Als de dots-knop "uit" staat: verwijder ALLE punten uit de regel
+                    // Als de dots-knop "uit" staat: verwijder ALLE punten uit de regel (ook midden in de zin)
                     line = line.replace(/\./g, '');
                 }
             }
