@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Store original text for safe reprocessing
     let originalText = '';
     
+    // Track if we need fresh emojis
+    let needFreshEmojis = true;
+    
     // CTA button scroll
     const ctaButton = document.querySelector('.cta-button');
     if (ctaButton) {
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
             button.classList.add('orange');
             setTimeout(() => {
                 button.classList.remove('orange');
-            }, 1000); // Changed to 1 second animation
+            }, 1000); // 1 second animation
             if (!button.classList.contains('red')) {
                 button.classList.remove('green');
                 button.classList.add('red');
@@ -46,6 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (button.classList.contains('red')) {
                 button.classList.remove('red');
                 button.classList.add('green');
+                // Only generate fresh emojis when emoji button is toggled
+                if (button === emojiBtn) {
+                    needFreshEmojis = true;
+                }
             } else {
                 button.classList.remove('green');
                 button.classList.add('red');
@@ -72,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const text = await navigator.clipboard.readText();
             textInput.value = text;
             originalText = text;
+            needFreshEmojis = true;
             processText();
         } catch (err) {
             alert('Failed to read clipboard. Please paste manually.');
@@ -89,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.onload = (e) => {
                 textInput.value = e.target.result;
                 originalText = e.target.result;
+                needFreshEmojis = true;
                 processText();
             };
             reader.readAsText(file);
@@ -126,8 +135,15 @@ document.addEventListener('DOMContentLoaded', function() {
         '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩'
     ];
 
-    function getRandomEmoji() {
-        return emojis[Math.floor(Math.random() * emojis.length)];
+    // Cache for emoji assignments to ensure consistency
+    let emojiCache = {};
+
+    function getRandomEmoji(lineIndex) {
+        // If we need fresh emojis or this line doesn't have an emoji yet
+        if (needFreshEmojis || !emojiCache[lineIndex]) {
+            emojiCache[lineIndex] = emojis[Math.floor(Math.random() * emojis.length)];
+        }
+        return emojiCache[lineIndex];
     }
 
     // Fixed processText function
@@ -135,6 +151,12 @@ document.addEventListener('DOMContentLoaded', function() {
         let text = textInput.value;
         let processedLines = [];
         let lines = text.split('\n');
+
+        // Reset emoji cache if needed
+        if (needFreshEmojis) {
+            emojiCache = {};
+            needFreshEmojis = false;
+        }
 
         for (let i = 0; i < lines.length; i++) {
             let line = lines[i].trim();
@@ -186,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Add emoji if needed and line is not empty
             if (emojiBtn.classList.contains('green') && line !== '') {
-                line = getRandomEmoji() + ' ' + line;
+                line = getRandomEmoji(i) + ' ' + line;
             }
             
             processedLines.push(line);
