@@ -21,7 +21,6 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
-    /* Add horizontal padding to prevent edge-to-edge on small screens */
     padding: 0;
 }
 
@@ -44,7 +43,7 @@ body {
 }
 
 .tool-header {
-    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%); /* Light gradient */
+    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%);
     color: white;
     text-align: center;
     padding: 15px;
@@ -52,21 +51,22 @@ body {
 }
 
 .tool-header h1 {
-    font-size: 28px; /* Increased text size for "Only Text" */
+    font-size: 28px;
     font-weight: 600;
 }
 
+/* Clear button styling voor desktop */
 .clear-btn {
     position: absolute;
     left: 50%;
-    top: 205px; /* Adjusted to be more centered in the blue bar */
+    top: 205px; /* Desktop: zoals nu */
     transform: translateX(-50%);
     background-color: white;
     color: #1e3a8a;
     border: 2px solid #1e3a8a;
     border-radius: 20px;
-    padding: 8px 20px; /* Increased padding to make button larger */
-    font-size: 16px; /* Increased font size */
+    padding: 8px 20px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     z-index: 10;
@@ -76,6 +76,21 @@ body {
 .clear-btn:hover {
     background-color: #1e3a8a;
     color: white;
+}
+
+/* Overschrijf de clear button positionering voor tablet en mobiel */
+@media (max-width: 768px) {
+    .clear-btn {
+        /* Stel de positionering in zoals in je oude CSS.
+           Hier wordt de absolute positionering verwijderd zodat de button 
+           volgens de normale documentflow wordt geplaatst.
+           Pas de margins of andere properties aan als dat nodig is! */
+        position: static;
+        margin: 10px auto;
+        top: auto;
+        left: auto;
+        transform: none;
+    }
 }
 
 /* Editor container styles */
@@ -88,7 +103,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
-    margin-top: 10px; /* Added space for clear button */
+    margin-top: 10px;
 }
 
 .left-buttons, .right-buttons {
@@ -127,9 +142,9 @@ body {
 
 #text-input {
     width: 100%;
-    height: 350px; /* Increased height */
+    height: 350px;
     padding: 15px;
-    border: 1px dashed #ddd; /* Dashed border */
+    border: 1px dashed #ddd;
     border-radius: 5px;
     resize: none;
     font-family: 'Inter', sans-serif;
@@ -147,7 +162,7 @@ body {
     display: flex;
     justify-content: center;
     padding: 15px;
-    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%); /* Light gradient */
+    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%);
     gap: 10px;
 }
 
@@ -179,7 +194,7 @@ body {
     color: black;
 }
 
-/* AI button animation - Modified for 1 second animation */
+/* AI button animation */
 .toggle-btn.orange {
     animation: pulseOrange 1s forwards;
 }
@@ -206,12 +221,11 @@ body {
 
 .explanation-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* maximaal 3 kolommen */
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     max-width: 1200px;
     margin: 0 auto;
 }
-
 
 .explanation-card {
     background: white;
@@ -438,7 +452,7 @@ cite {
 
 /* Footer */
 footer {
-    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%); /* Light gradient */
+    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%);
     color: white;
     padding: 30px 20px;
     text-align: center;
