@@ -24,7 +24,7 @@ body {
 }
 
 .tool-header {
-    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%); /* Light gradient */
     color: white;
     text-align: center;
     padding: 15px;
@@ -32,23 +32,24 @@ body {
 }
 
 .tool-header h1 {
-    font-size: 28px;
+    font-size: 28px; /* Increased text size for "Only Text" */
     font-weight: 600;
 }
 
-/* Repositioned clear button to be fully in gray area */
 .clear-btn {
-    position: relative;
-    display: block;
-    margin: 20px auto 0;
+    position: absolute;
+    left: 50%;
+    bottom: -20px; /* Adjusted to be more centered in the blue bar */
+    transform: translateX(-50%);
     background-color: white;
     color: #1e3a8a;
     border: 2px solid #1e3a8a;
     border-radius: 20px;
-    padding: 8px 20px;
-    font-size: 16px;
+    padding: 8px 20px; /* Increased padding to make button larger */
+    font-size: 16px; /* Increased font size */
     font-weight: 600;
     cursor: pointer;
+    z-index: 10;
     transition: all 0.3s ease;
 }
 
@@ -67,6 +68,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
+    margin-top: 10px; /* Added space for clear button */
 }
 
 .left-buttons, .right-buttons {
@@ -105,9 +107,9 @@ body {
 
 #text-input {
     width: 100%;
-    height: 350px;
+    height: 350px; /* Increased height */
     padding: 15px;
-    border: 1px dashed #ddd;
+    border: 1px dashed #ddd; /* Dashed border */
     border-radius: 5px;
     resize: none;
     font-family: 'Inter', sans-serif;
@@ -125,7 +127,7 @@ body {
     display: flex;
     justify-content: center;
     padding: 15px;
-    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%); /* Light gradient */
     gap: 10px;
 }
 
@@ -147,7 +149,6 @@ body {
     transform: scale(1.05);
 }
 
-/* Updated red color to be used consistently */
 .toggle-btn.red {
     background-color: #e63946;
     color: white;
@@ -185,11 +186,12 @@ body {
 
 .explanation-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* maximaal 3 kolommen */
     gap: 25px;
     max-width: 1200px;
     margin: 0 auto;
 }
+
 
 .explanation-card {
     background: white;
@@ -198,7 +200,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
-    border-top: 4px solid #e63946; /* Updated to use the red accent color */
+    border-top: 4px solid #1e3a8a;
 }
 
 .explanation-card:hover {
@@ -216,7 +218,7 @@ body {
     background-color: #f0f4ff;
     border-radius: 50%;
     font-size: 24px;
-    color: #e63946; /* Updated to use the red accent color */
+    color: #1e3a8a;
     font-weight: bold;
 }
 
@@ -228,7 +230,7 @@ body {
 .explanation-card h3 {
     font-size: 1.3rem;
     margin-bottom: 12px;
-    color: #e63946; /* Updated to use the red accent color */
+    color: #1e3a8a;
 }
 
 .explanation-card p {
@@ -281,7 +283,7 @@ section {
 }
 
 .cta-button {
-    background-color: #e63946; /* Updated to use the red accent color */
+    background-color: #1e3a8a;
     color: white;
     border: none;
     padding: 12px 30px;
@@ -293,14 +295,14 @@ section {
 }
 
 .cta-button:hover {
-    background-color: #c1272d; /* Darker red on hover */
+    background-color: #152a63;
     transform: translateY(-2px);
 }
 
 h2 {
     font-size: 2rem;
     margin-bottom: 25px;
-    color: #e63946; /* Updated to use the red accent color */
+    color: #1e3a8a;
 }
 
 .benefits-section ul {
@@ -323,7 +325,7 @@ h2 {
     content: "✓";
     position: absolute;
     left: 0;
-    color: #e63946; /* Updated to use the red accent color */
+    color: #2ecc71;
     font-weight: bold;
 }
 
@@ -340,7 +342,6 @@ h2 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     padding: 25px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-left: 4px solid #e63946; /* Added red accent border */
 }
 
 .blog-card:hover {
@@ -351,7 +352,7 @@ h2 {
 .blog-card h3 {
     font-size: 1.4rem;
     margin-bottom: 15px;
-    color: #e63946; /* Updated to use the red accent color */
+    color: #1e3a8a;
 }
 
 .blog-card p {
@@ -360,7 +361,7 @@ h2 {
 }
 
 .read-more {
-    color: #e63946; /* Updated to use the red accent color */
+    color: #1e3a8a;
     text-decoration: none;
     font-weight: 600;
     position: relative;
@@ -374,7 +375,7 @@ h2 {
     height: 2px;
     bottom: -2px;
     left: 0;
-    background-color: #e63946; /* Updated to use the red accent color */
+    background-color: #1e3a8a;
     transform: scaleX(0);
     transform-origin: bottom right;
     transition: transform 0.3s ease;
@@ -393,7 +394,7 @@ h2 {
 
 blockquote {
     background: white;
-    border-left: 4px solid #e63946; /* Updated to use the red accent color */
+    border-left: 4px solid #1e3a8a;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -417,7 +418,7 @@ cite {
 
 /* Footer */
 footer {
-    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%); /* Light gradient */
     color: white;
     padding: 30px 20px;
     text-align: center;
