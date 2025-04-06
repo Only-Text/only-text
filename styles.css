@@ -24,7 +24,7 @@ body {
     padding: 0;
 }
 
-/* Bij schermbreedtes tot 1240px behoudt de container zijmarges */
+/* Bij schermbreedtes tot 1240px behouden we de container zijmarges */
 @media (max-width: 1240px) {
     .tool-container {
         margin-left: 20px;
@@ -57,6 +57,9 @@ body {
     text-align: center;
     padding: 15px;
     position: relative;
+    /* Zorgt voor de afgeronde hoeken bovenaan (zelfde als de container) */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .tool-header h1 {
@@ -163,13 +166,15 @@ body {
     border-style: solid;
 }
 
-/* Tools row */
+/* Tools row met een afgeronde onderkant (zelfde als tool-header boven) */
 .tools-row {
     display: flex;
     justify-content: center;
     padding: 15px;
     background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%);
     gap: 10px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
 .toggle-btn {
