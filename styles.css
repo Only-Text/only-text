@@ -159,9 +159,9 @@ body {
     color: black;
 }
 
-/* AI button animation */
+/* AI button animation - Modified for 1 second animation */
 .toggle-btn.orange {
-    animation: pulseOrange 1.5s forwards;
+    animation: pulseOrange 1s forwards;
 }
 
 @keyframes pulseOrange {
