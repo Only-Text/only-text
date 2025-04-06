@@ -4,17 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Only Text - Free Text Cleaning Tool</title>
+    <meta name="description" content="Only Text is a free online tool to remove emojis, bullet points, and special characters from text. Clean up AI-generated content and get plain text instantly.">
+    <meta name="keywords" content="text cleaner, emoji remover, bullet point remover, plain text, clean text, special characters remover, AI text cleaner">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://onlytext.app">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Open Graph tags for social sharing -->
+    <meta property="og:title" content="Only Text - Free Text Cleaning Tool">
+    <meta property="og:description" content="Remove emojis, bullet points and special characters from any text with this free online tool.">
+    <meta property="og:url" content="https://onlytext.app">
+    <meta property="og:type" content="website">
 </head>
 <body>
     <div class="tool-container">
         <div class="tool-header">
             <h1>Only Text</h1>
-            <button id="clear-btn" class="clear-btn">Clear</button>
         </div>
         <div class="editor-container">
             <div class="button-row">
@@ -43,6 +51,7 @@
             <div class="text-area-container">
                 <textarea id="text-input" placeholder="Paste your text with Emoji's and characters here..."></textarea>
             </div>
+            <button id="clear-btn" class="clear-btn">Clear</button>
         </div>
         <div class="tools-row">
             <button id="emoji-btn" class="toggle-btn active red">
@@ -85,6 +94,11 @@
                     <p>Voegt punten toe aan het einde van zinnen of verwijdert ze, afhankelijk van je voorkeur.</p>
                 </div>
                 <div class="explanation-card">
+                    <div class="card-icon">{}</div>
+                    <h3>Code</h3>
+                    <p>Verwijdert code-symbolen en opmaak uit je tekst, zoals accolades en andere programmeersymbolen.</p>
+                </div>
+                <div class="explanation-card">
                     <div class="card-icon">AI</div>
                     <h3>AI Clean</h3>
                     <p>Verwijdert AI-sporen en onzichtbare tekens die door AI-tools zijn toegevoegd.</p>
@@ -93,11 +107,6 @@
                     <div class="card-icon">*_</div>
                     <h3>Special Characters</h3>
                     <p>Verwijdert speciale tekens zoals @, #, %, &, enz. en verwijdert overtollige spaties uit je tekst.</p>
-                </div>
-                <div class="explanation-card">
-                    <div class="card-icon">{}</div>
-                    <h3>Code</h3>
-                    <p>Verwijdert code-symbolen en opmaak uit je tekst, zoals accolades en andere programmeersymbolen.</p>
                 </div>
             </div>
         </div>
@@ -140,11 +149,11 @@
             <div class="testimonials">
                 <blockquote>
                     <p>"Finally, a simple text tool that does exactly what I need. Only Text saves me a ton of editing time!"</p>
-                    <cite>— John D., Content Creator</cite>
+                    <cite>— Michael D., Content Creator</cite>
                 </blockquote>
                 <blockquote>
                     <p>"I use Only Text after every ChatGPT session. It quickly removes all the formatting and emojis, leaving me with clean plain text ready to publish."</p>
-                    <cite>— Emily R., AI Enthusiast</cite>
+                    <cite>— Sarah R., AI Enthusiast</cite>
                 </blockquote>
             </div>
         </section>
