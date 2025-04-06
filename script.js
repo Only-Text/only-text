@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const codeBtn = document.getElementById('code-btn');
 
     // Flags
-    let dotsToggled = false; // false: initial state = do nothing with dots
+    let dotsToggled = false; // false: initieel, doet niets met dots
     let needFreshEmojis = true; // voor emoji processing
 
     // Store original text for safe reprocessing
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         // Voor de overige knoppen (emoji, bullets, dots)
         else {
-            // Voor dotsKnop: als dit de eerste keer is, markeer dat hij getoggled is
+            // Voor dots-knop: als dit de eerste keer is, markeer dat hij getoggled is
             if (button === dotsBtn) {
                 dotsToggled = true;
             }
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return emojiCache[lineIndex];
     }
 
-    // processText verwerkt de tekstregel voor regel op basis van de knoppen
+    // processText verwerkt de tekst regel voor regel op basis van de knoppen
     function processText() {
         let text = textInput.value;
         let processedLines = [];
@@ -187,14 +187,15 @@ document.addEventListener('DOMContentLoaded', function() {
             line = line.replace(/^\p{Emoji}\s*/gu, '');
             
             // Dots-processing:
-            // Alleen toepassen als de dots-knop al getoggled is
             if (dotsToggled) {
-                if (dotsBtn.classList.contains('green') && line !== '' && !/[.!?]$/.test(line)) {
-                    // Wanneer dots-knop "aan" staat, voeg een punt toe als er nog geen eindpunctuation is
-                    line += '.';
+                if (dotsBtn.classList.contains('green')) {
+                    // Als de dots-knop "aan" staat: voeg een punt toe aan het einde als dat er nog niet is
+                    if (line !== '' && !/[.!?]$/.test(line)) {
+                        line += '.';
+                    }
                 } else if (dotsBtn.classList.contains('red')) {
-                    // Wanneer dots-knop "uit" staat, verwijder eventuele trailing punt
-                    line = line.replace(/\.\s*$/, '');
+                    // Als de dots-knop "uit" staat: verwijder ALLE punten uit de regel
+                    line = line.replace(/\./g, '');
                 }
             }
             
@@ -203,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 line = line.replace(/\p{Emoji}/gu, '');
             }
             
-            // AI markers: als AI-knop "uit" staat (red), verwijder AI-sporen en onzichtbare tekens
+            // AI markers: als de AI-knop "uit" staat (red), verwijder AI-sporen en onzichtbare tekens
             if (aiBtn.classList.contains('red')) {
                 line = line.replace(/\[\[\w+\]\]/g, '');
                 line = line.replace(/\{(\w+):[^}]*\}/g, '');
