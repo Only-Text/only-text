@@ -26,7 +26,6 @@ const nextConfig = {
   
   // Experimental features for speed
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['@heroicons/react', '@headlessui/react'],
   },
 }
