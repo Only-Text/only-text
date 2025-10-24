@@ -64,8 +64,22 @@ export default async function RootLayout({ children }) {
       className="text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950"
     >
       <head>
-        <link rel="preconnect" href="https://rsms.me/" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+        <link rel="preconnect" href="https://rsms.me/" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://rsms.me/" />
+        <link 
+          rel="preload" 
+          href="https://rsms.me/inter/inter.css" 
+          as="style"
+        />
+        <link 
+          rel="stylesheet" 
+          href="https://rsms.me/inter/inter.css" 
+          media="print" 
+          onLoad="this.media='all'"
+        />
+        <noscript>
+          <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+        </noscript>
         <link rel="canonical" href="https://only-text.com" />
         <WebsiteSchema />
         <OrganizationSchema />
