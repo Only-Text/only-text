@@ -297,6 +297,61 @@ export default function OnlyTextHome() {
           </div>
         </div>
 
+        {/* AI-Powered Tools - NEW! */}
+        <div className="mt-12">
+          <div className="mb-6 flex items-center gap-3">
+            <Heading level={2}>🤖 AI-Powered Tools</Heading>
+            <span className="rounded-full bg-gradient-to-r from-purple-600 to-blue-600 px-3 py-1 text-xs font-bold text-white">
+              NEW!
+            </span>
+          </div>
+          <p className="mb-6 text-zinc-600 dark:text-zinc-400">
+            Lightning-fast AI tools powered by Claude Haiku 4.5 - the fastest AI model with near-frontier intelligence
+          </p>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <Link href="/ai-text-improver" className="group rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 p-6 shadow-sm transition-all hover:shadow-lg dark:from-purple-900/20 dark:to-blue-900/20">
+              <div className="mb-3 text-3xl">✨</div>
+              <h3 className="mb-2 text-lg font-semibold group-hover:text-purple-600 dark:group-hover:text-purple-400">AI Text Improver</h3>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                Make your text clearer, more professional, and better written with AI
+              </p>
+              <div className="mt-3 text-sm font-medium text-purple-600 dark:text-purple-400">
+                Try it →
+              </div>
+            </Link>
+            <Link href="/ai-grammar-checker" className="group rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 p-6 shadow-sm transition-all hover:shadow-lg dark:from-green-900/20 dark:to-emerald-900/20">
+              <div className="mb-3 text-3xl">✓</div>
+              <h3 className="mb-2 text-lg font-semibold group-hover:text-green-600 dark:group-hover:text-green-400">AI Grammar Checker</h3>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                Fix grammar, spelling, and punctuation errors instantly with AI
+              </p>
+              <div className="mt-3 text-sm font-medium text-green-600 dark:text-green-400">
+                Try it →
+              </div>
+            </Link>
+            <Link href="/ai-tone-converter" className="group rounded-lg bg-gradient-to-br from-orange-50 to-red-50 p-6 shadow-sm transition-all hover:shadow-lg dark:from-orange-900/20 dark:to-red-900/20">
+              <div className="mb-3 text-3xl">🎭</div>
+              <h3 className="mb-2 text-lg font-semibold group-hover:text-orange-600 dark:group-hover:text-orange-400">AI Tone Converter</h3>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                Change text tone: professional, casual, friendly, formal, and more
+              </p>
+              <div className="mt-3 text-sm font-medium text-orange-600 dark:text-orange-400">
+                Try it →
+              </div>
+            </Link>
+            <Link href="/ai-summarizer" className="group rounded-lg bg-gradient-to-br from-cyan-50 to-blue-50 p-6 shadow-sm transition-all hover:shadow-lg dark:from-cyan-900/20 dark:to-blue-900/20">
+              <div className="mb-3 text-3xl">📝</div>
+              <h3 className="mb-2 text-lg font-semibold group-hover:text-cyan-600 dark:group-hover:text-cyan-400">Smart Summarizer</h3>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                Summarize long text into concise, clear summaries with AI
+              </p>
+              <div className="mt-3 text-sm font-medium text-cyan-600 dark:text-cyan-400">
+                Try it →
+              </div>
+            </Link>
+          </div>
+        </div>
+
         {/* Quick Features */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">

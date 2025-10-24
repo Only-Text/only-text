@@ -1,0 +1,32 @@
+CRITICAL: CREATE THIS FILE NOW!
+
+File name: .env.local
+Location: c:\Users\lootj\Documents\text-only\only-text-catalyst\.env.local
+
+Copy these 3 lines EXACTLY:
+
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+NEXT_PUBLIC_SITE_URL=https://only-text.com
+
+HOW TO CREATE:
+1. Open Notepad
+2. Copy the 3 lines above
+3. File > Save As
+4. Navigate to: c:\Users\lootj\Documents\text-only\only-text-catalyst\
+5. File name: .env.local (with the dot!)
+6. Save as type: All Files (*)
+7. Click Save
+
+VERIFY:
+- File should be named .env.local (not .env.local.txt)
+- Should be in the only-text-catalyst folder
+- Should have 3 lines
+
+AFTER CREATING:
+Restart dev server:
+cd c:\Users\lootj\Documents\text-only\only-text-catalyst
+npm run dev
+
+Then test AI features at:
+http://localhost:3000/ai-text-improver
