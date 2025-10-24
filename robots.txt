@@ -1,0 +1,13 @@
+# Only Text - Robots.txt
+User-agent: *
+Allow: /
+Disallow: /Blogs/
+Disallow: /inspiratie/
+Disallow: /*.txt$
+Disallow: /*.pdf$
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://onlytext.app/sitemap.xml

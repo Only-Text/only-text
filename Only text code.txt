@@ -1,0 +1,752 @@
+/* General styles and reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Tool container with added margin */
+.tool-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20vh auto 0; /* Added 20vh top margin as requested */
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tool-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%); /* Light gradient */
+    color: white;
+    text-align: center;
+    padding: 15px;
+    position: relative;
+}
+
+.tool-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.clear-btn {
+    position: absolute;
+    left: 50%;
+    bottom: -15px;
+    transform: translateX(-50%);
+    background-color: white;
+    color: #1e3a8a;
+    border: 2px solid #1e3a8a;
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+    background-color: #1e3a8a;
+    color: white;
+}
+
+/* Editor container styles */
+.editor-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    margin-top: 10px; /* Added space for clear button */
+}
+
+.left-buttons, .right-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    transition: transform 0.2s ease;
+}
+
+.action-btn:hover {
+    background-color: #eee;
+    transform: translateY(-2px);
+}
+
+.btn-icon {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.text-area-container {
+    width: 100%;
+}
+
+#text-input {
+    width: 100%;
+    height: 350px; /* Increased height */
+    padding: 15px;
+    border: 1px dashed #ddd; /* Dashed border */
+    border-radius: 5px;
+    resize: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+}
+
+#text-input:focus {
+    outline: none;
+    border-color: #4a6cf7;
+    border-style: solid;
+}
+
+/* Tools row */
+.tools-row {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%); /* Light gradient */
+    gap: 10px;
+}
+
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 40px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.toggle-btn:hover {
+    transform: scale(1.05);
+}
+
+.toggle-btn.red {
+    background-color: #e63946;
+    color: white;
+}
+
+.toggle-btn.green {
+    background-color: #2ecc71;
+    color: black;
+}
+
+/* AI button animation */
+.toggle-btn.orange {
+    animation: pulseOrange 1.5s forwards;
+}
+
+@keyframes pulseOrange {
+    0% { background-color: #e63946; }
+    50% { background-color: #ff9f1c; }
+    100% { background-color: #e63946; }
+}
+
+/* SEO Content Styles */
+.content-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+section {
+    margin-bottom: 60px;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #1e3a8a;
+}
+
+.hero-section p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-button {
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.cta-button:hover {
+    background-color: #152a63;
+    transform: translateY(-2px);
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    color: #1e3a8a;
+}
+
+.benefits-section ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.benefits-section li {
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 30px;
+    transition: transform 0.3s ease;
+}
+
+.benefits-section li:hover {
+    transform: translateX(5px);
+}
+
+.benefits-section li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.blog-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.blog-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.blog-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #1e3a8a;
+}
+
+.blog-card p {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.read-more {
+    color: #1e3a8a;
+    text-decoration: none;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+}
+
+.read-more:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #1e3a8a;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+}
+
+.read-more:hover:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.testimonials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+blockquote {
+    background: white;
+    border-left: 4px solid #1e3a8a;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+blockquote:hover {
+    transform: scale(1.02);
+}
+
+blockquote p {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+cite {
+    font-style: normal;
+    font-weight: 600;
+    color: #666;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2a4494 100%); /* Light gradient */
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.footer-links {
+    margin-bottom: 20px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #ccc;
+    text-decoration: underline;
+}
+
+.copyright {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .blog-cards,
+    .testimonials {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .tools-row {
+        flex-wrap: wrap;
+    }
+    
+    .toggle-btn {
+        margin: 5px;
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const textInput = document.getElementById('text-input');
+    const pasteBtn = document.getElementById('paste-btn');
+    const importBtn = document.getElementById('import-btn');
+    const fileInput = document.getElementById('file-input');
+    const copyBtn = document.getElementById('copy-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    
+    // Toggle buttons
+    const emojiBtn = document.getElementById('emoji-btn');
+    const specialCharsBtn = document.getElementById('special-chars-btn');
+    const bulletsBtn = document.getElementById('bullets-btn');
+    const aiBtn = document.getElementById('ai-btn');
+    const dotsBtn = document.getElementById('dots-btn');
+    const codeBtn = document.getElementById('code-btn');
+
+    // Store original text for safe reprocessing
+    let originalText = '';
+    
+    // CTA button scroll
+    const ctaButton = document.querySelector('.cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Toggle button functionality - improved to handle state better
+    function toggleButton(button) {
+        if (button.classList.contains('red')) {
+            button.classList.remove('red');
+            button.classList.add('green');
+        } else {
+            button.classList.remove('green');
+            button.classList.add('red');
+        }
+        
+        // Special animation for AI button
+        if (button === aiBtn && button.classList.contains('red')) {
+            button.classList.add('orange');
+            setTimeout(() => {
+                button.classList.remove('orange');
+            }, 1500);
+        }
+        
+        processText();
+    }
+    
+    // Event listeners for toggle buttons
+    emojiBtn.addEventListener('click', () => toggleButton(emojiBtn));
+    specialCharsBtn.addEventListener('click', () => toggleButton(specialCharsBtn));
+    bulletsBtn.addEventListener('click', () => toggleButton(bulletsBtn));
+    aiBtn.addEventListener('click', () => toggleButton(aiBtn));
+    dotsBtn.addEventListener('click', () => toggleButton(dotsBtn));
+    codeBtn.addEventListener('click', () => toggleButton(codeBtn));
+    
+    // Clear button functionality
+    clearBtn.addEventListener('click', () => {
+        textInput.value = '';
+        originalText = '';
+    });
+    
+    // Paste from clipboard
+    pasteBtn.addEventListener('click', async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            textInput.value = text;
+            originalText = text;
+            processText();
+        } catch (err) {
+            alert('Failed to read clipboard. Please paste manually.');
+        }
+    });
+    
+    // Import text file
+    importBtn.addEventListener('click', () => {
+        fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                textInput.value = e.target.result;
+                originalText = e.target.result;
+                processText();
+            };
+            reader.readAsText(file);
+        }
+    });
+    
+    // Copy to clipboard
+    copyBtn.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(textInput.value);
+            // Flash effect instead of alert
+            textInput.style.backgroundColor = '#e6ffec';
+            setTimeout(() => {
+                textInput.style.backgroundColor = '';
+            }, 300);
+        } catch (err) {
+            alert('Failed to copy text. Please copy manually.');
+        }
+    });
+    
+    // Download as text file
+    downloadBtn.addEventListener('click', () => {
+        const text = textInput.value;
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'cleaned_text.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+
+    // List of emojis for random selection
+    const emojis = [
+        '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇',
+        '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚',
+        '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩'
+    ];
+
+    // Get random emoji from list
+    function getRandomEmoji() {
+        return emojis[Math.floor(Math.random() * emojis.length)];
+    }
+    
+    // Process text based on active toggles - completely reworked
+    function processText() {
+        // Start with original text or current input if there's no original
+        let text = textInput.value;
+        
+        // Split text into lines for better processing
+        let lines = text.split('\n');
+        
+        // Process each line based on active toggles
+        lines = lines.map(line => {
+            let processedLine = line;
+            
+            // EMOJI BUTTON
+            if (emojiBtn.classList.contains('red')) {
+                // Remove emojis and any space after emoji at line start
+                if (/^\p{Emoji}\s/.test(processedLine)) {
+                    processedLine = processedLine.replace(/^\p{Emoji}\s+/, '');
+                }
+                // Remove other emojis
+                processedLine = processedLine.replace(/\p{Emoji}/gu, '');
+            } else {
+                // Add random emoji at the beginning if line is not empty
+                if (processedLine.trim() !== '') {
+                    processedLine = getRandomEmoji() + ' ' + processedLine;
+                }
+            }
+            
+            // SPECIAL CHARACTERS BUTTON
+            if (specialCharsBtn.classList.contains('red')) {
+                // Handle the specific case: "word - word" to "word, word"
+                processedLine = processedLine.replace(/\s+\-\s+/g, ', ');
+                
+                // Remove other special characters but keep basic punctuation
+                processedLine = processedLine.replace(/[^\w\s.,?!()'";\-:]/g, '');
+            }
+            
+            // BULLETS BUTTON
+            if (bulletsBtn.classList.contains('red')) {
+                // Remove bullet points, numbers, etc. at beginning of lines, including any space after
+                processedLine = processedLine.replace(/^[\s]*[•\-\*\+\◦\○\●\■\□\▪\▫\♦\♣\♠\♥\d+\.]\s*/g, '');
+            } else {
+                // Add bullet point to non-empty lines only if it doesn't already start with one
+                if (processedLine.trim() !== '' && !/^[\s]*[•]/.test(processedLine)) {
+                    processedLine = '• ' + processedLine;
+                }
+            }
+            
+            return processedLine;
+        });
+        
+        // Get the processed text
+        let processedText = lines.join('\n');
+        
+        // AI BUTTON (removing invisible markers)
+        if (aiBtn.classList.contains('red')) {
+            // Remove common AI markers, both visible and invisible
+            processedText = processedText.replace(/\[AI\]|\<AI\>|\{AI\}|[\u200B-\u200F\uFEFF]/gi, '');
+            // Normalize whitespace
+            processedText = processedText.replace(/\s+/g, ' ').replace(/\n\s+/g, '\n');
+        }
+        
+        // DOTS BUTTON
+        if (dotsBtn.classList.contains('red')) {
+            // Remove all periods
+            processedText = processedText.replace(/\./g, '');
+        } else {
+            // If dots are enabled, make sure non-empty lines end with a period
+            lines = processedText.split('\n');
+            lines = lines.map(line => {
+                if (line.trim() !== '' && !/[.!?]$/.test(line.trim())) {
+                    return line.trimEnd() + '.';
+                }
+                return line;
+            });
+            processedText = lines.join('\n');
+        }
+        
+        // CODE BUTTON
+        if (codeBtn.classList.contains('red')) {
+            // Remove code blocks, inline code markers, and common code syntax
+            processedText = processedText.replace(/```[\s\S]*?```/g, '');
+            processedText = processedText.replace(/`([^`]*)`/g, '$1');
+            processedText = processedText.replace(/\{|\}|\[|\]|\<|\>|\/\/|\/\*|\*\/|#include|import\s+|function|class|def|return|if|else|for|while|\$/g, ' ');
+        }
+        
+        // Update textarea with processed text
+        textInput.value = processedText;
+    }
+    
+    // Process text when user types
+    textInput.addEventListener('input', function() {
+        // Store the original text when user types
+        originalText = textInput.value;
+        processText();
+    });
+});
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Only Text - Free Text Cleaning Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="tool-container">
+        <div class="tool-header">
+            <h1>Only Text</h1>
+            <button id="clear-btn" class="clear-btn">Clear</button>
+        </div>
+        <div class="editor-container">
+            <div class="button-row">
+                <div class="left-buttons">
+                    <button id="paste-btn" class="action-btn">
+                        <i class="fas fa-paste btn-icon"></i>
+                        <span>Paste</span>
+                    </button>
+                    <button id="import-btn" class="action-btn">
+                        <i class="fas fa-file-import btn-icon"></i>
+                        <span>Import</span>
+                    </button>
+                    <input type="file" id="file-input" accept=".txt" style="display: none;">
+                </div>
+                <div class="right-buttons">
+                    <button id="copy-btn" class="action-btn">
+                        <i class="fas fa-copy btn-icon"></i>
+                        <span>Copy</span>
+                    </button>
+                    <button id="download-btn" class="action-btn">
+                        <i class="fas fa-download btn-icon"></i>
+                        <span>Download</span>
+                    </button>
+                </div>
+            </div>
+            <div class="text-area-container">
+                <textarea id="text-input" placeholder="Paste your text with Emoji's and characters here..."></textarea>
+            </div>
+        </div>
+        <div class="tools-row">
+            <button id="emoji-btn" class="toggle-btn active red">
+                <span class="emoji-icon">😁</span>
+            </button>
+            <button id="special-chars-btn" class="toggle-btn active red">
+                <span>*_</span>
+            </button>
+            <button id="bullets-btn" class="toggle-btn active red">
+                <span>•</span>
+                <span>•</span>
+            </button>
+            <button id="ai-btn" class="toggle-btn active red">
+                <span>AI</span>
+            </button>
+            <button id="dots-btn" class="toggle-btn green">
+                <span>.</span>
+            </button>
+            <button id="code-btn" class="toggle-btn green">
+                <span>{}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- SEO Content -->
+    <div class="content-container">
+        <section class="hero-section">
+            <h1>Only Text – Free Tool to Remove Emojis, Bullet Points & Formatting</h1>
+            <p>Only Text is a free online tool that removes unwanted symbols from any text, leaving you with just plain text. In other words, it's an all-in-one emoji remover, special characters remover, and bullet point remover. Quickly strip out bullet points, emojis, special characters, even AI-specific markers, from your text. Perfect for cleaning up AI-generated content or text from emails, documents, and LinkedIn posts so you're left with only the text you need.</p>
+            <button class="cta-button">Use the Tool</button>
+        </section>
+
+        <section class="benefits-section">
+            <h2>Why Use Only Text?</h2>
+            <ul>
+                <li><strong>Save Time:</strong> No more manual deleting. Remove emoji from text, bullet points, and other unwanted characters in seconds.</li>
+                <li><strong>Plain Text Anywhere:</strong> Get a clean plain text output that's ready to use in emails, documents, or any platform – without weird formatting issues.</li>
+                <li><strong>AI‑Proof Your Text:</strong> Remove any AI symbols or formatting quirks left by text generators so your content looks natural and professional.</li>
+                <li><strong>Free & Easy:</strong> 100% free online tool with no sign-up or installation. Just paste, click, and copy your cleaned text.</li>
+            </ul>
+        </section>
+
+        <section class="blog-section">
+            <h2>From the Blog</h2>
+            <div class="blog-cards">
+                <div class="blog-card">
+                    <h3>Why AI Outputs Need Cleaning</h3>
+                    <p>AI-generated text isn't always ready to use out-of-the-box. Whether you use ChatGPT or another AI writer, the output often contains extras like lists, bullet points, emojis, or strange formatting that can clutter your content. In this blog post, we explore why cleaning up AI outputs is so important. From improving readability to avoiding hidden AI markers, discover how a quick clean-up can make AI-generated text more reliable and easier to work with. It's all about ensuring the quality and integrity of AI content before you use it. By making a few simple tweaks, you can ensure your AI-written content is polished and ready to go.</p>
+                    <a href="#" class="read-more">Read more...</a>
+                </div>
+                <div class="blog-card">
+                    <h3>How to Quickly Get Plain Text from LinkedIn Posts</h3>
+                    <p>Ever tried to copy a LinkedIn post, only to paste a mess of icons, formatting, and odd characters? You're not alone. LinkedIn posts often contain emojis and special symbols that don't transfer well into emails or documents. In this article, we show you how to instantly remove formatting from text copied from LinkedIn or any other platform. With the right tool, you can convert rich text into plain text in just a few clicks — perfect for saving or sharing without the clutter. For content creators and professionals, this simple trick can save a lot of cleanup time.</p>
+                    <a href="#" class="read-more">Read more...</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials-section">
+            <h2>What Users Are Saying</h2>
+            <div class="testimonials">
+                <blockquote>
+                    <p>"Finally, a simple text tool that does exactly what I need. Only Text saves me a ton of editing time!"</p>
+                    <cite>— John D., Content Creator</cite>
+                </blockquote>
+                <blockquote>
+                    <p>"I use Only Text after every ChatGPT session. It quickly removes all the formatting and emojis, leaving me with clean plain text ready to publish."</p>
+                    <cite>— Emily R., AI Enthusiast</cite>
+                </blockquote>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Blog</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Contact</a>
+        </div>
+        <p class="copyright">© 2025 Only Text. All rights reserved. Only Text is provided as-is and is not affiliated with OpenAI, LinkedIn, or any other platform.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

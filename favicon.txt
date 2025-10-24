@@ -1,0 +1,19 @@
+from PIL import Image, ImageDraw, ImageFont
+
+def create_favicon():
+    # Afmetingen voor de basisafbeelding (64x64 pixels) zodat we later op meerdere formaten kunnen schalen.
+    img_size = (64, 64)
+    background_color = (255, 255, 255, 255)  # witte achtergrond
+    text_color = (0, 0, 0, 255)              # zwarte tekst
+
+    # Maak een nieuwe afbeelding met een witte achtergrond.
+    img = Image.new("RGBA", img_size, background_color)
+    draw = ImageDraw.Draw(img)
+    
+    # Probeer een truetype lettertype te laden, anders gebruik je het standaard lettertype.
+    try:
+        font = ImageFont.truetype("arial.ttf", 40)
+    except IOError:
+        font = ImageFont.load_default()
+    
+    #

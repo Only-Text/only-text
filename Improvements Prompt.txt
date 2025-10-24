@@ -1,0 +1,17 @@
+Een stuk beter, maar nog niet perfect. 
+
+De hoogte boven de tool moet kleiner, maak er 10vh van. Verder wil ik de 'Clear' button wat groter en in het midden van de blauwe balk. Dan kan de Only Text tekst ook wat groter. De blauwe rand om de 'Clear' knop heen is een mooie. 
+
+En nu de werking van de knoppen, want dat is nog niet helemaal goed. 
+
+Emoji knop: Deze knop werkt in principe goed, maar wanneer je hem activeert komt er ook een • teken samen met een smiley, of hij haalt die tekens weg en dat moet niet. Alleen de smiley plus spatie. Ook met het verwijderen (by default), moet de emoji plus een spatie worden verwijderd. Zie het als een groep, de emoji plus spatie. Ook moet deze knop teveel spacing verwijderen wanneer hij uitgezet wordt. Alle spacing in het begin van de rij moet verwijderd worden wanneer uitgezet. 
+
+Speciale tekens knop: Deze verwijderd ook coderingshaakjes {}, deze moeten bij deze knop niet effect hebben. Als hij uitstaat (default) dan moeten ook () _;:en - verwijderd worden. Wanneer aangezet, kan het niet. Hij kan alleen uit, dus rood. Wanneer geklikt, wordt hij hetzelfde als de AI knop, rood , oranje, rood met animatie ertussen. 
+
+Bulletpoint knop: Als placeholder één • ipv 2, en verder werkt hij niet helemaal goed want hij conflicteerd met de smiley knop. wanneer ik herhaaldelijk op de bulletpointknop druk en er is een smiley naast, wordt die verwijderd of bijgedrukt. wat nu wel goed is is dat De bulletpoints en opsommingen worden verwijderd, en wanneer aangezet komt voor elke regel (zoals origineel, want de enters blijven behouden) een bulletpoint. Ook moet deze knop teveel spacing verwijderen wanneer hij uitgezet wordt. Alle spacing in het begin van de rij moet verwijderd worden wanneer uitgezet. 
+
+AI knop: Hij staat standaard uit, dat is goed. Maar nu kan hij wel aangezet (groen) worden. Dat moet niet, wanneer erop geklikt wordt, moet hij van rood naar oranje transformeren, en dan gelijk terug naar rood op een smoothe manier. Deze kan alleen uit staan. Verder wil ik dat de AI knop niks doet, het is slechts voor de sier. geen werking achter zetten, maar dit moeten de gebruikers niet weten. 
+
+Punten knop: Deze conflicteerd met emojis en bulletpoints. De taak is: wanneer een regel eindigt met een . dan verwijder je deze wanneer hij uitgezet wordt. wanneer hij dan weer wordt aangezet, krijgt elke regel met tekst een . erachter. 
+
+Het code symbool conflicteerd ook met emoji en bulletpoints. Wanneer uitgezet, worden alle {} symbolen verwijderd, en dan kan hij niet terug aan. Dan moet hij dezelfde animatie zoals de AI knop krijgen. rood, oranje, rood met animatie ertussen.
