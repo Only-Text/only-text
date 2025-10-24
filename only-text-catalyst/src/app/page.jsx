@@ -3,6 +3,7 @@
 import { Button } from '@/components/button'
 import { Heading } from '@/components/heading'
 import Link from 'next/link'
+import Image from 'next/image'
 import { 
   SparklesIcon,
   BoltIcon,
@@ -139,11 +140,18 @@ export default function HomePage() {
             </dl>
           </div>
 
-          {/* Screenshot placeholder - will be replaced with actual screenshot */}
+          {/* Hero Image */}
           <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:mt-0 lg:mr-0 lg:ml-10 lg:max-w-none lg:flex-none xl:ml-32">
             <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
               <div className="w-[76rem] rounded-xl bg-zinc-900/5 p-2 ring-1 ring-zinc-900/10 dark:bg-white/5 dark:ring-white/10 lg:rounded-2xl lg:p-4">
-                <div className="aspect-[16/9] rounded-md bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20 shadow-2xl ring-1 ring-zinc-900/10 dark:ring-white/10" />
+                <Image
+                  src="/pictures/only-text.png"
+                  alt="Only Text - Text Cleaning Tools Interface"
+                  width={2432}
+                  height={1442}
+                  className="rounded-md shadow-2xl ring-1 ring-zinc-900/10 dark:ring-white/10"
+                  priority
+                />
               </div>
             </div>
           </div>
