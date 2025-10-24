@@ -1,0 +1,41 @@
+{
+  "name": "Only Text - Free Text Tools",
+  "short_name": "Only Text",
+  "description": "Clean & improve text with AI. Remove emojis, bullets, and special characters. Free text processing tools.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#9333ea",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/pictures/only-text-purple.JPG",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pictures/only-text-purple.JPG",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "AI Text Improver",
+      "short_name": "Improve",
+      "description": "Improve your text with AI",
+      "url": "/ai-text-improver",
+      "icons": [{ "src": "/pictures/only-text-purple.JPG", "sizes": "192x192" }]
+    },
+    {
+      "name": "Grammar Checker",
+      "short_name": "Grammar",
+      "description": "Check grammar and spelling",
+      "url": "/ai-grammar-checker",
+      "icons": [{ "src": "/pictures/only-text-purple.JPG", "sizes": "192x192" }]
+    }
+  ]
+}

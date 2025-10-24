@@ -1,6 +1,6 @@
 import '@/styles/tailwind.css'
 import { WebsiteSchema, OrganizationSchema } from '@/components/seo-head'
-import { BookmarkButton } from '@/components/bookmark-button'
+import { PWAInstallButton } from '@/components/pwa-install-button'
 
 export const metadata = {
   metadataBase: new URL('https://only-text.com'),
@@ -82,12 +82,17 @@ export default async function RootLayout({ children }) {
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         </noscript>
         <link rel="canonical" href="https://only-text.com" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#9333ea" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Only Text" />
         <WebsiteSchema />
         <OrganizationSchema />
       </head>
       <body>
         {children}
-        <BookmarkButton />
+        <PWAInstallButton />
       </body>
     </html>
   )
