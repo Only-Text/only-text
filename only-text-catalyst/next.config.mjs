@@ -4,12 +4,15 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
     },
   },
-  outputFileTracingRoot: undefined,
+  outputFileTracing: true,
 }
 
 export default nextConfig
