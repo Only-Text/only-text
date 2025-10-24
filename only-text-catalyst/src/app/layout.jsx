@@ -1,5 +1,6 @@
 import '@/styles/tailwind.css'
 import { WebsiteSchema, OrganizationSchema } from '@/components/seo-head'
+import { BookmarkButton } from '@/components/bookmark-button'
 
 export const metadata = {
   metadataBase: new URL('https://only-text.com'),
@@ -84,7 +85,10 @@ export default async function RootLayout({ children }) {
         <WebsiteSchema />
         <OrganizationSchema />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <BookmarkButton />
+      </body>
     </html>
   )
 }
