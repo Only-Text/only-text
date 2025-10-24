@@ -145,7 +145,7 @@ export default function HomePage() {
             <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
               <div className="w-[76rem] rounded-xl bg-zinc-900/5 p-2 ring-1 ring-zinc-900/10 dark:bg-white/5 dark:ring-white/10 lg:rounded-2xl lg:p-4">
                 <Image
-                  src="/pictures/only-text.png"
+                  src="/pictures/only-text-purple.JPG"
                   alt="Only Text - Text Cleaning Tools Interface"
                   width={2432}
                   height={1442}
