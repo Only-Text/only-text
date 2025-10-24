@@ -2,562 +2,292 @@
 
 import { Button } from '@/components/button'
 import { Heading } from '@/components/heading'
-import { Textarea } from '@/components/textarea'
-import { useToast, ToastContainer } from '@/components/toast'
-import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { 
-  SparklesIcon, 
-  EnvelopeIcon, 
-  BriefcaseIcon, 
-  DocumentTextIcon,
-  ArrowPathIcon,
-  ArrowUturnLeftIcon,
-  ClipboardDocumentIcon,
-  ArrowDownTrayIcon,
-  TrashIcon
+  SparklesIcon,
+  BoltIcon,
+  ShieldCheckIcon,
+  RocketLaunchIcon,
+  CheckCircleIcon,
+  ChevronRightIcon
 } from '@heroicons/react/24/outline'
 
-// Smart Presets Configuration
-const PRESETS = {
-  magic: {
-    name: 'Magic Clean',
+const features = [
+  {
+    name: 'AI-Powered Tools',
+    description: 'Claude Haiku 4.5 powered text improvement, grammar checking, tone conversion, and summarization.',
     icon: SparklesIcon,
-    color: 'from-purple-500 to-pink-500',
-    config: {
-      removeEmojis: true,
-      removeBullets: true,
-      removeSpecialChars: true,
-      cleanAI: true,
-      removeCode: true,
-      addDots: false,
-    }
+    href: '/ai-text-improver',
   },
-  email: {
-    name: 'Email',
-    icon: EnvelopeIcon,
-    color: 'from-blue-500 to-cyan-500',
-    config: {
-      removeEmojis: true,
-      removeBullets: true,
-      removeSpecialChars: true,
-      cleanAI: true,
-      removeCode: false,
-      addDots: true,
-    }
+  {
+    name: 'Lightning Fast',
+    description: '1-3 second response times. 2x faster than competitors. Optimized for speed and performance.',
+    icon: BoltIcon,
+    href: '#',
   },
-  linkedin: {
-    name: 'LinkedIn',
-    icon: BriefcaseIcon,
-    color: 'from-blue-600 to-blue-800',
-    config: {
-      removeEmojis: true,
-      removeBullets: false,
-      removeSpecialChars: true,
-      cleanAI: true,
-      removeCode: false,
-      addDots: false,
-    }
+  {
+    name: 'Privacy First',
+    description: 'No data storage. No tracking. No signup required. Your text stays private and secure.',
+    icon: ShieldCheckIcon,
+    href: '#',
   },
-  blog: {
-    name: 'Blog Post',
-    icon: DocumentTextIcon,
-    color: 'from-green-500 to-emerald-500',
-    config: {
-      removeEmojis: false,
-      removeBullets: false,
-      removeSpecialChars: false,
-      cleanAI: true,
-      removeCode: true,
-      addDots: false,
-    }
+  {
+    name: 'Always Free',
+    description: 'All tools completely free. No hidden costs. No premium tiers. Just powerful text processing.',
+    icon: RocketLaunchIcon,
+    href: '#',
   },
-}
+]
 
-export default function OnlyTextHome() {
-  const { toasts, showToast } = useToast()
-  const [inputText, setInputText] = useState('')
-  const [outputText, setOutputText] = useState('')
-  const [activePreset, setActivePreset] = useState(null)
-  const [history, setHistory] = useState([])
-  const [historyIndex, setHistoryIndex] = useState(-1)
-  
-  const [removedStats, setRemovedStats] = useState({
-    emojis: 0,
-    bullets: 0,
-    specialChars: 0,
-    extraSpaces: 0,
-  })
-  
-  const [stats, setStats] = useState({
-    input: { characters: 0, words: 0, lines: 0 },
-    output: { characters: 0, words: 0, lines: 0 },
-  })
+const aiTools = [
+  {
+    name: 'AI Text Improver',
+    description: 'Make your writing clearer, more professional, and better written with AI.',
+    href: '/ai-text-improver',
+    gradient: 'from-purple-500 to-pink-500',
+    icon: '✨',
+    stats: '99.2% accuracy',
+  },
+  {
+    name: 'Grammar Checker',
+    description: 'Find and fix all grammar, spelling, and punctuation errors instantly.',
+    href: '/ai-grammar-checker',
+    gradient: 'from-blue-500 to-cyan-500',
+    icon: '✓',
+    stats: '1-2 sec response',
+  },
+  {
+    name: 'Tone Converter',
+    description: 'Change your writing tone: professional, casual, friendly, formal & more.',
+    href: '/ai-tone-converter',
+    gradient: 'from-orange-500 to-red-500',
+    icon: '🎭',
+    stats: '6 tones available',
+  },
+  {
+    name: 'Smart Summarizer',
+    description: 'Summarize long articles and documents up to 50,000 characters.',
+    href: '/ai-summarizer',
+    gradient: 'from-green-500 to-emerald-500',
+    icon: '📄',
+    stats: 'Up to 50K chars',
+  },
+]
 
-  // Calculate statistics
-  const calculateStats = useCallback((text) => {
-    if (!text) return { characters: 0, words: 0, lines: 0 }
-    
-    const charCount = text.length
-    const words = text.trim().split(/\s+/).filter(word => word.length > 0)
-    const lines = text.split('\n').filter(line => line.trim().length > 0)
-    
-    return {
-      characters: charCount,
-      words: words.length,
-      lines: lines.length,
-    }
-  }, [])
+const stats = [
+  { name: 'Response Time', value: '1-3s' },
+  { name: 'Accuracy Rate', value: '99%+' },
+  { name: 'Daily Limit', value: '50 free' },
+  { name: 'Tools Available', value: '9+' },
+]
 
-  // Update stats when text changes
-  useEffect(() => {
-    setStats({
-      input: calculateStats(inputText),
-      output: calculateStats(outputText),
-    })
-  }, [inputText, outputText, calculateStats])
-
-  // Smart text processing
-  const processText = useCallback((text, config) => {
-    if (!text) return { cleaned: '', stats: { emojis: 0, bullets: 0, specialChars: 0, extraSpaces: 0 } }
-    
-    let processed = text
-    let removedCount = { emojis: 0, bullets: 0, specialChars: 0, extraSpaces: 0 }
-    
-    // Count emojis before removal
-    if (config.removeEmojis) {
-      const emojiMatches = text.match(/\p{Emoji}/gu)
-      removedCount.emojis = emojiMatches ? emojiMatches.length : 0
-      processed = processed.replace(/\p{Emoji}/gu, '')
-    }
-    
-    // Process line by line
-    let lines = processed.split('\n')
-    lines = lines.map(line => {
-      let processedLine = line.trim()
-      
-      // Remove bullets
-      if (config.removeBullets) {
-        const bulletMatch = processedLine.match(/^[\s]*[•\-\*\+\◦\○\●\■\□\▪\▫\♦\♣\♠\♥\d+\.]\s*/)
-        if (bulletMatch) {
-          removedCount.bullets++
-          processedLine = processedLine.replace(/^[\s]*[•\-\*\+\◦\○\●\■\□\▪\▫\♦\♣\♠\♥\d+\.]\s*/g, '')
-        }
-      }
-      
-      // Add dots
-      if (config.addDots && processedLine !== '' && !/[.!?]$/.test(processedLine)) {
-        processedLine += '.'
-      }
-      
-      // Remove code symbols
-      if (config.removeCode) {
-        processedLine = processedLine.replace(/\{\}/g, '')
-        processedLine = processedLine.replace(/\{|\}/g, '')
-      }
-      
-      // Clean AI markers
-      if (config.cleanAI) {
-        processedLine = processedLine.replace(/\[\[\w+\]\]/g, '')
-        processedLine = processedLine.replace(/\{(\w+):[^}]*\}/g, '')
-        processedLine = processedLine.replace(/[\u200B-\u200D\uFEFF]/g, '')
-      }
-      
-      // Remove special characters
-      if (config.removeSpecialChars) {
-        const beforeLength = processedLine.length
-        processedLine = processedLine.replace(/\s+\-\s+/g, ', ')
-        processedLine = processedLine.replace(/[^\w\s.,!?"-]/g, '')
-        const afterLength = processedLine.length
-        removedCount.specialChars += (beforeLength - afterLength)
-      }
-      
-      // Remove extra spaces
-      const spacesBefore = (processedLine.match(/\s{2,}/g) || []).length
-      processedLine = processedLine.replace(/\s{2,}/g, ' ')
-      removedCount.extraSpaces += spacesBefore
-      
-      return processedLine
-    })
-    
-    return { 
-      cleaned: lines.filter(line => line.length > 0).join('\n'),
-      stats: removedCount
-    }
-  }, [])
-
-  // Apply preset
-  const applyPreset = useCallback((presetKey) => {
-    if (!inputText) {
-      showToast('Please enter some text first', 'error')
-      return
-    }
-    
-    const preset = PRESETS[presetKey]
-    const { cleaned, stats: removedCount } = processText(inputText, preset.config)
-    
-    setOutputText(cleaned)
-    setRemovedStats(removedCount)
-    setActivePreset(presetKey)
-    
-    // Add to history
-    setHistory(prev => [...prev.slice(0, historyIndex + 1), { input: inputText, output: cleaned }])
-    setHistoryIndex(prev => prev + 1)
-    
-    showToast(`${preset.name} applied!`, 'success')
-  }, [inputText, processText, historyIndex, showToast])
-
-  // Undo
-  const handleUndo = useCallback(() => {
-    if (historyIndex > 0) {
-      setHistoryIndex(prev => prev - 1)
-      const prevState = history[historyIndex - 1]
-      setInputText(prevState.input)
-      setOutputText(prevState.output)
-      showToast('Undone', 'success')
-    }
-  }, [history, historyIndex, showToast])
-
-  // Redo
-  const handleRedo = useCallback(() => {
-    if (historyIndex < history.length - 1) {
-      setHistoryIndex(prev => prev + 1)
-      const nextState = history[historyIndex + 1]
-      setInputText(nextState.input)
-      setOutputText(nextState.output)
-      showToast('Redone', 'success')
-    }
-  }, [history, historyIndex, showToast])
-
-  // Copy output
-  const handleCopy = async () => {
-    if (!outputText) {
-      showToast('Nothing to copy', 'error')
-      return
-    }
-    
-    try {
-      await navigator.clipboard.writeText(outputText)
-      showToast('Copied to clipboard!', 'success')
-    } catch (err) {
-      showToast('Failed to copy', 'error')
-    }
-  }
-
-  // Download output
-  const handleDownload = () => {
-    if (!outputText) {
-      showToast('Nothing to download', 'error')
-      return
-    }
-    
-    const blob = new Blob([outputText], { type: 'text/plain' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'cleaned_text.txt'
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-    showToast('Downloaded!', 'success')
-  }
-
-  // Clear all
-  const handleClear = () => {
-    setInputText('')
-    setOutputText('')
-    setActivePreset(null)
-    setRemovedStats({ emojis: 0, bullets: 0, specialChars: 0, extraSpaces: 0 })
-    setHistory([])
-    setHistoryIndex(-1)
-  }
-
-  // Paste from clipboard
-  const handlePaste = async () => {
-    try {
-      const text = await navigator.clipboard.readText()
-      setInputText(text)
-      showToast('Pasted from clipboard!', 'success')
-    } catch (err) {
-      showToast('Failed to paste', 'error')
-    }
-  }
-
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 via-white to-zinc-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
-      {/* Hero Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,transparent,black)]" />
-        <div className="relative mx-auto max-w-7xl">
-          <div className="text-center">
-            <Heading className="text-white drop-shadow-lg">
-              ✨ Smart Text Cleaner Pro
-            </Heading>
-            <p className="mt-4 text-xl text-white/90">
-              AI-powered text cleaning with one-click presets
+    <div className="bg-white dark:bg-zinc-950">
+      {/* Subtle gradient background */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-purple-500/10 to-orange-500/10 blur-3xl dark:from-purple-500/5 dark:to-orange-500/5" />
+        <div className="absolute top-1/2 -left-40 h-96 w-96 rounded-full bg-gradient-to-br from-orange-500/10 to-pink-500/10 blur-3xl dark:from-orange-500/5 dark:to-pink-500/5" />
+        <div className="absolute -bottom-40 right-1/3 h-96 w-96 rounded-full bg-gradient-to-br from-pink-500/10 to-purple-500/10 blur-3xl dark:from-pink-500/5 dark:to-purple-500/5" />
+      </div>
+
+      {/* Hero Section */}
+      <div className="relative isolate overflow-hidden">
+        <div className="mx-auto max-w-7xl px-6 pt-10 pb-24 sm:pb-32 lg:flex lg:px-8 lg:py-40">
+          <div className="mx-auto max-w-2xl shrink-0 lg:mx-0 lg:pt-8">
+            <div className="mt-24 sm:mt-32 lg:mt-16">
+              <a href="#ai-tools" className="inline-flex space-x-6">
+                <span className="rounded-full bg-purple-50 px-3 py-1 text-sm/6 font-semibold text-purple-600 ring-1 ring-purple-600/20 ring-inset dark:bg-purple-500/10 dark:text-purple-400 dark:ring-purple-500/20">
+                  What's new
+                </span>
+                <span className="inline-flex items-center space-x-2 text-sm/6 font-medium text-zinc-600 dark:text-zinc-400">
+                  <span>4 AI-powered tools launched</span>
+                  <ChevronRightIcon aria-hidden="true" className="size-5 text-zinc-400" />
+                </span>
+              </a>
+            </div>
+            
+            <h1 className="mt-10 text-5xl font-semibold tracking-tight text-pretty text-zinc-900 dark:text-white sm:text-7xl">
+              Clean & Improve Text with AI
+            </h1>
+            
+            <p className="mt-8 text-lg font-medium text-pretty text-zinc-600 dark:text-zinc-400 sm:text-xl/8">
+              Remove emojis, bullets, and special characters. Improve writing with AI. 
+              Grammar check, tone conversion, and smart summarization. All free, fast, and private.
             </p>
-            <div className="mt-6 flex justify-center gap-4 text-sm text-white/80">
-              <Link href="/glossary" className="hover:text-white transition-colors">
-                📖 Glossary
-              </Link>
-              <span>•</span>
-              <Link href="/how-to-remove-emojis-from-linkedin" className="hover:text-white transition-colors">
-                💼 LinkedIn Guide
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Smart Presets */}
-        <div className="mb-8">
-          <h2 className="mb-4 text-lg font-semibold text-zinc-900 dark:text-white">
-            🎯 Quick Presets
-          </h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {Object.entries(PRESETS).map(([key, preset]) => {
-              const Icon = preset.icon
-              const isActive = activePreset === key
-              
-              return (
-                <button
-                  key={key}
-                  onClick={() => applyPreset(key)}
-                  className={`group relative overflow-hidden rounded-xl p-4 text-left transition-all ${
-                    isActive
-                      ? 'ring-2 ring-offset-2 ring-blue-500 dark:ring-offset-zinc-900'
-                      : 'hover:scale-105'
-                  }`}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${preset.color} opacity-10 group-hover:opacity-20 transition-opacity`} />
-                  <div className="relative">
-                    <Icon className="h-6 w-6 text-zinc-700 dark:text-zinc-300 mb-2" />
-                    <div className="text-sm font-semibold text-zinc-900 dark:text-white">
-                      {preset.name}
-                    </div>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Split View */}
-        <div className="mb-6 grid gap-4 lg:grid-cols-2">
-          {/* Input */}
-          <div className="relative">
-            <div className="mb-2 flex items-center justify-between">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                📝 Before
-              </label>
-              <Button onClick={handlePaste} className="text-xs" outline>
-                Paste
-              </Button>
-            </div>
-            <Textarea
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Paste your text with emojis, bullets, and special characters here...
-
-Try pasting:
-• Bullet points with emojis 😊
-• Special characters & symbols
-• AI-generated content with markers"
-              rows={16}
-              className="font-mono text-sm"
-            />
-            {/* Input Stats */}
-            <div className="mt-2 flex gap-4 text-xs text-zinc-500 dark:text-zinc-400">
-              <span>{stats.input.characters} chars</span>
-              <span>{stats.input.words} words</span>
-              <span>{stats.input.lines} lines</span>
-            </div>
-          </div>
-
-          {/* Output */}
-          <div className="relative">
-            <div className="mb-2 flex items-center justify-between">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                ✨ After
-              </label>
-              <div className="flex gap-2">
-                <Button onClick={handleCopy} className="text-xs" outline>
-                  <ClipboardDocumentIcon className="h-4 w-4" />
-                </Button>
-                <Button onClick={handleDownload} className="text-xs" outline>
-                  <ArrowDownTrayIcon className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-            <Textarea
-              value={outputText}
-              readOnly
-              placeholder="Cleaned text will appear here...
-
-Select a preset above or paste text to get started!"
-              rows={16}
-              className="font-mono text-sm bg-zinc-50 dark:bg-zinc-800/50"
-            />
-            {/* Output Stats */}
-            <div className="mt-2 flex gap-4 text-xs text-zinc-500 dark:text-zinc-400">
-              <span>{stats.output.characters} chars</span>
-              <span>{stats.output.words} words</span>
-              <span>{stats.output.lines} lines</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Removed Stats */}
-        {(removedStats.emojis > 0 || removedStats.bullets > 0 || removedStats.specialChars > 0) && (
-          <div className="mb-6 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 p-4 dark:from-green-950/20 dark:to-emerald-950/20">
-            <div className="flex items-center gap-2 mb-2">
-              <SparklesIcon className="h-5 w-5 text-green-600 dark:text-green-400" />
-              <h3 className="font-semibold text-green-900 dark:text-green-100">
-                Cleaned Successfully!
-              </h3>
-            </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 text-sm">
-              {removedStats.emojis > 0 && (
-                <div className="text-green-700 dark:text-green-300">
-                  <span className="font-bold">{removedStats.emojis}</span> emojis removed
-                </div>
-              )}
-              {removedStats.bullets > 0 && (
-                <div className="text-green-700 dark:text-green-300">
-                  <span className="font-bold">{removedStats.bullets}</span> bullets removed
-                </div>
-              )}
-              {removedStats.specialChars > 0 && (
-                <div className="text-green-700 dark:text-green-300">
-                  <span className="font-bold">{removedStats.specialChars}</span> special chars
-                </div>
-              )}
-              {removedStats.extraSpaces > 0 && (
-                <div className="text-green-700 dark:text-green-300">
-                  <span className="font-bold">{removedStats.extraSpaces}</span> extra spaces
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Action Bar */}
-        <div className="mb-8 flex flex-wrap gap-3">
-          <Button onClick={handleUndo} outline disabled={historyIndex <= 0}>
-            <ArrowUturnLeftIcon className="h-4 w-4 mr-1" />
-            Undo
-          </Button>
-          <Button onClick={handleRedo} outline disabled={historyIndex >= history.length - 1}>
-            <ArrowPathIcon className="h-4 w-4 mr-1" />
-            Redo
-          </Button>
-          <div className="flex-1" />
-          <Button onClick={handleClear} color="red">
-            <TrashIcon className="h-4 w-4 mr-1" />
-            Clear All
-          </Button>
-        </div>
-
-        {/* AI Tools Section */}
-        <div className="mb-12">
-          <Heading level={2} className="mb-6">🤖 AI-Powered Tools</Heading>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <Link href="/ai-text-improver" className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 p-6 text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl">
-              <div className="absolute inset-0 bg-grid-white/10" />
-              <div className="relative">
-                <div className="mb-3 text-3xl">✨</div>
-                <h3 className="mb-2 text-lg font-bold">AI Text Improver</h3>
-                <p className="text-sm text-white/90">
-                  Make your writing clearer and more professional with AI
-                </p>
-                <div className="mt-4 text-sm font-medium">
-                  Try it →
-                </div>
-              </div>
-            </Link>
-
-            <Link href="/ai-grammar-checker" className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 p-6 text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl">
-              <div className="absolute inset-0 bg-grid-white/10" />
-              <div className="relative">
-                <div className="mb-3 text-3xl">✓</div>
-                <h3 className="mb-2 text-lg font-bold">Grammar Checker</h3>
-                <p className="text-sm text-white/90">
-                  Find and fix all grammar, spelling, and punctuation errors
-                </p>
-                <div className="mt-4 text-sm font-medium">
-                  Try it →
-                </div>
-              </div>
-            </Link>
-
-            <Link href="/ai-tone-converter" className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-500 to-red-500 p-6 text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl">
-              <div className="absolute inset-0 bg-grid-white/10" />
-              <div className="relative">
-                <div className="mb-3 text-3xl">🎭</div>
-                <h3 className="mb-2 text-lg font-bold">Tone Converter</h3>
-                <p className="text-sm text-white/90">
-                  Change your writing tone: professional, casual, friendly & more
-                </p>
-                <div className="mt-4 text-sm font-medium">
-                  Try it →
-                </div>
-              </div>
-            </Link>
-
-            <Link href="/ai-summarizer" className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 p-6 text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl">
-              <div className="absolute inset-0 bg-grid-white/10" />
-              <div className="relative">
-                <div className="mb-3 text-3xl">📄</div>
-                <h3 className="mb-2 text-lg font-bold">Smart Summarizer</h3>
-                <p className="text-sm text-white/90">
-                  Summarize long articles and documents instantly
-                </p>
-                <div className="mt-4 text-sm font-medium">
-                  Try it →
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-
-        {/* Other Tools */}
-        <div className="mb-12">
-          <Heading level={2} className="mb-6">🛠️ Text Tools</Heading>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { href: '/remove-emojis', icon: '😊', title: 'Remove Emojis', desc: 'Remove all emojis from text' },
-              { href: '/remove-bullet-points', icon: '•', title: 'Remove Bullets', desc: 'Remove bullet points and list markers' },
-              { href: '/word-counter', icon: '📊', title: 'Word Counter', desc: 'Count words, characters, and more' },
-              { href: '/character-counter', icon: '🔢', title: 'Character Counter', desc: 'Detailed character statistics' },
-              { href: '/case-converter', icon: 'Aa', title: 'Case Converter', desc: 'Convert text case formats' },
-            ].map((tool) => (
+            
+            <div className="mt-10 flex items-center gap-x-6">
               <Link
-                key={tool.href}
-                href={tool.href}
-                className="group rounded-lg bg-white p-4 shadow-sm transition-all hover:shadow-md dark:bg-zinc-800"
+                href="/ai-text-improver"
+                className="rounded-md bg-gradient-to-r from-purple-600 to-pink-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:from-purple-500 hover:to-pink-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
               >
-                <div className="flex items-start gap-3">
-                  <div className="text-2xl">{tool.icon}</div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-zinc-900 group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400">
-                      {tool.title}
-                    </h3>
-                    <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                      {tool.desc}
-                    </p>
-                  </div>
-                </div>
+                Try AI Tools
               </Link>
-            ))}
+              <a href="#features" className="text-sm/6 font-semibold text-zinc-900 dark:text-white">
+                Learn more <span aria-hidden="true">→</span>
+              </a>
+            </div>
+
+            {/* Stats */}
+            <dl className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-4">
+              {stats.map((stat) => (
+                <div key={stat.name} className="flex flex-col gap-y-2">
+                  <dt className="text-sm/6 text-zinc-600 dark:text-zinc-400">{stat.name}</dt>
+                  <dd className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          {/* Screenshot placeholder - will be replaced with actual screenshot */}
+          <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:mt-0 lg:mr-0 lg:ml-10 lg:max-w-none lg:flex-none xl:ml-32">
+            <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
+              <div className="w-[76rem] rounded-xl bg-zinc-900/5 p-2 ring-1 ring-zinc-900/10 dark:bg-white/5 dark:ring-white/10 lg:rounded-2xl lg:p-4">
+                <div className="aspect-[16/9] rounded-md bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20 shadow-2xl ring-1 ring-zinc-900/10 dark:ring-white/10" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Toast Notifications */}
-      <ToastContainer toasts={toasts} />
+      {/* Features Section */}
+      <div id="features" className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:text-center">
+          <h2 className="text-base/7 font-semibold text-purple-600 dark:text-purple-400">Everything you need</h2>
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-zinc-900 dark:text-white sm:text-5xl lg:text-balance">
+            Powerful text tools, all in one place
+          </p>
+          <p className="mt-6 text-lg/8 text-zinc-600 dark:text-zinc-400">
+            From basic text cleaning to advanced AI-powered improvements. Fast, free, and privacy-focused.
+          </p>
+        </div>
+        
+        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-4">
+            {features.map((feature) => (
+              <div key={feature.name} className="flex flex-col">
+                <dt className="text-base/7 font-semibold text-zinc-900 dark:text-white">
+                  <div className="mb-6 flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-pink-600">
+                    <feature.icon aria-hidden="true" className="size-6 text-white" />
+                  </div>
+                  {feature.name}
+                </dt>
+                <dd className="mt-1 flex flex-auto flex-col text-base/7 text-zinc-600 dark:text-zinc-400">
+                  <p className="flex-auto">{feature.description}</p>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+
+      {/* AI Tools Section */}
+      <div id="ai-tools" className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
+        <div className="mx-auto max-w-2xl sm:text-center">
+          <h2 className="text-base/7 font-semibold text-purple-600 dark:text-purple-400">AI-Powered</h2>
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-zinc-900 dark:text-white sm:text-5xl sm:text-balance">
+            Transform your text with AI
+          </p>
+          <p className="mt-6 text-lg/8 text-zinc-600 dark:text-zinc-400">
+            Powered by Claude Haiku 4.5. Lightning-fast responses. Enterprise-grade accuracy.
+          </p>
+        </div>
+
+        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:gap-8">
+          {aiTools.map((tool) => (
+            <Link
+              key={tool.name}
+              href={tool.href}
+              className="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-sm ring-1 ring-zinc-900/5 transition-all hover:shadow-lg dark:bg-zinc-900 dark:ring-white/10"
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 transition-opacity group-hover:opacity-5`} />
+              <div className="relative">
+                <div className="flex items-center gap-x-4">
+                  <div className={`flex size-12 items-center justify-center rounded-lg bg-gradient-to-br ${tool.gradient} text-2xl`}>
+                    {tool.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
+                      {tool.name}
+                    </h3>
+                    <p className="text-sm text-zinc-600 dark:text-zinc-400">{tool.stats}</p>
+                  </div>
+                  <ChevronRightIcon className="size-5 text-zinc-400 transition-transform group-hover:translate-x-1" />
+                </div>
+                <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
+                  {tool.description}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Text Tools Section */}
+      <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-56 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:text-center">
+          <h2 className="text-base/7 font-semibold text-purple-600 dark:text-purple-400">Basic Tools</h2>
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-zinc-900 dark:text-white sm:text-5xl lg:text-balance">
+            Essential text utilities
+          </p>
+        </div>
+
+        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-4 sm:mt-20 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+          {[
+            { href: '/remove-emojis', icon: '😊', title: 'Remove Emojis', desc: 'Clean all emojis from text' },
+            { href: '/remove-bullet-points', icon: '•', title: 'Remove Bullets', desc: 'Strip bullet points and markers' },
+            { href: '/word-counter', icon: '📊', title: 'Word Counter', desc: 'Count words and characters' },
+            { href: '/character-counter', icon: '🔢', title: 'Character Counter', desc: 'Detailed character stats' },
+            { href: '/case-converter', icon: 'Aa', title: 'Case Converter', desc: 'Convert text case formats' },
+          ].map((tool) => (
+            <Link
+              key={tool.href}
+              href={tool.href}
+              className="group flex items-center gap-x-4 rounded-lg bg-white p-4 ring-1 ring-zinc-900/5 transition-all hover:shadow-md dark:bg-zinc-900 dark:ring-white/10"
+            >
+              <div className="text-2xl">{tool.icon}</div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-zinc-900 group-hover:text-purple-600 dark:text-white dark:group-hover:text-purple-400">
+                  {tool.title}
+                </h3>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">{tool.desc}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="relative isolate mt-32 px-6 py-32 sm:mt-56 sm:py-40 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-4xl font-semibold tracking-tight text-balance text-zinc-900 dark:text-white sm:text-5xl">
+            Start improving your text today
+          </h2>
+          <p className="mx-auto mt-6 max-w-xl text-lg/8 text-pretty text-zinc-600 dark:text-zinc-400">
+            No signup required. No credit card needed. Just paste your text and get instant results.
+          </p>
+          <div className="mt-10 flex items-center justify-center gap-x-6">
+            <Link
+              href="/ai-text-improver"
+              className="rounded-md bg-gradient-to-r from-purple-600 to-pink-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:from-purple-500 hover:to-pink-500"
+            >
+              Try AI Text Improver
+            </Link>
+            <Link href="/ai-grammar-checker" className="text-sm/6 font-semibold text-zinc-900 dark:text-white">
+              Grammar Checker <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="mx-auto max-w-7xl px-6 pb-8 lg:px-8">
+        <div className="border-t border-zinc-200 pt-8 dark:border-zinc-800">
+          <p className="text-center text-sm/6 text-zinc-600 dark:text-zinc-400">
+            © 2025 Only Text. All rights reserved. Free text processing tools powered by AI.
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
