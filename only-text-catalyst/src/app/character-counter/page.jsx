@@ -1,30 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/button'
-import { Textarea } from '@/components/textarea'
-import { Heading } from '@/components/heading'
 import { ToolLayout } from '@/components/tool-layout'
+import { CounterTemplate } from '@/components/tool-templates'
 import { SoftwareApplicationSchema, FAQSchema, BreadcrumbSchema } from '@/components/structured-data'
+import { Heading } from '@/components/heading'
 
 export default function CharacterCounterPage() {
-  const [text, setText] = useState('')
-  const [stats, setStats] = useState({
-    total: 0,
-    noSpaces: 0,
-    letters: 0,
-    digits: 0,
-    punctuation: 0,
-    whitespace: 0,
-    special: 0,
-    uppercase: 0,
-    lowercase: 0,
-  })
-
-  useEffect(() => {
-    calculateStats(text)
-  }, [text])
-
   const calculateStats = (inputText) => {
     const total = inputText.length
     const noSpaces = inputText.replace(/\s/g, '').length
@@ -53,7 +34,7 @@ export default function CharacterCounterPage() {
       }
     }
     
-    setStats({
+    return {
       total,
       noSpaces,
       letters,
@@ -63,47 +44,18 @@ export default function CharacterCounterPage() {
       special,
       uppercase,
       lowercase,
-    })
-  }
-
-  const handlePaste = async () => {
-    try {
-      const clipboardText = await navigator.clipboard.readText()
-      setText(clipboardText)
-    } catch (err) {
-      alert('Failed to read clipboard')
     }
   }
 
-  const handleClear = () => {
-    setText('')
-  }
-
-  const relatedTools = [
-    {
-      name: 'Word Counter',
-      href: '/word-counter',
-      icon: '📊',
-      description: 'Count words with reading time'
-    },
-    {
-      name: 'Remove Emojis',
-      href: '/remove-emojis',
-      icon: '😀',
-      description: 'Remove all emojis'
-    },
-    {
-      name: 'Case Converter',
-      href: '/case-converter',
-      icon: 'Aa',
-      description: 'Convert text case'
-    },
-    {
-      name: 'All Tools',
-      href: '/',
-      icon: '🛠️',
-      description: 'View all tools'
-    }
+  const statsConfig = [
+    { key: 'total', label: 'Total Characters', icon: '🔢', color: 'purple' },
+    { key: 'noSpaces', label: 'No Spaces', icon: '✨', color: 'blue' },
+    { key: 'letters', label: 'Letters', icon: '🅰️', color: 'green' },
+    { key: 'digits', label: 'Digits', icon: '🔣', color: 'orange' },
+    { key: 'punctuation', label: 'Punctuation', icon: '❗', color: 'pink' },
+    { key: 'whitespace', label: 'Whitespace', icon: '⬜', color: 'cyan' },
+    { key: 'uppercase', label: 'Uppercase', icon: '🅰', color: 'indigo' },
+    { key: 'lowercase', label: 'Lowercase', icon: '🔡', color: 'red' },
   ]
 
   const faqQuestions = [
@@ -139,123 +91,16 @@ export default function CharacterCounterPage() {
       <ToolLayout
         title="Character Counter - Count Characters with Detailed Statistics"
         description="Free online character counter. Count total characters, letters, digits, punctuation, and more with real-time updates."
-        relatedTools={relatedTools}
+        currentPath="/character-counter"
       >
-        {/* Action Buttons */}
-        <div className="mb-6 flex flex-wrap gap-3">
-          <Button onClick={handlePaste}>Paste Text</Button>
-          <Button onClick={handleClear} color="red">Clear</Button>
-        </div>
-
-        {/* Text Area */}
-        <div className="mb-6">
-          <Textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Start typing or paste your text here to count characters..."
-            rows={15}
-            className="font-mono"
-          />
-        </div>
-
-        {/* Main Statistics */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-white shadow-lg">
-            <div className="text-sm font-medium opacity-90">Total Characters</div>
-            <div className="mt-2 text-4xl font-bold">{stats.total}</div>
-          </div>
-          <div className="rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 p-6 text-white shadow-lg">
-            <div className="text-sm font-medium opacity-90">Without Spaces</div>
-            <div className="mt-2 text-4xl font-bold">{stats.noSpaces}</div>
-          </div>
-          <div className="rounded-lg bg-gradient-to-br from-green-500 to-green-600 p-6 text-white shadow-lg">
-            <div className="text-sm font-medium opacity-90">Letters</div>
-            <div className="mt-2 text-4xl font-bold">{stats.letters}</div>
-          </div>
-        </div>
-
-        {/* Detailed Statistics */}
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-            <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Digits</div>
-            <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.digits}</div>
-          </div>
-          <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-            <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Punctuation</div>
-            <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.punctuation}</div>
-          </div>
-          <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-            <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Whitespace</div>
-            <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.whitespace}</div>
-          </div>
-          <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-            <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Special Characters</div>
-            <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.special}</div>
-          </div>
-          <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-            <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Uppercase</div>
-            <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.uppercase}</div>
-          </div>
-          <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-            <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Lowercase</div>
-            <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.lowercase}</div>
-          </div>
-        </div>
-
-        {/* Character Breakdown Chart */}
-        <div className="mt-8 rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-          <Heading level={3} className="mb-4">Character Breakdown</Heading>
-          <div className="space-y-3">
-            <div>
-              <div className="mb-1 flex justify-between text-sm">
-                <span className="text-zinc-600 dark:text-zinc-400">Letters</span>
-                <span className="font-medium">{stats.total > 0 ? Math.round((stats.letters / stats.total) * 100) : 0}%</span>
-              </div>
-              <div className="h-2 w-full rounded-full bg-zinc-200 dark:bg-zinc-700">
-                <div 
-                  className="h-2 rounded-full bg-blue-500" 
-                  style={{ width: `${stats.total > 0 ? (stats.letters / stats.total) * 100 : 0}%` }}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="mb-1 flex justify-between text-sm">
-                <span className="text-zinc-600 dark:text-zinc-400">Whitespace</span>
-                <span className="font-medium">{stats.total > 0 ? Math.round((stats.whitespace / stats.total) * 100) : 0}%</span>
-              </div>
-              <div className="h-2 w-full rounded-full bg-zinc-200 dark:bg-zinc-700">
-                <div 
-                  className="h-2 rounded-full bg-green-500" 
-                  style={{ width: `${stats.total > 0 ? (stats.whitespace / stats.total) * 100 : 0}%` }}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="mb-1 flex justify-between text-sm">
-                <span className="text-zinc-600 dark:text-zinc-400">Digits</span>
-                <span className="font-medium">{stats.total > 0 ? Math.round((stats.digits / stats.total) * 100) : 0}%</span>
-              </div>
-              <div className="h-2 w-full rounded-full bg-zinc-200 dark:bg-zinc-700">
-                <div 
-                  className="h-2 rounded-full bg-purple-500" 
-                  style={{ width: `${stats.total > 0 ? (stats.digits / stats.total) * 100 : 0}%` }}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="mb-1 flex justify-between text-sm">
-                <span className="text-zinc-600 dark:text-zinc-400">Punctuation</span>
-                <span className="font-medium">{stats.total > 0 ? Math.round((stats.punctuation / stats.total) * 100) : 0}%</span>
-              </div>
-              <div className="h-2 w-full rounded-full bg-zinc-200 dark:bg-zinc-700">
-                <div 
-                  className="h-2 rounded-full bg-orange-500" 
-                  style={{ width: `${stats.total > 0 ? (stats.punctuation / stats.total) * 100 : 0}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Main Tool Interface */}
+        <CounterTemplate
+          title="Character Counter"
+          placeholder="Start typing or paste your text here to count characters..."
+          calculateStats={calculateStats}
+          statsConfig={statsConfig}
+          demoText="Hello World! This is a TEST with 123 numbers, punctuation marks (like these), and UPPERCASE letters mixed with lowercase."
+        />
 
         {/* How It Works */}
         <div className="mt-12">

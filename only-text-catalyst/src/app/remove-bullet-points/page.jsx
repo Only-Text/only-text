@@ -1,22 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/button'
-import { Textarea } from '@/components/textarea'
-import { Heading } from '@/components/heading'
 import { ToolLayout } from '@/components/tool-layout'
+import { SimpleTransformTemplate } from '@/components/tool-templates'
 import { SoftwareApplicationSchema, FAQSchema, BreadcrumbSchema } from '@/components/structured-data'
+import { Heading } from '@/components/heading'
 
 export default function RemoveBulletPointsPage() {
-  const [inputText, setInputText] = useState('')
-  const [outputText, setOutputText] = useState('')
-  const [stats, setStats] = useState({ removed: 0, lines: 0 })
-
-  useEffect(() => {
-    processText(inputText)
-  }, [inputText])
-
-  const processText = (text) => {
+  // Transform function for removing bullet points
+  const removeBulletPoints = (text) => {
     const lines = text.split('\n')
     let removedCount = 0
     
@@ -32,62 +23,16 @@ export default function RemoveBulletPointsPage() {
     })
     
     const processed = processedLines.join('\n')
-    setOutputText(processed)
-    setStats({
-      removed: removedCount,
-      lines: processedLines.filter(l => l.length > 0).length
-    })
-  }
-
-  const handlePaste = async () => {
-    try {
-      const text = await navigator.clipboard.readText()
-      setInputText(text)
-    } catch (err) {
-      alert('Failed to read clipboard')
+    const lineCount = processedLines.filter(l => l.length > 0).length
+    
+    return {
+      text: processed,
+      stats: {
+        'Bullets Removed': removedCount,
+        'Lines': lineCount
+      }
     }
   }
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(outputText)
-      alert('Text copied!')
-    } catch (err) {
-      alert('Failed to copy text')
-    }
-  }
-
-  const handleClear = () => {
-    setInputText('')
-    setOutputText('')
-  }
-
-  const relatedTools = [
-    {
-      name: 'Remove Emojis',
-      href: '/remove-emojis',
-      icon: '😀',
-      description: 'Remove all emojis from text'
-    },
-    {
-      name: 'Word Counter',
-      href: '/word-counter',
-      icon: '📊',
-      description: 'Count words and characters'
-    },
-    {
-      name: 'Case Converter',
-      href: '/case-converter',
-      icon: 'Aa',
-      description: 'Convert text case'
-    },
-    {
-      name: 'All Tools',
-      href: '/',
-      icon: '🛠️',
-      description: 'View all tools'
-    }
-  ]
 
   const faqQuestions = [
     {
@@ -121,55 +66,17 @@ export default function RemoveBulletPointsPage() {
       
       <ToolLayout
         title="Remove Bullet Points from Text"
-        description="Instantly remove bullet points, dashes, and list markers from your text. Perfect for converting lists to plain text."
-        relatedTools={relatedTools}
+        description="Instantly remove bullet points, dashes, and list markers from your text. Perfect for cleaning up lists and formatted content."
+        currentPath="/remove-bullet-points"
       >
-        {/* Action Buttons */}
-        <div className="mb-6 flex flex-wrap gap-3">
-          <Button onClick={handlePaste}>Paste Text</Button>
-          <Button onClick={handleCopy} outline>Copy Result</Button>
-          <Button onClick={handleClear} color="red">Clear All</Button>
-        </div>
-
-        {/* Text Areas */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          <div>
-            <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              Input Text (with bullet points)
-            </label>
-            <Textarea
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="• Item 1&#10;• Item 2&#10;• Item 3"
-              rows={12}
-              className="font-mono"
-            />
-          </div>
-          <div>
-            <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-              Output Text (bullets removed)
-            </label>
-            <Textarea
-              value={outputText}
-              readOnly
-              placeholder="Clean text will appear here..."
-              rows={12}
-              className="font-mono bg-zinc-50 dark:bg-zinc-800"
-            />
-          </div>
-        </div>
-
-        {/* Statistics */}
-        <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-          <div className="text-center">
-            <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Bullets Removed</div>
-            <div className="mt-1 text-2xl font-bold text-red-600 dark:text-red-400">{stats.removed}</div>
-          </div>
-          <div className="text-center">
-            <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Lines Processed</div>
-            <div className="mt-1 text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.lines}</div>
-          </div>
-        </div>
+        {/* Main Tool Interface */}
+        <SimpleTransformTemplate
+          title="Remove Bullet Points"
+          placeholder="• Item 1&#10;• Item 2&#10;• Item 3"
+          transformFunction={removeBulletPoints}
+          actionLabel="Clean Text"
+          demoText={"• First important point\n• Second key insight\n• Third valuable tip\n- Another item here\n* And one more thing"}
+        />
 
         {/* How It Works */}
         <div className="mt-12">

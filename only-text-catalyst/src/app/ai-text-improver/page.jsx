@@ -1,66 +1,27 @@
 'use client'
 
-import { useState } from 'react'
-import { Button } from '@/components/button'
-import { Textarea } from '@/components/textarea'
-import { Heading } from '@/components/heading'
 import { ToolLayout } from '@/components/tool-layout'
+import { AITransformTemplate } from '@/components/tool-templates'
 import { useToast, ToastContainer } from '@/components/toast'
-import Link from 'next/link'
+import { Heading } from '@/components/heading'
 
 export default function AITextImproverPage() {
-  const [inputText, setInputText] = useState('')
-  const [outputText, setOutputText] = useState('')
-  const [loading, setLoading] = useState(false)
   const { toasts, showToast } = useToast()
 
-  const relatedTools = [
-    { name: 'AI Grammar Checker', href: '/ai-grammar-checker', description: 'Fix grammar and spelling errors' },
-    { name: 'AI Tone Converter', href: '/ai-tone-converter', description: 'Change text tone and style' },
-    { name: 'Smart Summarizer', href: '/ai-summarizer', description: 'Summarize long text' },
-  ]
+  const handleImprove = async (text) => {
+    const response = await fetch('/api/ai/improve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    })
 
-  const handleImprove = async () => {
-    if (!inputText.trim()) {
-      showToast('Please enter some text to improve', 'error')
-      return
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to improve text')
     }
 
-    setLoading(true)
-    try {
-      const response = await fetch('/api/ai/improve', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: inputText })
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to improve text')
-      }
-
-      setOutputText(data.improved)
-      showToast('Text improved successfully!', 'success')
-    } catch (error) {
-      showToast(error.message, 'error')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(outputText)
-      showToast('Improved text copied!', 'success')
-    } catch (err) {
-      showToast('Failed to copy text', 'error')
-    }
-  }
-
-  const handleClear = () => {
-    setInputText('')
-    setOutputText('')
+    return data.improved
   }
 
   return (
@@ -68,53 +29,18 @@ export default function AITextImproverPage() {
       <ToolLayout
         title="AI Text Improver - Make Your Text Better"
         description="Use AI to improve your text clarity, professionalism, and readability. Powered by Claude Haiku 4.5 for lightning-fast results."
-        relatedTools={relatedTools}
+        currentPath="/ai-text-improver"
       >
-        {/* Action Buttons */}
-        <div className="mb-6 flex flex-wrap gap-3">
-          <Button onClick={handleImprove} disabled={loading || !inputText.trim()}>
-            {loading ? 'Improving...' : '✨ Improve Text'}
-          </Button>
-          <Button onClick={handleCopy} outline disabled={!outputText}>
-            Copy Improved
-          </Button>
-          <Button onClick={handleClear} outline>
-            Clear
-          </Button>
-        </div>
-
-        {/* Input/Output Split View */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* Input */}
-          <div>
-            <label className="mb-2 block text-sm font-medium">Original Text</label>
-            <Textarea
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Paste your text here to improve it..."
-              rows={15}
-              className="font-mono text-sm"
-            />
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              {inputText.length} characters
-            </p>
-          </div>
-
-          {/* Output */}
-          <div>
-            <label className="mb-2 block text-sm font-medium">Improved Text</label>
-            <Textarea
-              value={outputText}
-              readOnly
-              placeholder="Improved text will appear here..."
-              rows={15}
-              className="font-mono text-sm bg-zinc-50 dark:bg-zinc-900"
-            />
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              {outputText.length} characters
-            </p>
-          </div>
-        </div>
+        {/* Main Tool Interface */}
+        <AITransformTemplate
+          title="AI Text Improver"
+          placeholder="Paste your text here to improve it..."
+          actionLabel="Improve Text"
+          onTransform={handleImprove}
+          showToast={showToast}
+          loadingText="Improving your text..."
+          demoText="i think that we should maybe consider doing the project differently because the current way isnt working good"
+        />
 
         {/* How It Works */}
         <div className="mt-12">
@@ -192,36 +118,30 @@ export default function AITextImproverPage() {
           </div>
         </div>
 
-        {/* FAQ */}
+        {/* FAQ - Always Expanded for SEO */}
         <div className="mt-12">
           <Heading level={2} className="mb-6">Frequently Asked Questions</Heading>
           <div className="space-y-4">
-            <details className="group rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <summary className="cursor-pointer text-lg font-semibold">
-                Is my text data safe?
-              </summary>
-              <p className="mt-3 text-zinc-600 dark:text-zinc-400">
+            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+              <h3 className="mb-2 text-lg font-semibold">Is my text data safe?</h3>
+              <p className="text-zinc-600 dark:text-zinc-400">
                 Yes! Your text is processed securely through our API and is not stored or used for training. We use enterprise-grade encryption.
               </p>
-            </details>
+            </div>
 
-            <details className="group rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <summary className="cursor-pointer text-lg font-semibold">
-                How fast is the AI processing?
-              </summary>
-              <p className="mt-3 text-zinc-600 dark:text-zinc-400">
+            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+              <h3 className="mb-2 text-lg font-semibold">How fast is the AI processing?</h3>
+              <p className="text-zinc-600 dark:text-zinc-400">
                 We use Claude Haiku 4.5, which is 2x faster than other AI models. Most texts are improved in 1-3 seconds.
               </p>
-            </details>
+            </div>
 
-            <details className="group rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <summary className="cursor-pointer text-lg font-semibold">
-                Will it change the meaning of my text?
-              </summary>
-              <p className="mt-3 text-zinc-600 dark:text-zinc-400">
+            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+              <h3 className="mb-2 text-lg font-semibold">Will it change the meaning of my text?</h3>
+              <p className="text-zinc-600 dark:text-zinc-400">
                 No! The AI preserves your original meaning and message. It only improves clarity, grammar, and flow.
               </p>
-            </details>
+            </div>
           </div>
         </div>
       </ToolLayout>

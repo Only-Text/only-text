@@ -1,18 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/button'
-import { Textarea } from '@/components/textarea'
-import { Heading } from '@/components/heading'
 import { ToolLayout } from '@/components/tool-layout'
+import { AITransformTemplate } from '@/components/tool-templates'
 import { useToast, ToastContainer } from '@/components/toast'
-import Link from 'next/link'
+import { Heading } from '@/components/heading'
 
 export default function AIToneConverterPage() {
-  const [inputText, setInputText] = useState('')
-  const [outputText, setOutputText] = useState('')
   const [selectedTone, setSelectedTone] = useState('professional')
-  const [loading, setLoading] = useState(false)
   const { toasts, showToast } = useToast()
 
   const tones = [
@@ -24,131 +19,63 @@ export default function AIToneConverterPage() {
     { id: 'empathetic', name: 'Empathetic', emoji: '❤️', description: 'Understanding and compassionate' },
   ]
 
-  const relatedTools = [
-    { name: 'AI Text Improver', href: '/ai-text-improver', description: 'Improve text clarity and professionalism' },
-    { name: 'AI Grammar Checker', href: '/ai-grammar-checker', description: 'Fix grammar and spelling errors' },
-    { name: 'Smart Summarizer', href: '/ai-summarizer', description: 'Summarize long text' },
-  ]
+  const handleConvert = async (text) => {
+    const response = await fetch('/api/ai/tone', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, tone: selectedTone })
+    })
 
-  const handleConvert = async () => {
-    if (!inputText.trim()) {
-      showToast('Please enter some text to convert', 'error')
-      return
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to convert tone')
     }
 
-    setLoading(true)
-    try {
-      const response = await fetch('/api/ai/tone', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: inputText, tone: selectedTone })
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to convert tone')
-      }
-
-      setOutputText(data.converted)
-      showToast(`Converted to ${selectedTone} tone!`, 'success')
-    } catch (error) {
-      showToast(error.message, 'error')
-    } finally {
-      setLoading(false)
-    }
+    return data.converted
   }
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(outputText)
-      showToast('Converted text copied!', 'success')
-    } catch (err) {
-      showToast('Failed to copy text', 'error')
-    }
-  }
-
-  const handleClear = () => {
-    setInputText('')
-    setOutputText('')
-  }
+  const toneSelector = (
+    <div>
+      <label className="mb-3 block text-sm font-medium">Select Tone</label>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {tones.map((tone) => (
+          <button
+            key={tone.id}
+            onClick={() => setSelectedTone(tone.id)}
+            className={`rounded-lg border-2 p-4 text-left transition-all ${
+              selectedTone === tone.id
+                ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30'
+                : 'border-zinc-200 hover:border-purple-300 dark:border-zinc-700'
+            }`}
+          >
+            <div className="mb-2 text-2xl">{tone.emoji}</div>
+            <div className="font-semibold">{tone.name}</div>
+            <div className="text-xs text-zinc-600 dark:text-zinc-400">{tone.description}</div>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
 
   return (
     <>
       <ToolLayout
         title="AI Tone Converter - Change Text Tone & Style"
         description="Use AI to convert text between different tones and styles. Professional, casual, friendly, formal, and more. Powered by Claude Haiku 4.5."
-        relatedTools={relatedTools}
+        currentPath="/ai-tone-converter"
       >
-        {/* Tone Selection */}
-        <div className="mb-6">
-          <label className="mb-3 block text-sm font-medium">Select Tone</label>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {tones.map((tone) => (
-              <button
-                key={tone.id}
-                onClick={() => setSelectedTone(tone.id)}
-                className={`rounded-lg border-2 p-4 text-left transition-all ${
-                  selectedTone === tone.id
-                    ? 'border-blue-600 bg-blue-50 dark:border-blue-400 dark:bg-blue-900/20'
-                    : 'border-zinc-200 bg-white hover:border-blue-300 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-blue-500'
-                }`}
-              >
-                <div className="mb-2 text-2xl">{tone.emoji}</div>
-                <div className="font-semibold">{tone.name}</div>
-                <div className="text-sm text-zinc-600 dark:text-zinc-400">{tone.description}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="mb-6 flex flex-wrap gap-3">
-          <Button onClick={handleConvert} disabled={loading || !inputText.trim()}>
-            {loading ? 'Converting...' : '🎭 Convert Tone'}
-          </Button>
-          <Button onClick={handleCopy} outline disabled={!outputText}>
-            Copy Converted
-          </Button>
-          <Button onClick={handleClear} outline>
-            Clear
-          </Button>
-        </div>
-
-        {/* Input/Output Split View */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* Input */}
-          <div>
-            <label className="mb-2 block text-sm font-medium">Original Text</label>
-            <Textarea
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Paste your text here to convert its tone..."
-              rows={15}
-              className="font-mono text-sm"
-            />
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              {inputText.length} characters
-            </p>
-          </div>
-
-          {/* Output */}
-          <div>
-            <label className="mb-2 block text-sm font-medium">
-              Converted Text ({tones.find(t => t.id === selectedTone)?.name})
-            </label>
-            <Textarea
-              value={outputText}
-              readOnly
-              placeholder="Converted text will appear here..."
-              rows={15}
-              className="font-mono text-sm bg-zinc-50 dark:bg-zinc-900"
-            />
-            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-              {outputText.length} characters
-            </p>
-          </div>
-        </div>
+        {/* Main Tool Interface */}
+        <AITransformTemplate
+          title="AI Tone Converter"
+          placeholder="Paste your text here to convert its tone..."
+          actionLabel="Convert Tone"
+          onTransform={handleConvert}
+          showToast={showToast}
+          loadingText="Converting tone..."
+          options={toneSelector}
+          demoText="Hey! Just wanted to let you know that the meeting got moved to tomorrow. Hope that works for you!"
+        />
 
         {/* How It Works */}
         <div className="mt-12">
@@ -267,36 +194,30 @@ export default function AIToneConverterPage() {
           </div>
         </div>
 
-        {/* FAQ */}
+        {/* FAQ - Always Expanded for SEO */}
         <div className="mt-12">
           <Heading level={2} className="mb-6">Frequently Asked Questions</Heading>
           <div className="space-y-4">
-            <details className="group rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <summary className="cursor-pointer text-lg font-semibold">
-                Does it change the meaning of my text?
-              </summary>
-              <p className="mt-3 text-zinc-600 dark:text-zinc-400">
+            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+              <h3 className="mb-2 text-lg font-semibold">Does it change the meaning of my text?</h3>
+              <p className="text-zinc-600 dark:text-zinc-400">
                 No! The AI preserves your core message and meaning. It only adjusts the tone, word choice, and style to match your selected tone.
               </p>
-            </details>
+            </div>
 
-            <details className="group rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <summary className="cursor-pointer text-lg font-semibold">
-                Can I convert the same text to multiple tones?
-              </summary>
-              <p className="mt-3 text-zinc-600 dark:text-zinc-400">
+            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+              <h3 className="mb-2 text-lg font-semibold">Can I convert the same text to multiple tones?</h3>
+              <p className="text-zinc-600 dark:text-zinc-400">
                 Yes! Simply select a different tone and click "Convert Tone" again. You can try all 6 tones to see which works best for your needs.
               </p>
-            </details>
+            </div>
 
-            <details className="group rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <summary className="cursor-pointer text-lg font-semibold">
-                How long does the conversion take?
-              </summary>
-              <p className="mt-3 text-zinc-600 dark:text-zinc-400">
+            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+              <h3 className="mb-2 text-lg font-semibold">How long does the conversion take?</h3>
+              <p className="text-zinc-600 dark:text-zinc-400">
                 Thanks to Claude Haiku 4.5, conversions are lightning-fast - typically 1-3 seconds regardless of text length (up to 10,000 characters).
               </p>
-            </details>
+            </div>
           </div>
         </div>
       </ToolLayout>

@@ -1,28 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/button'
-import { Textarea } from '@/components/textarea'
-import { Heading } from '@/components/heading'
 import { ToolLayout } from '@/components/tool-layout'
+import { CounterTemplate } from '@/components/tool-templates'
+import { Heading } from '@/components/heading'
 
 export default function WordCounterPage() {
-  const [text, setText] = useState('')
-  const [stats, setStats] = useState({
-    characters: 0,
-    charactersNoSpaces: 0,
-    words: 0,
-    sentences: 0,
-    paragraphs: 0,
-    lines: 0,
-    readingTime: 0,
-    speakingTime: 0,
-  })
-
-  useEffect(() => {
-    calculateStats(text)
-  }, [text])
-
   const calculateStats = (inputText) => {
     // Characters
     const characters = inputText.length
@@ -50,7 +32,7 @@ export default function WordCounterPage() {
     // Speaking time (average 130 words per minute)
     const speakingTime = Math.ceil(wordCount / 130)
     
-    setStats({
+    return {
       characters,
       charactersNoSpaces,
       words: wordCount,
@@ -59,111 +41,34 @@ export default function WordCounterPage() {
       lines: lineCount,
       readingTime,
       speakingTime,
-    })
-  }
-
-  const handlePaste = async () => {
-    try {
-      const clipboardText = await navigator.clipboard.readText()
-      setText(clipboardText)
-    } catch (err) {
-      alert('Failed to read clipboard')
     }
   }
 
-  const handleClear = () => {
-    setText('')
-  }
-
-  const relatedTools = [
-    {
-      name: 'Character Counter',
-      href: '/character-counter',
-      icon: '🔢',
-      description: 'Count characters with detailed statistics'
-    },
-    {
-      name: 'Remove Emojis',
-      href: '/remove-emojis',
-      icon: '😀',
-      description: 'Remove all emojis from your text'
-    },
-    {
-      name: 'Case Converter',
-      href: '/case-converter',
-      icon: 'Aa',
-      description: 'Convert text between different cases'
-    },
-    {
-      name: 'All Tools',
-      href: '/',
-      icon: '🛠️',
-      description: 'View all text tools'
-    }
+  const statsConfig = [
+    { key: 'words', label: 'Words', icon: '📝', color: 'purple' },
+    { key: 'characters', label: 'Characters', icon: '🔢', color: 'blue' },
+    { key: 'charactersNoSpaces', label: 'No Spaces', icon: '✨', color: 'cyan' },
+    { key: 'sentences', label: 'Sentences', icon: '💬', color: 'green' },
+    { key: 'paragraphs', label: 'Paragraphs', icon: '📊', color: 'orange' },
+    { key: 'lines', label: 'Lines', icon: '📋', color: 'pink' },
+    { key: 'readingTime', label: 'Reading (min)', icon: '📖', color: 'indigo' },
+    { key: 'speakingTime', label: 'Speaking (min)', icon: '🎤', color: 'red' },
   ]
 
   return (
     <ToolLayout
       title="Word Counter - Count Words, Characters & More"
-      description="Free online word counter tool. Count words, characters, sentences, paragraphs, and get reading time estimates instantly."
-      relatedTools={relatedTools}
+      description="Free online word counter tool. Count words, characters, sentences, paragraphs, and estimate reading time."
+      currentPath="/word-counter"
     >
-      {/* Action Buttons */}
-      <div className="mb-6 flex flex-wrap gap-3">
-        <Button onClick={handlePaste}>Paste Text</Button>
-        <Button onClick={handleClear} color="red">Clear</Button>
-      </div>
-
-      {/* Text Area */}
-      <div className="mb-6">
-        <Textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Start typing or paste your text here to count words..."
-          rows={15}
-          className="font-mono"
-        />
-      </div>
-
-      {/* Statistics Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-white shadow-lg">
-          <div className="text-sm font-medium opacity-90">Words</div>
-          <div className="mt-2 text-4xl font-bold">{stats.words}</div>
-        </div>
-        <div className="rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 p-6 text-white shadow-lg">
-          <div className="text-sm font-medium opacity-90">Characters</div>
-          <div className="mt-2 text-4xl font-bold">{stats.characters}</div>
-        </div>
-        <div className="rounded-lg bg-gradient-to-br from-green-500 to-green-600 p-6 text-white shadow-lg">
-          <div className="text-sm font-medium opacity-90">Sentences</div>
-          <div className="mt-2 text-4xl font-bold">{stats.sentences}</div>
-        </div>
-        <div className="rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 p-6 text-white shadow-lg">
-          <div className="text-sm font-medium opacity-90">Paragraphs</div>
-          <div className="mt-2 text-4xl font-bold">{stats.paragraphs}</div>
-        </div>
-      </div>
-
-      {/* Detailed Statistics */}
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-          <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Characters (no spaces)</div>
-          <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.charactersNoSpaces}</div>
-        </div>
-        <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-          <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Lines</div>
-          <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.lines}</div>
-        </div>
-        <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-          <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Reading Time</div>
-          <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.readingTime} min</div>
-        </div>
-        <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-          <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Speaking Time</div>
-          <div className="mt-1 text-2xl font-bold text-zinc-900 dark:text-white">{stats.speakingTime} min</div>
-        </div>
-      </div>
+      {/* Main Tool Interface */}
+      <CounterTemplate
+        title="Word Counter"
+        placeholder="Start typing or paste your text here to count words..."
+        calculateStats={calculateStats}
+        statsConfig={statsConfig}
+        demoText={"This is a sample text to demonstrate the word counter tool. It contains multiple sentences and paragraphs to show you how the statistics work in real-time.\n\nYou can see the word count, character count, sentence count, and even estimated reading time. This helps writers, students, and professionals track their content length and complexity."}
+      />
 
       {/* How It Works */}
       <div className="mt-12">

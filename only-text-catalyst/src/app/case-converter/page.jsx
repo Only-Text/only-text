@@ -1,90 +1,59 @@
 'use client'
 
-import { useState } from 'react'
-import { Button } from '@/components/button'
-import { Textarea } from '@/components/textarea'
-import { Heading } from '@/components/heading'
 import { ToolLayout } from '@/components/tool-layout'
+import { MultiActionTemplate } from '@/components/tool-templates'
+import { Heading } from '@/components/heading'
 
 export default function CaseConverterPage() {
-  const [text, setText] = useState('')
-
-  const convertCase = (type) => {
-    let converted = text
-    
-    switch (type) {
-      case 'upper':
-        converted = text.toUpperCase()
-        break
-      case 'lower':
-        converted = text.toLowerCase()
-        break
-      case 'title':
-        converted = text.replace(/\w\S*/g, (txt) => {
-          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-        })
-        break
-      case 'sentence':
-        converted = text.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, (c) => c.toUpperCase())
-        break
-      case 'capitalize':
-        converted = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
-        break
-      case 'alternating':
-        converted = text.split('').map((char, i) => 
-          i % 2 === 0 ? char.toLowerCase() : char.toUpperCase()
-        ).join('')
-        break
-      case 'inverse':
-        converted = text.split('').map(char => 
-          char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase()
-        ).join('')
-        break
-    }
-    
-    setText(converted)
-  }
-
-  const handlePaste = async () => {
-    try {
-      const clipboardText = await navigator.clipboard.readText()
-      setText(clipboardText)
-    } catch (err) {
-      alert('Failed to read clipboard')
-    }
-  }
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(text)
-      alert('Text copied!')
-    } catch (err) {
-      alert('Failed to copy text')
-    }
-  }
-
-  const handleClear = () => {
-    setText('')
-  }
-
-  const relatedTools = [
+  const actions = [
     {
-      name: 'Word Counter',
-      href: '/word-counter',
-      icon: '📊',
-      description: 'Count words and characters'
+      id: 'upper',
+      label: 'UPPERCASE',
+      icon: '🅰',
+      example: 'ABC',
+      transform: (text) => text.toUpperCase()
     },
     {
-      name: 'Remove Emojis',
-      href: '/remove-emojis',
-      icon: '😀',
-      description: 'Remove all emojis from text'
+      id: 'lower',
+      label: 'lowercase',
+      icon: '🔡',
+      example: 'abc',
+      transform: (text) => text.toLowerCase()
     },
     {
-      name: 'All Tools',
-      href: '/',
-      icon: '🛠️',
-      description: 'View all text tools'
+      id: 'title',
+      label: 'Title Case',
+      icon: '🆃',
+      example: 'Title Case',
+      transform: (text) => text.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
+    },
+    {
+      id: 'sentence',
+      label: 'Sentence case',
+      icon: '📝',
+      example: 'Sentence case',
+      transform: (text) => text.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, (c) => c.toUpperCase())
+    },
+    {
+      id: 'capitalize',
+      label: 'Capitalize',
+      icon: '⬆️',
+      example: 'Capitalize',
+      transform: (text) => text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+    },
+    {
+      id: 'alternating',
+      label: 'aLtErNaTiNg',
+      icon: '🔄',
+      example: 'aLt',
+      transform: (text) => text.split('').map((char, i) => i % 2 === 0 ? char.toLowerCase() : char.toUpperCase()).join('')
+    },
+    {
+      id: 'inverse',
+      label: 'InVeRsE',
+      icon: '🔃',
+      example: 'InV',
+      transform: (text) => text.split('').map(char => char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase()).join('')
     }
   ]
 
@@ -92,74 +61,15 @@ export default function CaseConverterPage() {
     <ToolLayout
       title="Case Converter - Change Text Case Online"
       description="Free online case converter tool. Convert text to uppercase, lowercase, title case, sentence case, and more instantly."
-      relatedTools={relatedTools}
+      currentPath="/case-converter"
     >
-      {/* Action Buttons */}
-      <div className="mb-6 flex flex-wrap gap-3">
-        <Button onClick={handlePaste}>Paste Text</Button>
-        <Button onClick={handleCopy} outline>Copy Result</Button>
-        <Button onClick={handleClear} color="red">Clear</Button>
-      </div>
-
-      {/* Text Area */}
-      <div className="mb-6">
-        <Textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Enter or paste your text here to convert case..."
-          rows={12}
-          className="font-mono"
-        />
-      </div>
-
-      {/* Conversion Buttons */}
-      <div className="mb-8">
-        <Heading level={2} className="mb-4">Convert To:</Heading>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <Button onClick={() => convertCase('upper')} className="justify-start">
-            <span className="text-left">
-              <div className="font-semibold">UPPERCASE</div>
-              <div className="text-xs opacity-70">ALL CAPS</div>
-            </span>
-          </Button>
-          <Button onClick={() => convertCase('lower')} className="justify-start">
-            <span className="text-left">
-              <div className="font-semibold">lowercase</div>
-              <div className="text-xs opacity-70">all lowercase</div>
-            </span>
-          </Button>
-          <Button onClick={() => convertCase('title')} className="justify-start">
-            <span className="text-left">
-              <div className="font-semibold">Title Case</div>
-              <div className="text-xs opacity-70">Capitalize Each Word</div>
-            </span>
-          </Button>
-          <Button onClick={() => convertCase('sentence')} className="justify-start">
-            <span className="text-left">
-              <div className="font-semibold">Sentence case</div>
-              <div className="text-xs opacity-70">First letter capital</div>
-            </span>
-          </Button>
-          <Button onClick={() => convertCase('capitalize')} className="justify-start">
-            <span className="text-left">
-              <div className="font-semibold">Capitalized</div>
-              <div className="text-xs opacity-70">First Letter Only</div>
-            </span>
-          </Button>
-          <Button onClick={() => convertCase('alternating')} className="justify-start">
-            <span className="text-left">
-              <div className="font-semibold">aLtErNaTiNg</div>
-              <div className="text-xs opacity-70">Alternating Case</div>
-            </span>
-          </Button>
-          <Button onClick={() => convertCase('inverse')} className="justify-start">
-            <span className="text-left">
-              <div className="font-semibold">InVeRsE</div>
-              <div className="text-xs opacity-70">Swap Case</div>
-            </span>
-          </Button>
-        </div>
-      </div>
+      {/* Main Tool Interface */}
+      <MultiActionTemplate
+        title="Case Converter"
+        placeholder="Type or paste your text here to convert case..."
+        actions={actions}
+        demoText="this is a sample text to demonstrate case conversion. try different options!"
+      />
 
       {/* Examples */}
       <div className="mt-12">

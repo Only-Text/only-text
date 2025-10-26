@@ -1,22 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Button } from '@/components/button'
-import { Textarea } from '@/components/textarea'
-import { Heading } from '@/components/heading'
 import { ToolLayout } from '@/components/tool-layout'
+import { SimpleTransformTemplate } from '@/components/tool-templates'
 import { SoftwareApplicationSchema, FAQSchema, BreadcrumbSchema } from '@/components/structured-data'
+import { Heading } from '@/components/heading'
 
 export default function RemoveEmojisPage() {
-  const [inputText, setInputText] = useState('')
-  const [outputText, setOutputText] = useState('')
-  const [stats, setStats] = useState({ removed: 0, characters: 0 })
-
-  useEffect(() => {
-    processText(inputText)
-  }, [inputText])
-
-  const processText = (text) => {
+  // Transform function for removing emojis
+  const removeEmojis = (text) => {
     // Count emojis before removal
     const emojiRegex = /\p{Emoji}/gu
     const emojis = text.match(emojiRegex) || []
@@ -25,74 +16,14 @@ export default function RemoveEmojisPage() {
     let processed = text.replace(/^\p{Emoji}\s*/gmu, '')
     processed = processed.replace(/\p{Emoji}/gu, '')
     
-    setOutputText(processed)
-    setStats({
-      removed: emojis.length,
-      characters: processed.length
-    })
-  }
-
-  const handlePaste = async () => {
-    try {
-      const text = await navigator.clipboard.readText()
-      setInputText(text)
-    } catch (err) {
-      alert('Failed to read clipboard')
+    return {
+      text: processed,
+      stats: {
+        'Emojis Removed': emojis.length,
+        'Characters': processed.length
+      }
     }
   }
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(outputText)
-      alert('Text copied!')
-    } catch (err) {
-      alert('Failed to copy text')
-    }
-  }
-
-  const handleClear = () => {
-    setInputText('')
-    setOutputText('')
-  }
-
-  const relatedTools = [
-    {
-      name: 'Remove Bullet Points',
-      href: '/remove-bullet-points',
-      icon: '•',
-      description: 'Remove bullet points and list markers from text'
-    },
-    {
-      name: 'Remove Special Characters',
-      href: '/remove-special-characters',
-      icon: '*_',
-      description: 'Clean special characters from your text'
-    },
-    {
-      name: 'Word Counter',
-      href: '/word-counter',
-      icon: '📊',
-      description: 'Count words, characters, and sentences'
-    },
-    {
-      name: 'Character Counter',
-      href: '/character-counter',
-      icon: '🔢',
-      description: 'Count characters with detailed statistics'
-    },
-    {
-      name: 'Case Converter',
-      href: '/case-converter',
-      icon: 'Aa',
-      description: 'Convert text between different cases'
-    },
-    {
-      name: 'All Tools',
-      href: '/',
-      icon: '🛠️',
-      description: 'View all text cleaning tools'
-    }
-  ]
 
   const faqQuestions = [
     {
@@ -127,54 +58,16 @@ export default function RemoveEmojisPage() {
       <ToolLayout
         title="Remove Emojis from Text"
         description="Instantly remove all emojis from your text. Perfect for cleaning up social media posts, messages, or any text with unwanted emojis."
-        relatedTools={relatedTools}
+        currentPath="/remove-emojis"
       >
-      {/* Action Buttons */}
-      <div className="mb-6 flex flex-wrap gap-3">
-        <Button onClick={handlePaste}>Paste Text</Button>
-        <Button onClick={handleCopy} outline>Copy Result</Button>
-        <Button onClick={handleClear} color="red">Clear All</Button>
-      </div>
-
-      {/* Text Areas */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div>
-          <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            Input Text (with emojis)
-          </label>
-          <Textarea
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="Paste your text with emojis here... 😀🎉✨"
-            rows={12}
-            className="font-mono"
-          />
-        </div>
-        <div>
-          <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            Output Text (emojis removed)
-          </label>
-          <Textarea
-            value={outputText}
-            readOnly
-            placeholder="Clean text will appear here..."
-            rows={12}
-            className="font-mono bg-zinc-50 dark:bg-zinc-800"
-          />
-        </div>
-      </div>
-
-      {/* Statistics */}
-      <div className="mt-6 grid grid-cols-2 gap-4 rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-        <div className="text-center">
-          <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Emojis Removed</div>
-          <div className="mt-1 text-2xl font-bold text-red-600 dark:text-red-400">{stats.removed}</div>
-        </div>
-        <div className="text-center">
-          <div className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Characters Remaining</div>
-          <div className="mt-1 text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.characters}</div>
-        </div>
-      </div>
+        {/* Main Tool Interface */}
+        <SimpleTransformTemplate
+          title="Remove Emojis"
+          placeholder="Paste your text with emojis here... 😀🎉✨"
+          transformFunction={removeEmojis}
+          actionLabel="Clean Text"
+          demoText="Hello! 👋 This is a great day! 🌞 Let's celebrate! 🎉 We're so excited! 😊✨"
+        />
 
       {/* How It Works */}
       <div className="mt-12">
