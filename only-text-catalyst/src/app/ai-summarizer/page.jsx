@@ -5,6 +5,9 @@ import { ToolLayout } from '@/components/tool-layout'
 import { AITransformTemplate } from '@/components/tool-templates'
 import { useToast, ToastContainer } from '@/components/toast'
 import { Heading } from '@/components/heading'
+import { Text } from '@/components/text'
+import { Badge } from '@/components/badge'
+import { CheckCircleIcon, SparklesIcon, BoltIcon, DocumentTextIcon, AcademicCapIcon, ClipboardDocumentListIcon, VideoCameraIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AISummarizerPage() {
   const [selectedLength, setSelectedLength] = useState('medium')
@@ -58,8 +61,8 @@ export default function AISummarizerPage() {
   return (
     <>
       <ToolLayout
-        title="AI Summarizer - Summarize Long Text Instantly"
-        description="Use AI to summarize long articles and documents. Choose your preferred summary length. Powered by Claude Haiku 4.5 for accurate, concise summaries."
+        title="Essential AI Summarizer: Your Tool for Clear and Concise Insights"
+        description="Free AI summarizer tool to extract key points from complex documents, lengthy content, and long text. Generate accurate summaries with bullet points, save time on academic research and meeting notes. AI powered summarization tool supports multiple languages."
         currentPath="/ai-summarizer"
       >
         {/* Main Tool Interface */}
@@ -74,55 +77,193 @@ export default function AISummarizerPage() {
           demoText="Artificial intelligence has revolutionized many industries in recent years. From healthcare to finance, AI systems are being deployed to automate tasks, analyze data, and make predictions. Machine learning algorithms can now recognize patterns in vast datasets that would be impossible for humans to process manually. Natural language processing enables computers to understand and generate human language, powering applications like chatbots and translation services. Computer vision allows machines to interpret visual information, enabling self-driving cars and facial recognition systems. As AI technology continues to advance, it raises important questions about ethics, privacy, and the future of work. While AI offers tremendous potential benefits, it also presents challenges that society must address thoughtfully and proactively."
         />
 
-        {/* How It Works */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-4">How It Works</Heading>
-          <div className="rounded-lg bg-gradient-to-br from-cyan-50 to-blue-50 p-6 dark:from-zinc-800 dark:to-zinc-900">
-            <p className="mb-4 text-zinc-700 dark:text-zinc-300">
-              Our AI Summarizer uses Claude Haiku 4.5 to create intelligent summaries that capture the key points:
-            </p>
-            <ul className="list-inside list-disc space-y-2 text-zinc-600 dark:text-zinc-400">
-              <li><strong>Short:</strong> Ultra-concise 1-2 sentence summary for quick overviews</li>
-              <li><strong>Medium:</strong> Balanced 3-5 sentence summary capturing main ideas</li>
-              <li><strong>Long:</strong> Detailed 1-2 paragraph summary with context and nuance</li>
-              <li><strong>Intelligent:</strong> Identifies key points, main arguments, and important details</li>
-              <li><strong>Accurate:</strong> Preserves meaning and doesn't add information</li>
-              <li><strong>Fast:</strong> Processes up to 50,000 characters in seconds</li>
-            </ul>
+        {/* Introduction Hero with Gradient */}
+        <div className="relative isolate mt-12 overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-50 px-6 py-16 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
+          <div className="absolute inset-0 -z-10 overflow-hidden opacity-20">
+            <svg
+              aria-hidden="true"
+              className="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 stroke-zinc-200 dark:stroke-zinc-700"
+            >
+              <defs>
+                <pattern
+                  x="50%"
+                  y={-1}
+                  id="summarizer-pattern"
+                  width={200}
+                  height={200}
+                  patternUnits="userSpaceOnUse"
+                >
+                  <path d="M100 200V.5M.5 .5H200" fill="none" />
+                </pattern>
+              </defs>
+              <rect fill="url(#summarizer-pattern)" width="100%" height="100%" strokeWidth={0} />
+            </svg>
+          </div>
+          
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-6 flex items-center gap-3">
+              <Badge color="cyan">Free AI Summarizer</Badge>
+              <Badge color="blue">AI Powered</Badge>
+              <Badge color="indigo">Save Time</Badge>
+            </div>
+            
+            <Heading level={2} className="mb-6 text-3xl font-bold">
+              Introduction to AI Summarization
+            </Heading>
+            
+            <Text className="mb-6 text-lg text-zinc-700 dark:text-zinc-300">
+              Discover the power of AI summarizer tools to extract key points from complex documents, lengthy content, and long text. Our AI article summarizer can save time and effort in understanding valuable content, making it perfect for academic research, academic papers, and professional use.
+            </Text>
+            
+            <Text className="mb-8 text-lg text-zinc-700 dark:text-zinc-300">
+              Get introduced to the concept of AI generated summaries and the process of generating summaries. Our summarization tool helps you extract key points and main ideas from large texts with just one click, ensuring you never miss important information.
+            </Text>
+            
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <SparklesIcon className="h-6 w-6 flex-none text-cyan-600 dark:text-cyan-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">AI Powered</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Extract key insights</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <BoltIcon className="h-6 w-6 flex-none text-blue-600 dark:text-blue-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Save Time</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Instant results</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <DocumentTextIcon className="h-6 w-6 flex-none text-indigo-600 dark:text-indigo-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Multiple Formats</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Bullet points & more</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <CheckCircleIcon className="h-6 w-6 flex-none text-green-600 dark:text-green-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Accurate Summary</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Key takeaways</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Examples */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">Summarization Examples</Heading>
-          <div className="space-y-6">
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <h3 className="mb-3 font-semibold text-zinc-900 dark:text-white">Original Text (500 words):</h3>
-              <p className="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
-                "Artificial intelligence has transformed the way we interact with technology in the 21st century. 
-                From virtual assistants to recommendation systems, AI is now embedded in countless aspects of our 
-                daily lives. Machine learning algorithms analyze vast amounts of data to identify patterns and make 
-                predictions, enabling applications that were once thought impossible..."
-              </p>
-              
-              <div className="space-y-3">
-                <div>
-                  <h4 className="mb-1 text-sm font-semibold text-cyan-600 dark:text-cyan-400">📄 Short Summary:</h4>
-                  <p className="text-sm text-zinc-700 dark:text-zinc-300">
-                    "AI has revolutionized technology through machine learning and is now integral to daily life, 
-                    from virtual assistants to recommendation systems."
-                  </p>
-                </div>
-                <div>
-                  <h4 className="mb-1 text-sm font-semibold text-blue-600 dark:text-blue-400">📃 Medium Summary:</h4>
-                  <p className="text-sm text-zinc-700 dark:text-zinc-300">
-                    "Artificial intelligence has fundamentally changed how we interact with technology in the 21st century. 
-                    Machine learning algorithms process massive datasets to identify patterns and enable previously impossible 
-                    applications. AI is now embedded in everyday tools like virtual assistants and recommendation systems, 
-                    transforming multiple industries and aspects of daily life."
-                  </p>
+        {/* Types of AI Summarization */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <Heading level={2} className="mb-6 text-3xl font-bold">
+              Types of AI Summarization: Extractive vs. Abstractive
+            </Heading>
+            <Text className="mb-8 text-lg text-zinc-600 dark:text-zinc-400">
+              When exploring AI summarization together, we believe in understanding the two powerful approaches that can transform how you work with content: extractive and abstractive summarization. Together, we can discover how each method brings unique value to capturing the essential insights and core ideas from your content.
+            </Text>
+            
+            <div className="space-y-6">
+              <div className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
+                <h3 className="mb-3 text-xl font-semibold text-zinc-900 dark:text-white">Extractive Summarization</h3>
+                <Text className="mb-4 text-zinc-600 dark:text-zinc-400">
+                  Extractive summarization works alongside you by carefully scanning your original text and identifying the most valuable sentences and phrases. Your AI partner then compiles these key insights into a focused summary, often presented as clear bullet points or concise paragraphs. This collaborative approach ensures your summary stays true to your original voice and context—perfect when you want to preserve the authentic essence of lengthy documents, research papers, or meeting notes while saving precious time.
+                </Text>
+                <div className="flex items-start gap-3">
+                  <CheckCircleIcon className="mt-1 h-5 w-5 flex-none text-green-600 dark:text-green-400" />
+                  <Text className="text-sm text-zinc-600 dark:text-zinc-400">
+                    Best for: Academic papers, research papers, meeting notes, and documents where original context must be preserved
+                  </Text>
                 </div>
               </div>
+              
+              <div className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
+                <h3 className="mb-3 text-xl font-semibold text-zinc-900 dark:text-white">Abstractive Summarization</h3>
+                <Text className="mb-4 text-zinc-600 dark:text-zinc-400">
+                  Abstractive summarization takes our partnership to the next level. Here, your AI collaborator reads and truly understands the context and main ideas of your text, then crafts an entirely new summary using fresh language. This approach allows us to create summaries that capture the heart of your content, even when the wording differs from your original text. Together, we can distill complex information into clear, accessible summaries that highlight your most valuable insights and core messages.
+                </Text>
+                <div className="flex items-start gap-3">
+                  <CheckCircleIcon className="mt-1 h-5 w-5 flex-none text-blue-600 dark:text-blue-400" />
+                  <Text className="text-sm text-zinc-600 dark:text-zinc-400">
+                    Best for: Articles, long text, complex documents where you need concise summaries with key takeaways
+                  </Text>
+                </div>
+              </div>
+            </div>
+            
+            <Text className="mt-6 text-zinc-600 dark:text-zinc-400">
+              By embracing both extractive and abstractive approaches together, we ensure you receive summaries that truly serve your unique needs—whether you prefer structured bullet points that honor your original text or more creative, condensed versions that focus on your core ideas. This flexible partnership makes summarization an essential ally for anyone looking to save time, extract key insights, and gain deeper understanding of complex materials.
+            </Text>
+          </div>
+        </div>
+
+        {/* Benefits Section */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <Heading level={2} className="mb-4 text-3xl font-bold">Benefits of Using an AI Summarizer</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              Our AI summarizer tool helps you reduce reading time, extract key insights, and stay updated with the latest information. Save time and improve comprehension with accurate summaries and essential information.
+            </Text>
+          </div>
+          
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-cyan-50 to-blue-50 p-6 transition-all hover:shadow-lg dark:from-cyan-900/20 dark:to-blue-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-cyan-100 p-3 dark:bg-cyan-900/50">
+                <BoltIcon className="h-6 w-6 text-cyan-600 dark:text-cyan-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Reduce Reading Time</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Stay updated with the latest information using our AI summarizer tool. Extract key insights and essential information from complex documents and lengthy content in seconds.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 p-6 transition-all hover:shadow-lg dark:from-blue-900/20 dark:to-indigo-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-blue-100 p-3 dark:bg-blue-900/50">
+                <SparklesIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Extract Key Insights</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Get all the main points and key takeaways from your content. Our AI powered extract feature identifies core ideas and key sentences for easier understanding.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 p-6 transition-all hover:shadow-lg dark:from-indigo-900/20 dark:to-purple-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-indigo-100 p-3 dark:bg-indigo-900/50">
+                <CheckCircleIcon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Improve Comprehension</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Improve comprehension and retention of main points and key ideas with concise summaries. Never miss important information with accurate summary generation.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 p-6 transition-all hover:shadow-lg dark:from-purple-900/20 dark:to-pink-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-purple-100 p-3 dark:bg-purple-900/50">
+                <AcademicCapIcon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Enhance Productivity</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Enhance productivity and efficiency in research, study, and work with our AI powered summarizer. Perfect for academic research and study notes.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-pink-50 to-rose-50 p-6 transition-all hover:shadow-lg dark:from-pink-900/20 dark:to-rose-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-pink-100 p-3 dark:bg-pink-900/50">
+                <DocumentTextIcon className="h-6 w-6 text-pink-600 dark:text-pink-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Accurate Summaries</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Get an accurate summary that ensures you receive precise and reliable information from your content. Our tool supports generating summaries with key insights.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-rose-50 to-red-50 p-6 transition-all hover:shadow-lg dark:from-rose-900/20 dark:to-red-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-rose-100 p-3 dark:bg-rose-900/50">
+                <ClipboardDocumentListIcon className="h-6 w-6 text-rose-600 dark:text-rose-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Avoid Missing Info</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Avoid missing important information with the help of our AI summarizer tool. Extract key points and essential information from lengthy content effortlessly.
+              </Text>
             </div>
           </div>
         </div>
