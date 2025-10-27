@@ -5,7 +5,10 @@ import { ToolLayout } from '@/components/tool-layout'
 import { AITransformTemplate } from '@/components/tool-templates'
 import { useToast, ToastContainer } from '@/components/toast'
 import { Heading } from '@/components/heading'
+import { Text } from '@/components/text'
+import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
+import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, ChatBubbleLeftRightIcon, UserGroupIcon } from '@heroicons/react/20/solid'
 
 export default function AIToneConverterPage() {
   const [selectedTone, setSelectedTone] = useState('professional')
@@ -62,8 +65,8 @@ export default function AIToneConverterPage() {
   return (
     <>
       <ToolLayout
-        title="AI Tone Converter - Change Text Tone & Style"
-        description="Use AI to convert text between different tones and styles. Professional, casual, friendly, formal, and more. Powered by Claude Haiku 4.5."
+        title="The Best AI Tone Converter for Effortless Text Transformation"
+        description="Free AI tone converter for rewriting paragraphs and articles with desired tone. Adjust tone for academic papers, business documents, social media posts. Transform text with persuasive language, enhance readability, save time with AI-powered tool."
         currentPath="/ai-tone-converter"
       >
         {/* Main Tool Interface */}
