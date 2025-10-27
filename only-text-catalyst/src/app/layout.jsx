@@ -6,10 +6,10 @@ export const metadata = {
   metadataBase: new URL('https://only-text.com'),
   title: {
     template: '%s - Only Text',
-    default: 'Only Text - Free Text Cleaning Tool | Remove Emojis, Bullets & Special Characters',
+    default: 'Only Text - Free AI Text Tools | Grammar Checker, Summarizer, Tone Converter & More',
   },
-  description: 'The fastest free online tool to remove emojis, bullet points, and special characters from text. Clean AI-generated content and get plain text instantly. 100% client-side, privacy-friendly.',
-  keywords: ['text cleaning', 'remove emojis', 'remove bullet points', 'word counter', 'character counter', 'case converter', 'text formatter', 'plain text', 'emoji remover', 'text tools'],
+  description: 'Free AI-powered text tools: grammar checker, text summarizer, tone converter, and text improver. Enhance your writing with advanced AI. No signup required, completely free.',
+  keywords: ['ai text tools', 'free ai tools', 'grammar checker', 'text summarizer', 'tone converter', 'text improver', 'ai writing assistant', 'free writing tools', 'ai grammar checker', 'text enhancement'],
   authors: [{ name: 'Only Text Team' }],
   creator: 'Only Text',
   publisher: 'Only Text',
@@ -22,8 +22,8 @@ export const metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://only-text.com',
-    title: 'Only Text - Free Text Cleaning Tools',
-    description: 'Remove emojis, bullet points, and special characters from text instantly. Free online tools for text cleaning and formatting.',
+    title: 'Only Text - Free AI Text Tools',
+    description: 'Free AI-powered text tools: grammar checker, text summarizer, tone converter, and text improver. Enhance your writing with advanced AI.',
     siteName: 'Only Text',
     images: [
       {
@@ -36,8 +36,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Only Text - Free Text Cleaning Tools',
-    description: 'Remove emojis, bullet points, and special characters instantly.',
+    title: 'Only Text - Free AI Text Tools',
+    description: 'Free AI-powered grammar checker, text summarizer, tone converter, and text improver. Enhance your writing instantly.',
     images: ['/og-image.png'],
     creator: '@onlytext',
   },
@@ -83,7 +83,7 @@ export default async function RootLayout({ children }) {
         </noscript>
         <link rel="canonical" href="https://only-text.com" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#9333ea" />
+        <meta name="theme-color" content="#a855f7" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Only Text" />

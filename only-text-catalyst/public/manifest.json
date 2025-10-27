@@ -1,11 +1,11 @@
 {
-  "name": "Only Text - Free Text Tools",
+  "name": "Only Text - Free AI Text Tools",
   "short_name": "Only Text",
-  "description": "Clean & improve text with AI. Remove emojis, bullets, and special characters. Free text processing tools.",
+  "description": "Free AI-powered text tools: grammar checker, text summarizer, tone converter, and text improver. Enhance your writing with AI.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#9333ea",
+  "background_color": "#1a1a1a",
+  "theme_color": "#a855f7",
   "orientation": "portrait-primary",
   "icons": [
     {
