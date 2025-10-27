@@ -5,6 +5,7 @@ import { ToolLayout } from '@/components/tool-layout'
 import { AITransformTemplate } from '@/components/tool-templates'
 import { useToast, ToastContainer } from '@/components/toast'
 import { Heading } from '@/components/heading'
+import { RelatedTools } from '@/components/related-tools'
 
 export default function AIToneConverterPage() {
   const [selectedTone, setSelectedTone] = useState('professional')
@@ -150,6 +151,9 @@ export default function AIToneConverterPage() {
             </div>
           </div>
         </div>
+
+        {/* Related Tools - AI Powered & Basic Tools */}
+        <RelatedTools currentPath="/ai-tone-converter" />
 
         {/* Use Cases */}
         <div className="mt-12">

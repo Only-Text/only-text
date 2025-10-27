@@ -4,6 +4,7 @@ import { ToolLayout } from '@/components/tool-layout'
 import { AITransformTemplate } from '@/components/tool-templates'
 import { useToast, ToastContainer } from '@/components/toast'
 import { Heading } from '@/components/heading'
+import { RelatedTools } from '@/components/related-tools'
 
 export default function AITextImproverPage() {
   const { toasts, showToast } = useToast()
@@ -86,6 +87,9 @@ export default function AITextImproverPage() {
             </div>
           </div>
         </div>
+
+        {/* Related Tools - AI Powered & Basic Tools */}
+        <RelatedTools currentPath="/ai-text-improver" />
 
         {/* Use Cases */}
         <div className="mt-12">
