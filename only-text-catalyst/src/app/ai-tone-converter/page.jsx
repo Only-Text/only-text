@@ -8,7 +8,7 @@ import { Heading } from '@/components/heading'
 import { Text } from '@/components/text'
 import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
-import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, ChatBubbleLeftRightIcon, UserGroupIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, ChatBubbleLeftRightIcon, UserGroupIcon, PencilSquareIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AIToneConverterPage() {
   const [selectedTone, setSelectedTone] = useState('professional')
@@ -81,21 +81,57 @@ export default function AIToneConverterPage() {
           demoText="Hey! Just wanted to let you know that the meeting got moved to tomorrow. Hope that works for you!"
         />
 
-        {/* How It Works */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-4">How It Works</Heading>
-          <div className="rounded-lg bg-gradient-to-br from-orange-50 to-red-50 p-6 dark:from-zinc-800 dark:to-zinc-900">
-            <p className="mb-4 text-zinc-700 dark:text-zinc-300">
-              Our AI Tone Converter uses Claude Haiku 4.5 to adapt your text for different audiences and contexts:
-            </p>
-            <ul className="list-inside list-disc space-y-2 text-zinc-600 dark:text-zinc-400">
-              <li><strong>Professional:</strong> Perfect for business emails, reports, and formal communication</li>
-              <li><strong>Casual:</strong> Great for social media, blogs, and friendly messages</li>
-              <li><strong>Friendly:</strong> Warm and approachable for customer service and personal emails</li>
-              <li><strong>Formal:</strong> Academic and sophisticated for research papers and official documents</li>
-              <li><strong>Confident:</strong> Assertive and strong for leadership communication and presentations</li>
-              <li><strong>Empathetic:</strong> Understanding and compassionate for sensitive situations</li>
-            </ul>
+        {/* Introduction Hero with Gradient */}
+        <div className="relative isolate mt-12 overflow-hidden rounded-2xl bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 px-6 py-16 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-6 flex items-center gap-3">
+              <Badge color="orange">Free AI</Badge>
+              <Badge color="red">6 Tones</Badge>
+              <Badge color="pink">Save Time</Badge>
+            </div>
+            
+            <Heading level={2} className="mb-6 text-3xl font-bold">
+              Introduction to AI Tone Conversion
+            </Heading>
+            
+            <Text className="mb-6 text-lg text-zinc-700 dark:text-zinc-300">
+              Discover the power of AI tone conversion for effortless text transformation - rewriting paragraphs and articles with ease. AI tone converters can be used in different contexts, such as academic, business, or creative writing, to adjust tone accordingly. Learn how to adjust the tone of your writing to suit various purposes, from formal to informal, and persuasive language.
+            </Text>
+            
+            <Text className="mb-8 text-lg text-zinc-700 dark:text-zinc-300">
+              Users can ensure their writing matches their intended tone for each context. Explore the benefits of using AI tone converters for content creation, including saving time and enhancing readability. Transform your message for different target audiences with just one click.
+            </Text>
+            
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <SparklesIcon className="h-6 w-6 flex-none text-orange-600 dark:text-orange-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">AI Powered</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">6 tones available</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <BoltIcon className="h-6 w-6 flex-none text-red-600 dark:text-red-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Instant Results</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">1-3 seconds</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <PencilSquareIcon className="h-6 w-6 flex-none text-pink-600 dark:text-pink-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Rewrite Text</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Own words</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <CheckCircleIcon className="h-6 w-6 flex-none text-green-600 dark:text-green-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Error Free</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">High quality</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -158,8 +194,80 @@ export default function AIToneConverterPage() {
           </div>
         </div>
 
+        {/* Benefits Section */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <Heading level={2} className="mb-4 text-3xl font-bold">Benefits of AI Tone Converters</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              AI tone converters can help users save time by automating the process of rewriting paragraphs and articles. They enhance clarity and readability of text, making it more engaging for readers. Adjust the tone of your messages for various purposes and target audiences.
+            </Text>
+          </div>
+          
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-50 to-red-50 p-6 transition-all hover:shadow-lg dark:from-orange-900/20 dark:to-red-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-orange-100 p-3 dark:bg-orange-900/50">
+                <BoltIcon className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Save Time</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Automate the process of rewriting paragraphs and articles. Transform your text with just one click instead of manually rewriting for different audiences.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-red-50 to-pink-50 p-6 transition-all hover:shadow-lg dark:from-red-900/20 dark:to-pink-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-red-100 p-3 dark:bg-red-900/50">
+                <DocumentTextIcon className="h-6 w-6 text-red-600 dark:text-red-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Enhance Readability</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Improve clarity and readability of text, making it more engaging for readers. Adjust tone to match your intended message and audience.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-pink-50 to-purple-50 p-6 transition-all hover:shadow-lg dark:from-pink-900/20 dark:to-purple-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-pink-100 p-3 dark:bg-pink-900/50">
+                <UserGroupIcon className="h-6 w-6 text-pink-600 dark:text-pink-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Multiple Audiences</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Create content optimized for various platforms, including social media posts and research papers. Maintain consistent voice across different contexts.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 p-6 transition-all hover:shadow-lg dark:from-purple-900/20 dark:to-indigo-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-purple-100 p-3 dark:bg-purple-900/50">
+                <PencilSquareIcon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Rephrase Text</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Rephrase sentences and paragraphs in your own words. Create rewritten text that sounds natural and engaging while preserving meaning.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 p-6 transition-all hover:shadow-lg dark:from-indigo-900/20 dark:to-blue-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-indigo-100 p-3 dark:bg-indigo-900/50">
+                <AcademicCapIcon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Academic & Business</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Perfect for academic papers, business documents, and professional writing. Adjust tone for formal, informal, or persuasive language.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 transition-all hover:shadow-lg dark:from-blue-900/20 dark:to-cyan-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-blue-100 p-3 dark:bg-blue-900/50">
+                <CheckCircleIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Error Free Writing</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Ensure error-free writing with grammar and readability improvements. Create professional content that engages your target audience effectively.
+              </Text>
+            </div>
+          </div>
+        </div>
+
         {/* Use Cases */}
-        <div className="mt-12">
+        <div className="mt-16">
           <Heading level={2} className="mb-6">Perfect For</Heading>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
