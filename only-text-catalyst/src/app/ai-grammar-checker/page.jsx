@@ -98,6 +98,9 @@ export default function AIGrammarCheckerPage() {
           </div>
         </div>
 
+        {/* Related Tools - AI Powered & Basic Tools */}
+        <RelatedTools currentPath="/ai-grammar-checker" />
+
         {/* Benefits Section */}
         <div className="mt-12">
           <div className="mx-auto max-w-3xl">
@@ -134,9 +137,6 @@ export default function AIGrammarCheckerPage() {
             </div>
           </div>
         </div>
-
-        {/* Related Tools - AI Powered & Basic Tools */}
-        <RelatedTools currentPath="/ai-grammar-checker" />
 
         {/* Comparison Table - Moved up */}
         <div className="mt-16">

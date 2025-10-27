@@ -60,6 +60,9 @@ export default function AITextImproverPage() {
           </div>
         </div>
 
+        {/* Related Tools - AI Powered & Basic Tools */}
+        <RelatedTools currentPath="/ai-text-improver" />
+
         {/* Examples */}
         <div className="mt-12">
           <Heading level={2} className="mb-6">Before & After Examples</Heading>
@@ -87,9 +90,6 @@ export default function AITextImproverPage() {
             </div>
           </div>
         </div>
-
-        {/* Related Tools - AI Powered & Basic Tools */}
-        <RelatedTools currentPath="/ai-text-improver" />
 
         {/* Use Cases */}
         <div className="mt-12">

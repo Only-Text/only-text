@@ -99,6 +99,9 @@ export default function AIToneConverterPage() {
           </div>
         </div>
 
+        {/* Related Tools - AI Powered & Basic Tools */}
+        <RelatedTools currentPath="/ai-tone-converter" />
+
         {/* Examples */}
         <div className="mt-12">
           <Heading level={2} className="mb-6">Tone Conversion Examples</Heading>
@@ -154,9 +157,6 @@ export default function AIToneConverterPage() {
             </div>
           </div>
         </div>
-
-        {/* Related Tools - AI Powered & Basic Tools */}
-        <RelatedTools currentPath="/ai-tone-converter" />
 
         {/* Use Cases */}
         <div className="mt-12">

@@ -133,6 +133,9 @@ export default function AISummarizerPage() {
           </div>
         </div>
 
+        {/* Related Tools - AI Powered & Basic Tools */}
+        <RelatedTools currentPath="/ai-summarizer" />
+
         {/* Types of AI Summarization */}
         <div className="mt-16">
           <div className="mx-auto max-w-3xl">
@@ -248,9 +251,6 @@ export default function AISummarizerPage() {
             </div>
           </div>
         </div>
-
-        {/* Related Tools - AI Powered & Basic Tools */}
-        <RelatedTools currentPath="/ai-summarizer" />
 
         {/* Use Cases */}
         <div className="mt-12">
