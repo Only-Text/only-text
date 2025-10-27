@@ -28,8 +28,8 @@ export default function AITextImproverPage() {
   return (
     <>
       <ToolLayout
-        title="AI Text Improver - Make Your Text Better"
-        description="Use AI to improve your text clarity, professionalism, and readability. Powered by Claude Haiku 4.5 for lightning-fast results."
+        title="Enhance Your Writing: The Best AI Text Improver for Clearer Content"
+        description="Free AI text improver for enhancing written content with advanced AI. Improve clarity, rewrite paragraphs, fix punctuation errors. Perfect for academic writing and professional content creation."
         currentPath="/ai-text-improver"
       >
         {/* Main Tool Interface */}
