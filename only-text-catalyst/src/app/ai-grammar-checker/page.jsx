@@ -119,7 +119,13 @@ export default function AIGrammarCheckerPage() {
 
         {/* Benefits Section */}
         <div className="mt-12">
-          <Heading level={2} className="mb-6">Benefits of Using a Grammar Checker</Heading>
+          <div className="mx-auto max-w-3xl">
+            <Heading level={2} className="mb-6 text-3xl font-bold">Benefits of Using a Grammar Checker</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              Our free AI grammar checker provides instant feedback on grammar, spelling, and punctuation to enhance your writing skills and overall clarity. Discover how our tool helps you avoid mistakes and improve your writing process.
+            </Text>
+          </div>
+          
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
               <h3 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-white">Improve Writing Skills</h3>
@@ -148,9 +154,73 @@ export default function AIGrammarCheckerPage() {
           </div>
         </div>
 
+        {/* Comparison Table - Moved up */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <Heading level={2} className="mb-4 text-3xl font-bold">Free Grammar Checker Options - Compare the Best</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              Choose a reliable and user-friendly grammar checker for daily use. Our free AI grammar checker provides all essential tools with no payment required - see how we compare to other online grammar checker tools.
+            </Text>
+          </div>
+          
+          <Table striped>
+            <TableHead>
+              <TableRow>
+                <TableHeader>Feature</TableHeader>
+                <TableHeader>Only Text (Our Tool)</TableHeader>
+                <TableHeader>Best Online Grammar Checker</TableHeader>
+                <TableHeader>Best Free Grammar Checker</TableHeader>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell className="font-medium">Price</TableCell>
+                <TableCell className="text-green-600 dark:text-green-400 font-semibold">Completely Free</TableCell>
+                <TableCell>$30/month</TableCell>
+                <TableCell>Limited Free</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">AI Technology</TableCell>
+                <TableCell className="text-green-600 dark:text-green-400 font-semibold">Cutting-edge AI (Claude 4.5)</TableCell>
+                <TableCell>Standard AI</TableCell>
+                <TableCell>Basic AI</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">Speed</TableCell>
+                <TableCell className="text-green-600 dark:text-green-400 font-semibold">1-3 seconds</TableCell>
+                <TableCell>5-10 seconds</TableCell>
+                <TableCell>5-8 seconds</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">Payment Required</TableCell>
+                <TableCell className="text-green-600 dark:text-green-400 font-semibold">No</TableCell>
+                <TableCell>Yes</TableCell>
+                <TableCell>For Premium</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">User-Friendly</TableCell>
+                <TableCell className="text-green-600 dark:text-green-400 font-semibold">Very User-Friendly</TableCell>
+                <TableCell>Moderate</TableCell>
+                <TableCell>User-Friendly</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">Detects Complex Errors</TableCell>
+                <TableCell className="text-green-600 dark:text-green-400 font-semibold">Yes</TableCell>
+                <TableCell>Yes</TableCell>
+                <TableCell>Limited</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+
         {/* Features Section with Icons */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">Features of a Comprehensive Grammar Checker</Heading>
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <Heading level={2} className="mb-4 text-3xl font-bold">Features of a Comprehensive Grammar Checker</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              Our AI grammar checker detects grammatical errors, punctuation errors, and spelling mistakes with exceptional accuracy. Powered by cutting-edge AI technology, it's the essential tool for all your writing needs.
+            </Text>
+          </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 transition-all hover:shadow-lg dark:from-blue-900/20 dark:to-cyan-900/20">
               <div className="mb-4 inline-flex rounded-lg bg-blue-100 p-3 dark:bg-blue-900/50">
@@ -215,24 +285,65 @@ export default function AIGrammarCheckerPage() {
         </div>
 
         {/* How AI Grammar Checkers Work */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-4">How AI Grammar Checkers Work</Heading>
-          <div className="rounded-lg bg-gradient-to-br from-purple-50 to-pink-50 p-6 dark:from-zinc-800 dark:to-zinc-900">
-            <Text className="mb-4 text-zinc-700 dark:text-zinc-300">
-              Our AI grammar checker utilizes cutting-edge AI technology to detect and correct grammatical errors with precision. Here's how it works:
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <Heading level={2} className="mb-6 text-3xl font-bold">How AI Grammar Checkers Work</Heading>
+            <Text className="mb-8 text-lg text-zinc-600 dark:text-zinc-400">
+              Our AI grammar checker utilizes cutting-edge AI technology to detect and correct grammatical errors with precision. The AI understands context, sentence structure, and complex sentences to deliver superior grammar check results.
             </Text>
-            <ul className="list-inside list-disc space-y-3 text-zinc-600 dark:text-zinc-400">
-              <li><strong>Analyze Sentence Structure:</strong> The AI examines sentence structure and context to provide accurate feedback on grammar, spelling, and punctuation</li>
-              <li><strong>Detect Errors:</strong> Identifies punctuation mistakes, spelling errors, grammatical mistakes, and common grammatical errors like subject-verb agreement and comma splices</li>
-              <li><strong>Suggest Corrections:</strong> Offers tips and suggestions for improving writing skills and avoiding mistakes in future writing</li>
-              <li><strong>Seamless Integration:</strong> Works as a standalone tool or integrates with your favorite apps for a smooth writing workflow</li>
-            </ul>
+            
+            <div className="space-y-6">
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-blue-600 dark:text-blue-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Analyze Sentence Structure</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    The AI examines sentence structure and context to provide accurate feedback on grammar, spelling, and punctuation. It understands complex sentences and identifies issues that traditional spell checkers miss.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-purple-600 dark:text-purple-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Detect Errors</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Identifies punctuation mistakes, spelling errors, grammatical mistakes, and common grammatical errors like subject-verb agreement and comma splices. Our grammar checker catches errors that other tools miss.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-green-600 dark:text-green-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Suggest Corrections</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Offers tips and suggestions for improving writing skills and avoiding mistakes in future writing. Learn from each correction to become a better writer.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-amber-600 dark:text-amber-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Seamless Integration</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Works as a standalone tool or integrates with your favorite apps for a smooth writing workflow. Use it for emails, documents, academic papers, and more.
+                  </Text>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Importance of Correct Grammar with Icons */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">Importance of Correct Grammar</Heading>
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <Heading level={2} className="mb-4 text-3xl font-bold">Importance of Correct Grammar</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              Correct grammar, spelling, and punctuation are essential for effective communication. Our grammar checker helps you maintain high standards in academic papers, professional writing, and all your written content.
+            </Text>
+          </div>
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="group relative overflow-hidden rounded-xl border border-zinc-200 bg-white p-6 transition-all hover:border-blue-300 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-blue-600">
               <div className="mb-4 flex items-center gap-3">
@@ -284,113 +395,118 @@ export default function AIGrammarCheckerPage() {
           </div>
         </div>
 
-        {/* Comparison Table */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">Free Grammar Checker Options - Compare the Best</Heading>
-          <Table striped>
-            <TableHead>
-              <TableRow>
-                <TableHeader>Feature</TableHeader>
-                <TableHeader>Only Text (Our Tool)</TableHeader>
-                <TableHeader>Best Online Grammar Checker</TableHeader>
-                <TableHeader>Best Free Grammar Checker</TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Price</TableCell>
-                <TableCell className="text-green-600 dark:text-green-400 font-semibold">Completely Free</TableCell>
-                <TableCell>$30/month</TableCell>
-                <TableCell>Limited Free</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">AI Technology</TableCell>
-                <TableCell className="text-green-600 dark:text-green-400 font-semibold">Cutting-edge AI (Claude 4.5)</TableCell>
-                <TableCell>Standard AI</TableCell>
-                <TableCell>Basic AI</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Speed</TableCell>
-                <TableCell className="text-green-600 dark:text-green-400 font-semibold">1-3 seconds</TableCell>
-                <TableCell>5-10 seconds</TableCell>
-                <TableCell>5-8 seconds</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Payment Required</TableCell>
-                <TableCell className="text-green-600 dark:text-green-400 font-semibold">No</TableCell>
-                <TableCell>Yes</TableCell>
-                <TableCell>For Premium</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">User-Friendly</TableCell>
-                <TableCell className="text-green-600 dark:text-green-400 font-semibold">Very User-Friendly</TableCell>
-                <TableCell>Moderate</TableCell>
-                <TableCell>User-Friendly</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Detects Complex Errors</TableCell>
-                <TableCell className="text-green-600 dark:text-green-400 font-semibold">Yes</TableCell>
-                <TableCell>Yes</TableCell>
-                <TableCell>Limited</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-          <Text className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-            Choose a reliable and user-friendly grammar checker for daily use. Our free AI grammar checker provides all essential tools with no payment required.
-          </Text>
-        </div>
-
         {/* Advanced Features */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">Advanced Grammar Checking Features</Heading>
-          <div className="space-y-4">
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Complex Sentences Analysis</h3>
-              <Text className="text-zinc-600 dark:text-zinc-400">
-                Detect and correct complex sentences and grammatical errors. Our AI analyzes sentence structure to identify issues with subject-verb agreement, comma splices, and other advanced grammar rules.
-              </Text>
-            </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Writing Style Improvement</h3>
-              <Text className="text-zinc-600 dark:text-zinc-400">
-                Get advanced feedback and suggestions for improving writing style and overall clarity. The tool helps you develop better writing skills and avoid common grammatical errors.
-              </Text>
-            </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Academic Papers Support</h3>
-              <Text className="text-zinc-600 dark:text-zinc-400">
-                Perfect for academic papers and essays. Supports multiple document types and maintains academic integrity while checking grammar, spelling, and punctuation.
-              </Text>
-            </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Streamlined Writing Workflow</h3>
-              <Text className="text-zinc-600 dark:text-zinc-400">
-                Integrates seamlessly into your writing workflow. Use it as an essential tool alongside other AI tools and editing tools to enhance your writing process from blank page to final draft.
-              </Text>
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <Heading level={2} className="mb-6 text-3xl font-bold">Advanced Grammar Checking Features</Heading>
+            <Text className="mb-8 text-lg text-zinc-600 dark:text-zinc-400">
+              Our grammar checker goes beyond basic spell checking. It detects complex sentences, analyzes writing style, and provides advanced feedback to help you become a better writer.
+            </Text>
+            
+            <div className="space-y-6">
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-blue-600 dark:text-blue-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Complex Sentences Analysis</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Detect and correct complex sentences and grammatical errors. Our AI analyzes sentence structure to identify issues with subject-verb agreement, comma splices, and other advanced grammar rules that traditional spell checkers miss.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-purple-600 dark:text-purple-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Writing Style Improvement</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Get advanced feedback and suggestions for improving writing style and overall clarity. The tool helps you develop better writing skills and avoid common grammatical errors through consistent practice.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-green-600 dark:text-green-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Academic Papers Support</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Perfect for academic papers and essays. Supports multiple document types and maintains academic integrity while checking grammar, spelling, and punctuation. Essential for students and researchers.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-amber-600 dark:text-amber-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Streamlined Writing Workflow</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Integrates seamlessly into your writing workflow. Use it as an essential tool alongside other AI tools and editing tools to enhance your writing process from blank page to final draft.
+                  </Text>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Fixing Grammar Mistakes */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">Fixing Grammar Mistakes</Heading>
-          <div className="rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 p-6 dark:from-zinc-800 dark:to-zinc-900">
-            <Text className="mb-4 text-zinc-700 dark:text-zinc-300">
-              Learn how to identify and correct common grammatical errors effectively:
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <Heading level={2} className="mb-6 text-3xl font-bold">Fixing Grammar Mistakes</Heading>
+            <Text className="mb-8 text-lg text-zinc-600 dark:text-zinc-400">
+              Learn how to identify and correct common grammatical errors effectively. Our grammar checker helps you fix punctuation mistakes, spelling errors, and grammatical mistakes while improving your writing skills.
             </Text>
-            <ul className="list-inside list-disc space-y-3 text-zinc-600 dark:text-zinc-400">
-              <li><strong>Punctuation Mistakes:</strong> Fix punctuation errors including comma splices, missing periods, and incorrect apostrophe usage</li>
-              <li><strong>Spelling Errors:</strong> Correct spelling mistakes and identify misspelled words with our spell checker functionality</li>
-              <li><strong>Grammatical Mistakes:</strong> Address subject-verb agreement issues, tense consistency, and sentence structure problems</li>
-              <li><strong>Avoid Mistakes:</strong> Develop strategies for avoiding mistakes and improving writing skills through consistent grammar check practice</li>
-              <li><strong>Writing Improvement:</strong> Use our grammar checker to detect and correct errors while receiving feedback and guidance for better writing</li>
-            </ul>
+            
+            <div className="space-y-6">
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-red-600 dark:text-red-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Punctuation Mistakes</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Fix punctuation errors including comma splices, missing periods, and incorrect apostrophe usage. Our grammar checker ensures correct punctuation throughout your writing.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-blue-600 dark:text-blue-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Spelling Errors</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Correct spelling mistakes and identify misspelled words with our spell checker functionality. Catch typos and commonly confused words instantly.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-purple-600 dark:text-purple-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Grammatical Mistakes</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Address subject-verb agreement issues, tense consistency, and sentence structure problems. Avoid common grammatical errors that can detract from your message.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-green-600 dark:text-green-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Continuous Improvement</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Develop strategies for avoiding mistakes and improving writing skills through consistent grammar check practice. Use our grammar checker to detect and correct errors while receiving feedback and guidance for better writing.
+                  </Text>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Mistake-Free Writing with AI */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">Mistake-Free Writing with AI</Heading>
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <Heading level={2} className="mb-4 text-3xl font-bold">Mistake-Free Writing with AI</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              Utilize our AI-powered grammar checker for instant and accurate feedback. Enhance writing skills and productivity with cutting-edge AI technology that ensures error-free, polished written content.
+            </Text>
+          </div>
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
               <h3 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-white">Instant AI Feedback</h3>
@@ -420,8 +536,13 @@ export default function AIGrammarCheckerPage() {
         </div>
 
         {/* AI Generated Content */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">AI Generated Content and Grammar</Heading>
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <Heading level={2} className="mb-4 text-3xl font-bold">AI Generated Content and Grammar</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              Understand the role of AI in generating content and checking grammar. Our AI grammar checker uses cutting-edge AI technology to analyze written content and provide accurate corrections for both AI-generated text and human-written content.
+            </Text>
+          </div>
           <div className="space-y-4">
             <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
               <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Understanding AI in Grammar Checking</h3>
@@ -445,25 +566,34 @@ export default function AIGrammarCheckerPage() {
         </div>
 
         {/* Free AI Tools */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">Free AI Tools for Writing</Heading>
-          <div className="rounded-lg bg-gradient-to-br from-indigo-50 to-blue-50 p-6 dark:from-zinc-800 dark:to-zinc-900">
-            <Text className="mb-4 text-zinc-700 dark:text-zinc-300">
-              Access a range of free AI tools and resources for writing, including our grammar checker and spell checker. Compare features and benefits of different AI-powered writing tools to find the best fit for your needs.
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <Heading level={2} className="mb-6 text-3xl font-bold">Free AI Tools for Writing</Heading>
+            <Text className="mb-6 text-lg text-zinc-600 dark:text-zinc-400">
+              Access a range of free AI tools and resources for writing, including our grammar checker and spell checker. Our completely free online grammar checker is an essential tool for writers who want to improve their writing skills without any payment required.
             </Text>
-            <Text className="mb-4 text-zinc-700 dark:text-zinc-300">
-              Choose a reliable and user-friendly AI tool for daily use. Explore additional features and tools, such as AI detector and punctuation checker. Discover the benefits of using free AI tools for writing assistance and grammar checking.
-            </Text>
-            <Text className="text-zinc-700 dark:text-zinc-300">
-              Our completely free online grammar checker is an essential tool for writers who want to improve their writing skills without any payment required. It's user-friendly, fast, and integrates seamlessly into your writing workflow.
-            </Text>
+            
+            <div className="space-y-4">
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Compare features and benefits of different AI-powered writing tools to find the best fit for your needs. Choose a reliable and user-friendly AI tool for daily use. Explore additional features and tools, such as AI detector and punctuation checker.
+              </Text>
+              
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Discover the benefits of using free AI tools for writing assistance and grammar checking. Our tool is user-friendly, fast, and integrates seamlessly into your writing workflow - making it the best free grammar checker available online.
+              </Text>
+            </div>
           </div>
         </div>
 
         {/* FAQ - Always Expanded for SEO */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-6">Frequently Asked Questions</Heading>
-          <div className="space-y-4">
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <Heading level={2} className="mb-4 text-3xl font-bold">Frequently Asked Questions</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              Find answers to common questions about our free AI grammar checker. Learn how it works, what it detects, and how it compares to other grammar checking tools.
+            </Text>
+          </div>
+          <div className="mx-auto max-w-3xl space-y-4">
             <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
               <h3 className="mb-2 text-lg font-semibold">How accurate is the AI grammar checker?</h3>
               <Text className="text-zinc-600 dark:text-zinc-400">
