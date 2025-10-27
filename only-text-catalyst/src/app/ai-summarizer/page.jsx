@@ -11,11 +11,17 @@ import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
 import { SoftwareApplicationSchema } from '@/components/software-schema'
 import { HowToSchema } from '@/components/howto-schema'
+import { BreadcrumbSchema } from '@/components/breadcrumb-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, DocumentTextIcon, AcademicCapIcon, ClipboardDocumentListIcon, VideoCameraIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AISummarizerPage() {
   const [selectedLength, setSelectedLength] = useState('medium')
   const { toasts, showToast } = useToast()
+
+  const breadcrumbs = [
+    { name: "Home", url: "https://only-text.com" },
+    { name: "AI Summarizer", url: "https://only-text.com/ai-summarizer" }
+  ]
 
   const howToSteps = [
     {
@@ -137,6 +143,7 @@ export default function AISummarizerPage() {
         description="Step-by-step guide to summarizing long text using our free AI summarizer"
         totalTime="PT2M"
       />
+      <BreadcrumbSchema items={breadcrumbs} />
       <ToolLayout
         title="Essential AI Summarizer: Your Tool for Clear and Concise Insights"
         description="Free AI summarizer tool to extract key points from complex documents, lengthy content, and long text. Generate accurate summaries with bullet points, save time on academic research and meeting notes. AI powered summarization tool supports multiple languages."

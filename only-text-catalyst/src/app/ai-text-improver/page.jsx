@@ -10,10 +10,16 @@ import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
 import { SoftwareApplicationSchema } from '@/components/software-schema'
 import { HowToSchema } from '@/components/howto-schema'
+import { BreadcrumbSchema } from '@/components/breadcrumb-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, PencilSquareIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 
 export default function AITextImproverPage() {
   const { toasts, showToast } = useToast()
+
+  const breadcrumbs = [
+    { name: "Home", url: "https://only-text.com" },
+    { name: "AI Text Improver", url: "https://only-text.com/ai-text-improver" }
+  ]
 
   const howToSteps = [
     {
@@ -106,6 +112,7 @@ export default function AITextImproverPage() {
         description="Step-by-step guide to enhancing your writing using our free AI text improver"
         totalTime="PT2M"
       />
+      <BreadcrumbSchema items={breadcrumbs} />
       <ToolLayout
         title="Enhance Your Writing: The Best AI Text Improver for Clearer Content"
         description="Free AI text improver for enhancing written content with advanced AI. Improve clarity, rewrite paragraphs, fix punctuation errors. Perfect for academic writing and professional content creation."

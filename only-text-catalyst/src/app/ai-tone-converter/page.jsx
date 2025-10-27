@@ -11,11 +11,17 @@ import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
 import { SoftwareApplicationSchema } from '@/components/software-schema'
 import { HowToSchema } from '@/components/howto-schema'
+import { BreadcrumbSchema } from '@/components/breadcrumb-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, ChatBubbleLeftRightIcon, UserGroupIcon, PencilSquareIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AIToneConverterPage() {
   const [selectedTone, setSelectedTone] = useState('professional')
   const { toasts, showToast } = useToast()
+
+  const breadcrumbs = [
+    { name: "Home", url: "https://only-text.com" },
+    { name: "AI Tone Converter", url: "https://only-text.com/ai-tone-converter" }
+  ]
 
   const howToSteps = [
     {
@@ -140,6 +146,7 @@ export default function AIToneConverterPage() {
         description="Step-by-step guide to changing your writing tone using our free AI tone converter"
         totalTime="PT2M"
       />
+      <BreadcrumbSchema items={breadcrumbs} />
       <ToolLayout
         title="The Best AI Tone Converter for Effortless Text Transformation"
         description="Free AI tone converter for rewriting paragraphs and articles with desired tone. Adjust tone for academic papers, business documents, social media posts. Transform text with persuasive language, enhance readability, save time with AI-powered tool."

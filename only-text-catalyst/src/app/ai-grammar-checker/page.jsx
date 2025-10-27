@@ -11,10 +11,16 @@ import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
 import { SoftwareApplicationSchema } from '@/components/software-schema'
 import { HowToSchema } from '@/components/howto-schema'
+import { BreadcrumbSchema } from '@/components/breadcrumb-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, AcademicCapIcon, BriefcaseIcon, ChatBubbleLeftRightIcon, DocumentTextIcon } from '@heroicons/react/20/solid'
 
 export default function AIGrammarCheckerPage() {
   const { toasts, showToast } = useToast()
+
+  const breadcrumbs = [
+    { name: "Home", url: "https://only-text.com" },
+    { name: "AI Grammar Checker", url: "https://only-text.com/ai-grammar-checker" }
+  ]
 
   const howToSteps = [
     {
@@ -107,6 +113,7 @@ export default function AIGrammarCheckerPage() {
         description="Step-by-step guide to checking grammar using our free AI grammar checker"
         totalTime="PT2M"
       />
+      <BreadcrumbSchema items={breadcrumbs} />
       <ToolLayout
         title="Free AI Grammar Checker: Fix Grammar, Spelling & Punctuation Instantly"
         description="Free AI grammar checker powered by Claude Haiku 4.5. Check grammar, spelling, and punctuation instantly with 99%+ accuracy. No payment required - completely free online grammar checker for all your writing needs."
