@@ -6,7 +6,8 @@ import { useToast, ToastContainer } from '@/components/toast'
 import { Heading } from '@/components/heading'
 import { Text } from '@/components/text'
 import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from '@/components/table'
-import { SoftwareApplicationSchema, FAQSchema } from '@/components/structured-data'
+import { Badge } from '@/components/badge'
+import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, AcademicCapIcon, BriefcaseIcon, ChatBubbleLeftRightIcon, DocumentTextIcon } from '@heroicons/react/20/solid'
 
 export default function AIGrammarCheckerPage() {
   const { toasts, showToast } = useToast()
@@ -45,16 +46,74 @@ export default function AIGrammarCheckerPage() {
           demoText="Their going too the store tommorow to by some grocerys. Its important that they dont forget there shopping list."
         />
 
-        {/* Introduction Section */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-4">Introduction to Grammar Checkers</Heading>
-          <div className="rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 p-6 dark:from-zinc-800 dark:to-zinc-900">
-            <Text className="mb-4 text-zinc-700 dark:text-zinc-300">
+        {/* Introduction Section with Hero Layout */}
+        <div className="relative isolate mt-12 overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-6 py-16 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
+          <div className="absolute inset-0 -z-10 overflow-hidden opacity-20">
+            <svg
+              aria-hidden="true"
+              className="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 stroke-zinc-200 dark:stroke-zinc-700"
+            >
+              <defs>
+                <pattern
+                  x="50%"
+                  y={-1}
+                  id="grammar-pattern"
+                  width={200}
+                  height={200}
+                  patternUnits="userSpaceOnUse"
+                >
+                  <path d="M100 200V.5M.5 .5H200" fill="none" />
+                </pattern>
+              </defs>
+              <rect fill="url(#grammar-pattern)" width="100%" height="100%" strokeWidth={0} />
+            </svg>
+          </div>
+          
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-6 flex items-center gap-3">
+              <Badge color="blue">New</Badge>
+              <Badge color="green">Completely Free</Badge>
+              <Badge color="purple">AI-Powered</Badge>
+            </div>
+            
+            <Heading level={2} className="mb-6 text-3xl font-bold">
+              Introduction to Grammar Checkers
+            </Heading>
+            
+            <Text className="mb-6 text-lg text-zinc-700 dark:text-zinc-300">
               Discover the power of grammar checkers in improving writing skills and overall clarity. Our free AI grammar checker helps you detect grammatical errors, punctuation errors, and spelling mistakes in your written content. Whether you're working on academic papers, professional writing, or just want to avoid mistakes in your daily writing, our tool provides instant feedback to help you correct grammar, spelling, and punctuation with just one click.
             </Text>
-            <Text className="text-zinc-700 dark:text-zinc-300">
-              Understanding the importance of correct grammar, spelling, and punctuation in writing is essential for effective communication. Our online grammar checker ensures your writing is error-free and maintains academic integrity while helping you develop better writing skills through the writing process.
-            </Text>
+            
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <SparklesIcon className="h-6 w-6 flex-none text-blue-600 dark:text-blue-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">AI-Powered</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Claude 4.5</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <BoltIcon className="h-6 w-6 flex-none text-yellow-600 dark:text-yellow-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Lightning Fast</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">1-3 seconds</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <ShieldCheckIcon className="h-6 w-6 flex-none text-green-600 dark:text-green-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">100% Private</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">No data stored</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <CheckCircleIcon className="h-6 w-6 flex-none text-emerald-600 dark:text-emerald-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">99%+ Accuracy</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Best in class</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -89,38 +148,67 @@ export default function AIGrammarCheckerPage() {
           </div>
         </div>
 
-        {/* Features Section */}
+        {/* Features Section with Icons */}
         <div className="mt-12">
           <Heading level={2} className="mb-6">Features of a Comprehensive Grammar Checker</Heading>
-          <div className="space-y-4">
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 transition-all hover:shadow-lg dark:from-blue-900/20 dark:to-cyan-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-blue-100 p-3 dark:bg-blue-900/50">
+                <CheckCircleIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
               <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Advanced Grammar Checking</h3>
               <Text className="text-zinc-600 dark:text-zinc-400">
                 Our AI grammar checker detects grammatical errors, punctuation errors, and spelling mistakes with exceptional accuracy. It analyzes sentence structure, identifies misspelled words, and corrects punctuation to ensure your writing is error-free.
               </Text>
             </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 p-6 transition-all hover:shadow-lg dark:from-purple-900/20 dark:to-pink-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-purple-100 p-3 dark:bg-purple-900/50">
+                <SparklesIcon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              </div>
               <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">AI-Powered Technology</h3>
               <Text className="text-zinc-600 dark:text-zinc-400">
                 Powered by cutting-edge AI technology (Claude Haiku 4.5), our free AI grammar checker provides accurate and instant feedback. The AI understands context, sentence structure, and complex sentences to deliver superior grammar check results.
               </Text>
             </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 p-6 transition-all hover:shadow-lg dark:from-green-900/20 dark:to-emerald-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-green-100 p-3 dark:bg-green-900/50">
+                <ChatBubbleLeftRightIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
+              </div>
               <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Multiple Languages Support</h3>
               <Text className="text-zinc-600 dark:text-zinc-400">
                 While currently optimized for English, our grammar checker supports various writing styles and dialects. Perfect for writers working in different languages and contexts.
               </Text>
             </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 p-6 transition-all hover:shadow-lg dark:from-amber-900/20 dark:to-orange-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-amber-100 p-3 dark:bg-amber-900/50">
+                <BoltIcon className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+              </div>
               <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">User-Friendly Interface</h3>
               <Text className="text-zinc-600 dark:text-zinc-400">
                 Simple text box interface - just paste your writing and click to check grammar. No complex editing tools or learning curve. It's an essential tool for writers of all skill levels.
               </Text>
             </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-rose-50 to-red-50 p-6 transition-all hover:shadow-lg dark:from-rose-900/20 dark:to-red-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-rose-100 p-3 dark:bg-rose-900/50">
+                <ShieldCheckIcon className="h-6 w-6 text-rose-600 dark:text-rose-400" />
+              </div>
               <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Completely Free</h3>
               <Text className="text-zinc-600 dark:text-zinc-400">
                 No payment required, no hidden fees. Our free grammar checker is completely free to use with all features available. Unlike other tools, there's no subscription needed.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-50 to-violet-50 p-6 transition-all hover:shadow-lg dark:from-indigo-900/20 dark:to-violet-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-indigo-100 p-3 dark:bg-indigo-900/50">
+                <DocumentTextIcon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Works Everywhere</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Use our grammar checker for emails, documents, academic papers, social media posts, and more. It's the essential tool for all your writing needs.
               </Text>
             </div>
           </div>
@@ -142,30 +230,53 @@ export default function AIGrammarCheckerPage() {
           </div>
         </div>
 
-        {/* Importance of Correct Grammar */}
+        {/* Importance of Correct Grammar with Icons */}
         <div className="mt-12">
           <Heading level={2} className="mb-6">Importance of Correct Grammar</Heading>
           <div className="grid gap-6 sm:grid-cols-2">
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <h3 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-white">Academic Integrity</h3>
+            <div className="group relative overflow-hidden rounded-xl border border-zinc-200 bg-white p-6 transition-all hover:border-blue-300 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-blue-600">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="rounded-lg bg-blue-100 p-2 dark:bg-blue-900/50">
+                  <AcademicCapIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Academic Integrity</h3>
+              </div>
               <Text className="text-zinc-600 dark:text-zinc-400">
                 Ensure academic integrity and credibility with error-free writing. Our grammar checker helps you maintain high standards in academic papers and research, avoiding grammatical errors that could impact your work.
               </Text>
             </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <h3 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-white">Professional Writing</h3>
+            
+            <div className="group relative overflow-hidden rounded-xl border border-zinc-200 bg-white p-6 transition-all hover:border-purple-300 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-purple-600">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="rounded-lg bg-purple-100 p-2 dark:bg-purple-900/50">
+                  <BriefcaseIcon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Professional Writing</h3>
+              </div>
               <Text className="text-zinc-600 dark:text-zinc-400">
                 Enhance professional writing and communication with correct grammar and spelling. Fix grammar issues to present polished, mistake-free written content that reflects your professionalism.
               </Text>
             </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <h3 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-white">Improve Clarity</h3>
+            
+            <div className="group relative overflow-hidden rounded-xl border border-zinc-200 bg-white p-6 transition-all hover:border-green-300 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-green-600">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="rounded-lg bg-green-100 p-2 dark:bg-green-900/50">
+                  <DocumentTextIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Improve Clarity</h3>
+              </div>
               <Text className="text-zinc-600 dark:text-zinc-400">
                 Improve overall clarity and readability of written content. Correct punctuation, proper spelling, and correct grammar ensure your ideas are communicated effectively.
               </Text>
             </div>
-            <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
-              <h3 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-white">Avoid Mistakes</h3>
+            
+            <div className="group relative overflow-hidden rounded-xl border border-zinc-200 bg-white p-6 transition-all hover:border-amber-300 hover:shadow-lg dark:border-zinc-700 dark:bg-zinc-800 dark:hover:border-amber-600">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="rounded-lg bg-amber-100 p-2 dark:bg-amber-900/50">
+                  <ShieldCheckIcon className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">Avoid Mistakes</h3>
+              </div>
               <Text className="text-zinc-600 dark:text-zinc-400">
                 Avoid mistakes and errors that can detract from your message. Develop good writing habits with consistent practice and feedback from our grammar checker.
               </Text>
@@ -413,50 +524,6 @@ export default function AIGrammarCheckerPage() {
       </ToolLayout>
 
       <ToastContainer toasts={toasts} />
-      
-      {/* Structured Data for SEO */}
-      <SoftwareApplicationSchema
-        name="AI Grammar Checker"
-        description="Free AI grammar checker powered by cutting-edge AI technology. Detect and fix grammatical errors, punctuation errors, and spelling mistakes instantly."
-        url="https://only-text.com/ai-grammar-checker"
-      />
-      
-      <FAQSchema
-        questions={[
-          {
-            question: "How accurate is the AI grammar checker?",
-            answer: "Our AI uses Claude Haiku 4.5, which has near-frontier intelligence. It catches 99%+ of grammar, spelling, and punctuation errors - more accurate than most traditional grammar checkers. The cutting-edge AI technology ensures you get the best online grammar checker experience."
-          },
-          {
-            question: "Does it work for academic writing?",
-            answer: "Yes! The AI understands formal academic writing and will maintain the appropriate tone while fixing errors. Perfect for academic papers, essays, research papers, and dissertations. It helps maintain academic integrity while improving your writing skills."
-          },
-          {
-            question: "Is my text data safe?",
-            answer: "Absolutely! Your text is processed securely and never stored. We use enterprise-grade encryption and don't use your data for AI training. Your written content remains completely private."
-          },
-          {
-            question: "Can it check multiple languages?",
-            answer: "Currently optimized for English. We're working on adding support for more languages in future updates to help writers in different languages improve their writing."
-          },
-          {
-            question: "Is this really completely free?",
-            answer: "Yes! No payment required, no hidden fees, no subscription. Our free grammar checker is completely free to use with all features available. It's the best free grammar checker you'll find online."
-          },
-          {
-            question: "What types of errors does it detect?",
-            answer: "Our grammar checker detects grammatical errors, punctuation errors, spelling mistakes, punctuation mistakes, misspelled words, subject-verb agreement issues, comma splices, and more. It's a comprehensive tool for all your grammar checking needs."
-          },
-          {
-            question: "How does it compare to other grammar checkers?",
-            answer: "Our free AI grammar checker uses cutting-edge AI technology (Claude Haiku 4.5) and is faster (1-3 seconds) than most competitors. It's completely free, user-friendly, and provides instant feedback - making it one of the best online grammar checker tools available."
-          },
-          {
-            question: "Can I use it for professional writing?",
-            answer: "Absolutely! Our grammar checker is perfect for professional writing, business documents, emails, reports, and more. It helps you avoid mistakes and present error-free, polished written content that enhances your professional image."
-          }
-        ]}
-      />
     </>
   )
 }
