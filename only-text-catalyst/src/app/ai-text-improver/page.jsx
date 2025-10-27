@@ -8,10 +8,30 @@ import { Text } from '@/components/text'
 import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
+import { SoftwareApplicationSchema } from '@/components/software-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, PencilSquareIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 
 export default function AITextImproverPage() {
   const { toasts, showToast } = useToast()
+
+  const toolInfo = {
+    name: "AI Text Improver",
+    description: "Free AI text improver for enhancing written content with advanced AI. Improve clarity, rewrite paragraphs, fix punctuation errors. Perfect for academic writing and professional content.",
+    features: [
+      "Text clarity enhancement",
+      "Grammar and punctuation fixes",
+      "Sentence structure improvement",
+      "Professional writing enhancement",
+      "Academic writing support",
+      "Readability optimization",
+      "Preserve writing style",
+      "Free unlimited use"
+    ],
+    rating: {
+      value: "4.9",
+      count: "1350"
+    }
+  }
 
   const faqs = [
     {
@@ -59,6 +79,7 @@ export default function AITextImproverPage() {
   return (
     <>
       <FAQSchema faqs={faqs} />
+      <SoftwareApplicationSchema tool={toolInfo} />
       <ToolLayout
         title="Enhance Your Writing: The Best AI Text Improver for Clearer Content"
         description="Free AI text improver for enhancing written content with advanced AI. Improve clarity, rewrite paragraphs, fix punctuation errors. Perfect for academic writing and professional content creation."

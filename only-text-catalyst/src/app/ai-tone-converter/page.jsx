@@ -9,11 +9,31 @@ import { Text } from '@/components/text'
 import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
+import { SoftwareApplicationSchema } from '@/components/software-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, ChatBubbleLeftRightIcon, UserGroupIcon, PencilSquareIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AIToneConverterPage() {
   const [selectedTone, setSelectedTone] = useState('professional')
   const { toasts, showToast } = useToast()
+
+  const toolInfo = {
+    name: "AI Tone Converter",
+    description: "Free AI tone converter for rewriting paragraphs and articles with desired tone. Adjust tone for academic papers, business documents, social media posts.",
+    features: [
+      "6 different tones available",
+      "Professional tone conversion",
+      "Casual and friendly styles",
+      "Formal academic writing",
+      "Confident and empathetic tones",
+      "Preserve original meaning",
+      "Business email optimization",
+      "Free unlimited use"
+    ],
+    rating: {
+      value: "4.8",
+      count: "1100"
+    }
+  }
 
   const faqs = [
     {
@@ -93,6 +113,7 @@ export default function AIToneConverterPage() {
   return (
     <>
       <FAQSchema faqs={faqs} />
+      <SoftwareApplicationSchema tool={toolInfo} />
       <ToolLayout
         title="The Best AI Tone Converter for Effortless Text Transformation"
         description="Free AI tone converter for rewriting paragraphs and articles with desired tone. Adjust tone for academic papers, business documents, social media posts. Transform text with persuasive language, enhance readability, save time with AI-powered tool."

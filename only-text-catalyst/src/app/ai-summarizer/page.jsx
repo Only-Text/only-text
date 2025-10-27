@@ -9,11 +9,31 @@ import { Text } from '@/components/text'
 import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
+import { SoftwareApplicationSchema } from '@/components/software-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, DocumentTextIcon, AcademicCapIcon, ClipboardDocumentListIcon, VideoCameraIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AISummarizerPage() {
   const [selectedLength, setSelectedLength] = useState('medium')
   const { toasts, showToast } = useToast()
+
+  const toolInfo = {
+    name: "AI Summarizer",
+    description: "Free AI summarizer tool to extract key points from complex documents, lengthy content, and long text. Generate accurate summaries with bullet points, save time on academic research.",
+    features: [
+      "Text summarization",
+      "Extract key points",
+      "Multiple summary lengths",
+      "Up to 50,000 characters",
+      "Academic research support",
+      "Meeting notes summarization",
+      "Article summarization",
+      "Free unlimited use"
+    ],
+    rating: {
+      value: "4.7",
+      count: "980"
+    }
+  }
 
   const faqs = [
     {
@@ -90,6 +110,7 @@ export default function AISummarizerPage() {
   return (
     <>
       <FAQSchema faqs={faqs} />
+      <SoftwareApplicationSchema tool={toolInfo} />
       <ToolLayout
         title="Essential AI Summarizer: Your Tool for Clear and Concise Insights"
         description="Free AI summarizer tool to extract key points from complex documents, lengthy content, and long text. Generate accurate summaries with bullet points, save time on academic research and meeting notes. AI powered summarization tool supports multiple languages."

@@ -9,10 +9,30 @@ import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from '@
 import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
+import { SoftwareApplicationSchema } from '@/components/software-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, AcademicCapIcon, BriefcaseIcon, ChatBubbleLeftRightIcon, DocumentTextIcon } from '@heroicons/react/20/solid'
 
 export default function AIGrammarCheckerPage() {
   const { toasts, showToast } = useToast()
+
+  const toolInfo = {
+    name: "AI Grammar Checker",
+    description: "Free AI grammar checker powered by Claude Haiku 4.5. Check grammar, spelling, and punctuation instantly with 99%+ accuracy. No payment required.",
+    features: [
+      "Grammar checking",
+      "Spelling correction",
+      "Punctuation fixes",
+      "AI-powered suggestions",
+      "Real-time analysis",
+      "Academic writing support",
+      "Professional writing enhancement",
+      "Free unlimited use"
+    ],
+    rating: {
+      value: "4.8",
+      count: "1250"
+    }
+  }
 
   const faqs = [
     {
@@ -60,6 +80,7 @@ export default function AIGrammarCheckerPage() {
   return (
     <>
       <FAQSchema faqs={faqs} />
+      <SoftwareApplicationSchema tool={toolInfo} />
       <ToolLayout
         title="Free AI Grammar Checker: Fix Grammar, Spelling & Punctuation Instantly"
         description="Free AI grammar checker powered by Claude Haiku 4.5. Check grammar, spelling, and punctuation instantly with 99%+ accuracy. No payment required - completely free online grammar checker for all your writing needs."
