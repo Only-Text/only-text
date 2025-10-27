@@ -4,7 +4,10 @@ import { ToolLayout } from '@/components/tool-layout'
 import { AITransformTemplate } from '@/components/tool-templates'
 import { useToast, ToastContainer } from '@/components/toast'
 import { Heading } from '@/components/heading'
+import { Text } from '@/components/text'
+import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
+import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, PencilSquareIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 
 export default function AITextImproverPage() {
   const { toasts, showToast } = useToast()
@@ -43,20 +46,57 @@ export default function AITextImproverPage() {
           demoText="i think that we should maybe consider doing the project differently because the current way isnt working good"
         />
 
-        {/* How It Works */}
-        <div className="mt-12">
-          <Heading level={2} className="mb-4">How It Works</Heading>
-          <div className="rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 p-6 dark:from-zinc-800 dark:to-zinc-900">
-            <p className="mb-4 text-zinc-700 dark:text-zinc-300">
-              Our AI Text Improver uses Claude Haiku 4.5, one of the fastest and most intelligent AI models, to enhance your text:
-            </p>
-            <ul className="list-inside list-disc space-y-2 text-zinc-600 dark:text-zinc-400">
-              <li><strong>Clarity:</strong> Makes your message clearer and easier to understand</li>
-              <li><strong>Grammar:</strong> Fixes grammar and punctuation errors</li>
-              <li><strong>Flow:</strong> Improves sentence structure and readability</li>
-              <li><strong>Professionalism:</strong> Enhances tone while keeping your voice</li>
-              <li><strong>Speed:</strong> 2x faster than other AI models</li>
-            </ul>
+        {/* Introduction Hero with Gradient */}
+        <div className="relative isolate mt-12 overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 via-blue-50 to-cyan-50 px-6 py-16 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
+          <div className="mx-auto max-w-4xl">
+            <div className="mb-6 flex items-center gap-3">
+              <Badge color="purple">Free AI</Badge>
+              <Badge color="blue">Advanced AI</Badge>
+              <Badge color="cyan">Enhance Writing</Badge>
+            </div>
+            
+            <Heading level={2} className="mb-6 text-3xl font-bold">
+              Introduction to AI Text Improvement
+            </Heading>
+            
+            <Text className="mb-6 text-lg text-zinc-700 dark:text-zinc-300">
+              Discover the power of AI in enhancing your written content with advanced AI. Learn how advanced AI can inspire and enhance creativity in your writing. Improve clarity and coherence in your writing using an AI text enhancer. Explore the benefits of AI tools in rewriting paragraphs and refining your writing style.
+            </Text>
+            
+            <Text className="mb-8 text-lg text-zinc-700 dark:text-zinc-300">
+              Understand how AI can assist in academic writing and professional content creation. AI text improvers can be used to enhance various types of articles, including academic papers, blog posts, and professional publications. Transform your input text into error-free, engaging content.
+            </Text>
+            
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <SparklesIcon className="h-6 w-6 flex-none text-purple-600 dark:text-purple-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">AI Powered</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Advanced AI</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <BoltIcon className="h-6 w-6 flex-none text-blue-600 dark:text-blue-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Lightning Fast</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">1-3 seconds</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <LightBulbIcon className="h-6 w-6 flex-none text-cyan-600 dark:text-cyan-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Improve Clarity</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">Better readability</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg bg-white/80 p-4 dark:bg-zinc-800/80">
+                <CheckCircleIcon className="h-6 w-6 flex-none text-green-600 dark:text-green-400" />
+                <div>
+                  <div className="font-semibold text-zinc-900 dark:text-white">Error Free</div>
+                  <div className="text-sm text-zinc-600 dark:text-zinc-400">High quality</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -91,8 +131,80 @@ export default function AITextImproverPage() {
           </div>
         </div>
 
+        {/* Benefits Section */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl text-center">
+            <Heading level={2} className="mb-4 text-3xl font-bold">Benefits of AI Text Improvement</Heading>
+            <Text className="mb-10 text-lg text-zinc-600 dark:text-zinc-400">
+              AI text improvement tools help enhance the logical flow of your writing. They assist in identifying and correcting punctuation mistakes, grammar errors, and spelling issues. Create professional content that engages your target audience and conveys your message effectively.
+            </Text>
+          </div>
+          
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-50 to-blue-50 p-6 transition-all hover:shadow-lg dark:from-purple-900/20 dark:to-blue-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-purple-100 p-3 dark:bg-purple-900/50">
+                <LightBulbIcon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Improve Clarity</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Enhance the logical flow and coherence of your writing. Improved clarity leads to better readability and understanding of your written content.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 transition-all hover:shadow-lg dark:from-blue-900/20 dark:to-cyan-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-blue-100 p-3 dark:bg-blue-900/50">
+                <CheckCircleIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Error Free Writing</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Fix punctuation errors, grammar mistakes, and spelling issues. Ensure error-free writing with spell check and grammar tools built-in.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-cyan-50 to-teal-50 p-6 transition-all hover:shadow-lg dark:from-cyan-900/20 dark:to-teal-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-cyan-100 p-3 dark:bg-cyan-900/50">
+                <DocumentTextIcon className="h-6 w-6 text-cyan-600 dark:text-cyan-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Professional Content</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Create professional content that engages your target audience. Perfect for academic writing, business documents, and articles.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-teal-50 to-green-50 p-6 transition-all hover:shadow-lg dark:from-teal-900/20 dark:to-green-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-teal-100 p-3 dark:bg-teal-900/50">
+                <PencilSquareIcon className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Rewrite Paragraphs</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Easily rewrite paragraphs and enhance sentence structures. Transform your original text while preserving the core message and meaning.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 p-6 transition-all hover:shadow-lg dark:from-green-900/20 dark:to-emerald-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-green-100 p-3 dark:bg-green-900/50">
+                <AcademicCapIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Academic & Creative</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Perfect for academic writing, creative writing, and research papers. Enhance creativity while maintaining academic standards.
+              </Text>
+            </div>
+            
+            <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-50 to-lime-50 p-6 transition-all hover:shadow-lg dark:from-emerald-900/20 dark:to-lime-900/20">
+              <div className="mb-4 inline-flex rounded-lg bg-emerald-100 p-3 dark:bg-emerald-900/50">
+                <BoltIcon className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <h3 className="mb-2 font-semibold text-zinc-900 dark:text-white">Save Time</h3>
+              <Text className="text-zinc-600 dark:text-zinc-400">
+                Streamline the editing process and save time. Get instant suggestions to enhance overall quality and readability of your text.
+              </Text>
+            </div>
+          </div>
+        </div>
+
         {/* Use Cases */}
-        <div className="mt-12">
+        <div className="mt-16">
           <Heading level={2} className="mb-6">Perfect For</Heading>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
