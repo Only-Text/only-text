@@ -7,6 +7,7 @@ import { Heading } from '@/components/heading'
 import { Text } from '@/components/text'
 import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from '@/components/table'
 import { Badge } from '@/components/badge'
+import { RelatedTools } from '@/components/related-tools'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, AcademicCapIcon, BriefcaseIcon, ChatBubbleLeftRightIcon, DocumentTextIcon } from '@heroicons/react/20/solid'
 
 export default function AIGrammarCheckerPage() {
@@ -153,6 +154,9 @@ export default function AIGrammarCheckerPage() {
             </div>
           </div>
         </div>
+
+        {/* Related Tools - AI Powered & Basic Tools */}
+        <RelatedTools currentPath="/ai-grammar-checker" />
 
         {/* Comparison Table - Moved up */}
         <div className="mt-16">

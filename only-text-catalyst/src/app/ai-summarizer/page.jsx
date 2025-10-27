@@ -7,6 +7,7 @@ import { useToast, ToastContainer } from '@/components/toast'
 import { Heading } from '@/components/heading'
 import { Text } from '@/components/text'
 import { Badge } from '@/components/badge'
+import { RelatedTools } from '@/components/related-tools'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, DocumentTextIcon, AcademicCapIcon, ClipboardDocumentListIcon, VideoCameraIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AISummarizerPage() {
@@ -267,6 +268,9 @@ export default function AISummarizerPage() {
             </div>
           </div>
         </div>
+
+        {/* Related Tools - AI Powered & Basic Tools */}
+        <RelatedTools currentPath="/ai-summarizer" />
 
         {/* Use Cases */}
         <div className="mt-12">
