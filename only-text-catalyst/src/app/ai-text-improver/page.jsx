@@ -9,10 +9,30 @@ import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
 import { SoftwareApplicationSchema } from '@/components/software-schema'
+import { HowToSchema } from '@/components/howto-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, PencilSquareIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 
 export default function AITextImproverPage() {
   const { toasts, showToast } = useToast()
+
+  const howToSteps = [
+    {
+      name: "Paste Your Text",
+      text: "Copy and paste your text into the input box. You can improve any written content: emails, essays, articles, or professional documents."
+    },
+    {
+      name: "Click Improve Text",
+      text: "Click the 'Improve Text' button and the AI will analyze your writing for clarity, grammar, and readability improvements."
+    },
+    {
+      name: "Review Enhancements",
+      text: "Review the enhanced text with improved clarity, better sentence structures, and fixed punctuation errors."
+    },
+    {
+      name: "Use Improved Text",
+      text: "Copy the improved, professional text and use it in your documents, emails, or academic papers."
+    }
+  ]
 
   const toolInfo = {
     name: "AI Text Improver",
@@ -80,6 +100,12 @@ export default function AITextImproverPage() {
     <>
       <FAQSchema faqs={faqs} />
       <SoftwareApplicationSchema tool={toolInfo} />
+      <HowToSchema 
+        steps={howToSteps}
+        name="How to Improve Text with AI"
+        description="Step-by-step guide to enhancing your writing using our free AI text improver"
+        totalTime="PT2M"
+      />
       <ToolLayout
         title="Enhance Your Writing: The Best AI Text Improver for Clearer Content"
         description="Free AI text improver for enhancing written content with advanced AI. Improve clarity, rewrite paragraphs, fix punctuation errors. Perfect for academic writing and professional content creation."

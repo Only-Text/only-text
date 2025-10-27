@@ -10,11 +10,31 @@ import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
 import { SoftwareApplicationSchema } from '@/components/software-schema'
+import { HowToSchema } from '@/components/howto-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, DocumentTextIcon, AcademicCapIcon, ClipboardDocumentListIcon, VideoCameraIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AISummarizerPage() {
   const [selectedLength, setSelectedLength] = useState('medium')
   const { toasts, showToast } = useToast()
+
+  const howToSteps = [
+    {
+      name: "Paste Your Text",
+      text: "Copy and paste your long text, article, or document into the input box. You can summarize up to 50,000 characters."
+    },
+    {
+      name: "Select Summary Length",
+      text: "Choose your preferred summary length: short (1-2 sentences), medium (3-5 sentences), or long (1-2 paragraphs)."
+    },
+    {
+      name: "Click Summarize",
+      text: "Click the 'Summarize' button and the AI will analyze your text and extract the key points and essential information."
+    },
+    {
+      name: "Use Your Summary",
+      text: "Copy the concise summary and use it for your research, notes, or quick understanding of the content."
+    }
+  ]
 
   const toolInfo = {
     name: "AI Summarizer",
@@ -111,6 +131,12 @@ export default function AISummarizerPage() {
     <>
       <FAQSchema faqs={faqs} />
       <SoftwareApplicationSchema tool={toolInfo} />
+      <HowToSchema 
+        steps={howToSteps}
+        name="How to Summarize Text with AI"
+        description="Step-by-step guide to summarizing long text using our free AI summarizer"
+        totalTime="PT2M"
+      />
       <ToolLayout
         title="Essential AI Summarizer: Your Tool for Clear and Concise Insights"
         description="Free AI summarizer tool to extract key points from complex documents, lengthy content, and long text. Generate accurate summaries with bullet points, save time on academic research and meeting notes. AI powered summarization tool supports multiple languages."

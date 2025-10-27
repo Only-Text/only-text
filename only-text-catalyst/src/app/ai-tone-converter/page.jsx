@@ -10,11 +10,31 @@ import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
 import { SoftwareApplicationSchema } from '@/components/software-schema'
+import { HowToSchema } from '@/components/howto-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, ChatBubbleLeftRightIcon, UserGroupIcon, PencilSquareIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AIToneConverterPage() {
   const [selectedTone, setSelectedTone] = useState('professional')
   const { toasts, showToast } = useToast()
+
+  const howToSteps = [
+    {
+      name: "Paste Your Text",
+      text: "Copy and paste your text into the input box. You can convert any type of writing: emails, articles, social media posts, or documents."
+    },
+    {
+      name: "Select Desired Tone",
+      text: "Choose from 6 different tones: Professional, Casual, Friendly, Formal, Confident, or Empathetic based on your target audience."
+    },
+    {
+      name: "Click Convert Tone",
+      text: "Click the 'Convert Tone' button and the AI will rewrite your text in the selected tone while preserving your original meaning."
+    },
+    {
+      name: "Use Rewritten Text",
+      text: "Copy the tone-adjusted text and use it for your business emails, academic papers, or social media posts."
+    }
+  ]
 
   const toolInfo = {
     name: "AI Tone Converter",
@@ -114,6 +134,12 @@ export default function AIToneConverterPage() {
     <>
       <FAQSchema faqs={faqs} />
       <SoftwareApplicationSchema tool={toolInfo} />
+      <HowToSchema 
+        steps={howToSteps}
+        name="How to Convert Text Tone with AI"
+        description="Step-by-step guide to changing your writing tone using our free AI tone converter"
+        totalTime="PT2M"
+      />
       <ToolLayout
         title="The Best AI Tone Converter for Effortless Text Transformation"
         description="Free AI tone converter for rewriting paragraphs and articles with desired tone. Adjust tone for academic papers, business documents, social media posts. Transform text with persuasive language, enhance readability, save time with AI-powered tool."

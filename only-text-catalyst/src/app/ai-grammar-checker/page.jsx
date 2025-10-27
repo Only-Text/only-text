@@ -10,10 +10,30 @@ import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
 import { FAQSchema } from '@/components/faq-schema'
 import { SoftwareApplicationSchema } from '@/components/software-schema'
+import { HowToSchema } from '@/components/howto-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, AcademicCapIcon, BriefcaseIcon, ChatBubbleLeftRightIcon, DocumentTextIcon } from '@heroicons/react/20/solid'
 
 export default function AIGrammarCheckerPage() {
   const { toasts, showToast } = useToast()
+
+  const howToSteps = [
+    {
+      name: "Paste Your Text",
+      text: "Copy and paste your text into the input box. You can check any type of writing: emails, essays, articles, or documents."
+    },
+    {
+      name: "Click Check Grammar",
+      text: "Click the 'Check Grammar' button to analyze your text. The AI will scan for grammar, spelling, and punctuation errors."
+    },
+    {
+      name: "Review Suggestions",
+      text: "Review the AI-powered grammar suggestions and corrections. The tool highlights errors and provides instant fixes."
+    },
+    {
+      name: "Copy Corrected Text",
+      text: "Copy the corrected, error-free text and use it in your documents, emails, or wherever you need professional writing."
+    }
+  ]
 
   const toolInfo = {
     name: "AI Grammar Checker",
@@ -81,6 +101,12 @@ export default function AIGrammarCheckerPage() {
     <>
       <FAQSchema faqs={faqs} />
       <SoftwareApplicationSchema tool={toolInfo} />
+      <HowToSchema 
+        steps={howToSteps}
+        name="How to Check Grammar with AI"
+        description="Step-by-step guide to checking grammar using our free AI grammar checker"
+        totalTime="PT2M"
+      />
       <ToolLayout
         title="Free AI Grammar Checker: Fix Grammar, Spelling & Punctuation Instantly"
         description="Free AI grammar checker powered by Claude Haiku 4.5. Check grammar, spelling, and punctuation instantly with 99%+ accuracy. No payment required - completely free online grammar checker for all your writing needs."
