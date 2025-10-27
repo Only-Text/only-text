@@ -8,11 +8,39 @@ import { Heading } from '@/components/heading'
 import { Text } from '@/components/text'
 import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
+import { FAQSchema } from '@/components/faq-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, ChatBubbleLeftRightIcon, UserGroupIcon, PencilSquareIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AIToneConverterPage() {
   const [selectedTone, setSelectedTone] = useState('professional')
   const { toasts, showToast } = useToast()
+
+  const faqs = [
+    {
+      question: "Does it change the meaning of my text?",
+      answer: "No! The AI preserves your core message and meaning. It only adjusts the tone, word choice, and style to match your selected tone while keeping your original intent intact."
+    },
+    {
+      question: "Can I use it for business emails?",
+      answer: "Absolutely! The tone converter is perfect for business documents, professional emails, and formal communication. Choose the professional or formal tone for business contexts."
+    },
+    {
+      question: "How many tones are available?",
+      answer: "We offer 6 different tones: Professional, Casual, Friendly, Formal, Confident, and Empathetic. Each tone is optimized for different contexts and target audiences."
+    },
+    {
+      question: "Is it free to use?",
+      answer: "Yes! Our AI tone converter is completely free with no payment required. No signup, no subscription, unlimited use."
+    },
+    {
+      question: "Can it help with academic writing?",
+      answer: "Yes! Use the formal tone for academic papers and research papers. It helps maintain appropriate academic language while ensuring clarity and readability."
+    },
+    {
+      question: "Does it work for social media posts?",
+      answer: "Perfect for social media! Use casual or friendly tones to create engaging social media posts that resonate with your audience."
+    }
+  ]
 
   const tones = [
     { id: 'professional', name: 'Professional', emoji: '💼', description: 'Business-appropriate and formal' },
@@ -64,6 +92,7 @@ export default function AIToneConverterPage() {
 
   return (
     <>
+      <FAQSchema faqs={faqs} />
       <ToolLayout
         title="The Best AI Tone Converter for Effortless Text Transformation"
         description="Free AI tone converter for rewriting paragraphs and articles with desired tone. Adjust tone for academic papers, business documents, social media posts. Transform text with persuasive language, enhance readability, save time with AI-powered tool."

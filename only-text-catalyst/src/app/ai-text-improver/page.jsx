@@ -7,10 +7,38 @@ import { Heading } from '@/components/heading'
 import { Text } from '@/components/text'
 import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
+import { FAQSchema } from '@/components/faq-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, DocumentTextIcon, AcademicCapIcon, PencilSquareIcon, LightBulbIcon } from '@heroicons/react/20/solid'
 
 export default function AITextImproverPage() {
   const { toasts, showToast } = useToast()
+
+  const faqs = [
+    {
+      question: "How does the AI text improver work?",
+      answer: "Our AI text improver uses Claude Haiku 4.5 to enhance your written content. It improves clarity, fixes grammar and punctuation errors, enhances sentence structures, and makes your writing more professional while preserving your core message."
+    },
+    {
+      question: "Can it help with academic writing?",
+      answer: "Yes! Perfect for academic writing, research papers, and essays. It enhances clarity while maintaining academic standards and formal tone appropriate for scholarly work."
+    },
+    {
+      question: "Does it change my writing style?",
+      answer: "No, it enhances your writing while preserving your unique voice. The AI improves clarity, grammar, and readability without completely rewriting in a different style."
+    },
+    {
+      question: "Is it free to use?",
+      answer: "Yes! Our AI text improver is completely free with no payment required. No signup, no subscription, unlimited access to all features."
+    },
+    {
+      question: "What types of errors does it fix?",
+      answer: "It fixes punctuation errors, grammar mistakes, spelling issues, improves sentence structures, enhances logical flow, and increases overall quality and readability of your text."
+    },
+    {
+      question: "Can I use it for professional content?",
+      answer: "Absolutely! Perfect for professional content, business documents, emails, and articles. It helps create error-free, engaging content for your target audience."
+    }
+  ]
 
   const handleImprove = async (text) => {
     const response = await fetch('/api/ai/improve', {
@@ -30,6 +58,7 @@ export default function AITextImproverPage() {
 
   return (
     <>
+      <FAQSchema faqs={faqs} />
       <ToolLayout
         title="Enhance Your Writing: The Best AI Text Improver for Clearer Content"
         description="Free AI text improver for enhancing written content with advanced AI. Improve clarity, rewrite paragraphs, fix punctuation errors. Perfect for academic writing and professional content creation."

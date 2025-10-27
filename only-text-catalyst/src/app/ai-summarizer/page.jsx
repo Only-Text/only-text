@@ -8,11 +8,39 @@ import { Heading } from '@/components/heading'
 import { Text } from '@/components/text'
 import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
+import { FAQSchema } from '@/components/faq-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, DocumentTextIcon, AcademicCapIcon, ClipboardDocumentListIcon, VideoCameraIcon, LanguageIcon } from '@heroicons/react/20/solid'
 
 export default function AISummarizerPage() {
   const [selectedLength, setSelectedLength] = useState('medium')
   const { toasts, showToast } = useToast()
+
+  const faqs = [
+    {
+      question: "How does the AI summarizer work?",
+      answer: "Our AI summarizer uses Claude Haiku 4.5 to analyze your text and extract the most important points. It can handle up to 50,000 characters and provides summaries in three lengths: short, medium, or long."
+    },
+    {
+      question: "What types of content can I summarize?",
+      answer: "You can summarize articles, research papers, documents, meeting notes, academic papers, blog posts, and any other text content. Perfect for lengthy content that needs quick understanding."
+    },
+    {
+      question: "Is the summarizer free to use?",
+      answer: "Yes! Our AI summarizer is completely free with no payment required. No signup, no subscription, no hidden fees."
+    },
+    {
+      question: "How accurate are the summaries?",
+      answer: "Our AI powered summarizer extracts key points with high accuracy, preserving the main ideas and essential information from your original text while creating concise summaries."
+    },
+    {
+      question: "Can I use it for academic research?",
+      answer: "Absolutely! The summarizer is perfect for academic research, helping you quickly extract key insights from research papers and academic papers. Great for study notes and literature reviews."
+    },
+    {
+      question: "What's the character limit?",
+      answer: "You can summarize up to 50,000 characters at once, which is roughly 10,000 words. Perfect for long articles and complex documents."
+    }
+  ]
 
   const lengths = [
     { id: 'short', name: 'Short', emoji: '📄', description: '1-2 sentences' },
@@ -61,6 +89,7 @@ export default function AISummarizerPage() {
 
   return (
     <>
+      <FAQSchema faqs={faqs} />
       <ToolLayout
         title="Essential AI Summarizer: Your Tool for Clear and Concise Insights"
         description="Free AI summarizer tool to extract key points from complex documents, lengthy content, and long text. Generate accurate summaries with bullet points, save time on academic research and meeting notes. AI powered summarization tool supports multiple languages."
