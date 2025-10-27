@@ -8,10 +8,38 @@ import { Text } from '@/components/text'
 import { Table, TableHead, TableBody, TableRow, TableHeader, TableCell } from '@/components/table'
 import { Badge } from '@/components/badge'
 import { RelatedTools } from '@/components/related-tools'
+import { FAQSchema } from '@/components/faq-schema'
 import { CheckCircleIcon, SparklesIcon, BoltIcon, ShieldCheckIcon, AcademicCapIcon, BriefcaseIcon, ChatBubbleLeftRightIcon, DocumentTextIcon } from '@heroicons/react/20/solid'
 
 export default function AIGrammarCheckerPage() {
   const { toasts, showToast } = useToast()
+
+  const faqs = [
+    {
+      question: "How accurate is the AI grammar checker?",
+      answer: "Our AI uses Claude Haiku 4.5, which has near-frontier intelligence. It catches 99%+ of grammar, spelling, and punctuation errors - more accurate than most traditional grammar checkers."
+    },
+    {
+      question: "Does it work for academic writing?",
+      answer: "Yes! The AI understands formal academic writing and will maintain the appropriate tone while fixing errors. Perfect for academic papers, essays, research papers, and dissertations."
+    },
+    {
+      question: "Is my text data safe?",
+      answer: "Absolutely! Your text is processed securely and never stored. We use enterprise-grade encryption and don't use your data for AI training."
+    },
+    {
+      question: "Can it check multiple languages?",
+      answer: "Currently optimized for English. We're working on adding support for more languages in future updates."
+    },
+    {
+      question: "Is this really completely free?",
+      answer: "Yes! No payment required, no hidden fees, no subscription. Our free grammar checker is completely free to use with all features available."
+    },
+    {
+      question: "What types of errors does it detect?",
+      answer: "Our grammar checker detects grammatical errors, punctuation errors, spelling mistakes, subject-verb agreement issues, comma splices, and more."
+    }
+  ]
 
   const handleCheck = async (text) => {
     const response = await fetch('/api/ai/grammar', {
@@ -31,9 +59,10 @@ export default function AIGrammarCheckerPage() {
 
   return (
     <>
+      <FAQSchema faqs={faqs} />
       <ToolLayout
-        title="The Best AI Grammar Checker - Fix Grammar & Spelling Instantly"
-        description="Free AI grammar checker powered by cutting-edge AI technology. Detect and fix grammatical errors, punctuation errors, and spelling mistakes instantly. Improve your writing skills with our completely free online grammar checker tool."
+        title="Free AI Grammar Checker: Fix Grammar, Spelling & Punctuation Instantly"
+        description="Free AI grammar checker powered by Claude Haiku 4.5. Check grammar, spelling, and punctuation instantly with 99%+ accuracy. No payment required - completely free online grammar checker for all your writing needs."
         currentPath="/ai-grammar-checker"
       >
         {/* Main Tool Interface */}
