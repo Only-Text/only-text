@@ -80,26 +80,6 @@ export default function AISummarizerPage() {
 
         {/* Introduction Hero with Gradient */}
         <div className="relative isolate mt-12 overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-50 px-6 py-16 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900">
-          <div className="absolute inset-0 -z-10 overflow-hidden opacity-20">
-            <svg
-              aria-hidden="true"
-              className="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 stroke-zinc-200 dark:stroke-zinc-700"
-            >
-              <defs>
-                <pattern
-                  x="50%"
-                  y={-1}
-                  id="summarizer-pattern"
-                  width={200}
-                  height={200}
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path d="M100 200V.5M.5 .5H200" fill="none" />
-                </pattern>
-              </defs>
-              <rect fill="url(#summarizer-pattern)" width="100%" height="100%" strokeWidth={0} />
-            </svg>
-          </div>
           
           <div className="mx-auto max-w-4xl">
             <div className="mb-6 flex items-center gap-3">
