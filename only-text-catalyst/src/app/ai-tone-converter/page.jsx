@@ -138,8 +138,52 @@ export default function AIToneConverterPage() {
         {/* Related Tools - AI Powered & Basic Tools */}
         <RelatedTools currentPath="/ai-tone-converter" />
 
+        {/* What is an AI Tone Converter */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <Heading level={2} className="mb-6 text-3xl font-bold">
+              What is an AI Tone Converter?
+            </Heading>
+            <Text className="mb-6 text-lg text-zinc-600 dark:text-zinc-400">
+              An AI tone converter is a tool that uses artificial intelligence to transform the tone of written text, allowing users to convey their desired tone. It can change the tone of sentences, paragraphs, and even entire documents, making it a valuable tool for writers and content creators.
+            </Text>
+            
+            <div className="space-y-6">
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-orange-600 dark:text-orange-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Transform Text Tone</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    With an AI tone converter, users can rephrase sentences and paragraphs in their own words, creating rewritten text that sounds natural and engaging. Transform your message for various purposes and contexts.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-red-600 dark:text-red-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Preserve Original Meaning</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    A good AI tone converter ensures that the original meaning of the text is preserved while transforming its tone. Adjust tone for different target audiences while maintaining your core message.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <CheckCircleIcon className="mt-1 h-6 w-6 flex-none text-pink-600 dark:text-pink-400" />
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Paste and Transform</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Simply paste your text into the input box, select your desired tone, and let the AI rewrite your content. Perfect for business documents, academic papers, and social media posts.
+                  </Text>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Examples */}
-        <div className="mt-12">
+        <div className="mt-16">
           <Heading level={2} className="mb-6">Tone Conversion Examples</Heading>
           <div className="space-y-6">
             <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
@@ -309,8 +353,93 @@ export default function AIToneConverterPage() {
           </div>
         </div>
 
+        {/* How to Use an AI Tone Converter */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <Heading level={2} className="mb-6 text-3xl font-bold">
+              How to Use an AI Tone Converter
+            </Heading>
+            <Text className="mb-8 text-lg text-zinc-600 dark:text-zinc-400">
+              Using an AI tone converter is straightforward, involving just a few simple steps. The process is quick and easy, and can be used to transform a wide range of text, from sentences and paragraphs to entire documents.
+            </Text>
+            
+            <div className="space-y-6">
+              <div className="flex gap-x-4">
+                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-orange-100 dark:bg-orange-900/50">
+                  <span className="text-lg font-bold text-orange-600 dark:text-orange-400">1</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Paste Your Text</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Users simply paste their text into an input box. You can paste sentences, paragraphs, or entire articles that need tone adjustment.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-red-100 dark:bg-red-900/50">
+                  <span className="text-lg font-bold text-red-600 dark:text-red-400">2</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Select Desired Tone</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Choose from professional, casual, friendly, formal, confident, or empathetic tones. Select the right tone for your target audience and context.
+                  </Text>
+                </div>
+              </div>
+              
+              <div className="flex gap-x-4">
+                <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-pink-100 dark:bg-pink-900/50">
+                  <span className="text-lg font-bold text-pink-600 dark:text-pink-400">3</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-zinc-900 dark:text-white">Generate Rewritten Text</h3>
+                  <Text className="mt-1 text-zinc-600 dark:text-zinc-400">
+                    Click a button to generate the rewritten text. The AI will transform your content while preserving meaning and creating engaging, natural-sounding text.
+                  </Text>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Finding the Right Tone */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-3xl">
+            <Heading level={2} className="mb-6 text-3xl font-bold">
+              Finding the Right Tone
+            </Heading>
+            <Text className="mb-8 text-lg text-zinc-600 dark:text-zinc-400">
+              The tone of the content is critical in conveying the intended message and engaging the target audience. AI tools can help in suggesting the right tone and language to use in different contexts.
+            </Text>
+            
+            <div className="space-y-6">
+              <div className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
+                <h3 className="mb-3 text-xl font-semibold text-zinc-900 dark:text-white">Consistent Tone Throughout</h3>
+                <Text className="text-zinc-600 dark:text-zinc-400">
+                  The tone should be consistent throughout the content, and AI can assist in maintaining a uniform tone and style. Whether you're writing for business, academic, or creative purposes, consistency helps your message resonate with readers.
+                </Text>
+              </div>
+              
+              <div className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
+                <h3 className="mb-3 text-xl font-semibold text-zinc-900 dark:text-white">Match Your Audience</h3>
+                <Text className="text-zinc-600 dark:text-zinc-400">
+                  By using AI to find the right tone, writers can create content that resonates with their audience and achieves their communication goals. Adjust tone for various purposes: formal for academic papers, persuasive for marketing, or informal for social media posts.
+                </Text>
+              </div>
+              
+              <div className="rounded-lg border border-zinc-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-800">
+                <h3 className="mb-3 text-xl font-semibold text-zinc-900 dark:text-white">Context Matters</h3>
+                <Text className="text-zinc-600 dark:text-zinc-400">
+                  Different contexts require different tones. Business documents need professional language, while creative writing allows for more flexibility. Our AI tone converter helps you adjust your message for each specific context and target audience.
+                </Text>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* FAQ - Always Expanded for SEO */}
-        <div className="mt-12">
+        <div className="mt-16">
           <Heading level={2} className="mb-6">Frequently Asked Questions</Heading>
           <div className="space-y-4">
             <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-zinc-800">
