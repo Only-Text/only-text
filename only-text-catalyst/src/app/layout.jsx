@@ -65,6 +65,19 @@ export default async function RootLayout({ children }) {
       className="text-zinc-950 antialiased lg:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:lg:bg-zinc-950"
     >
       <head>
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-13LZ4LQ68J"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-13LZ4LQ68J');
+            `,
+          }}
+        />
+        
         <link rel="preconnect" href="https://rsms.me/" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://rsms.me/" />
         <link 
