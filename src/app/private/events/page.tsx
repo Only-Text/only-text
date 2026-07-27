@@ -167,7 +167,7 @@ export default async function EventsPage({ searchParams }: Props) {
               <Regel
                 key={d.day}
                 label={d.day}
-                waarde={`${formatNumber(d.sessions)} visits, ${formatNumber(d.events)} things`}
+                waarde={`${formatNumber(d.sessions)} ${d.sessions === 1 ? 'visit' : 'visits'}, ${formatNumber(d.events)} things`}
               />
             ))}
           </>
@@ -178,7 +178,7 @@ export default async function EventsPage({ searchParams }: Props) {
           <Regel
             key={e.name}
             label={e.name}
-            waarde={`${formatNumber(e.count)} (${formatNumber(e.sessions)} visits)`}
+            waarde={`${formatNumber(e.count)} (${formatNumber(e.sessions)} ${e.sessions === 1 ? 'visit' : 'visits'})`}
           />
         ))}
 

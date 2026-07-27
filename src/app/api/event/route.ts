@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { countryFrom } from '@/lib/client-hash'
-import { ANALYTICS_EVENTS } from '@/lib/analytics'
+import { ANALYTICS_EVENTS } from '@/lib/analytics-events'
 import { createServiceClient } from '@/lib/supabase'
 
 export const runtime = 'nodejs'
@@ -59,10 +59,16 @@ export async function POST(request: Request) {
   let payload: z.infer<typeof PayloadSchema>
   try {
     payload = PayloadSchema.parse(await request.json())
-  } catch {
+  } catch (fout) {
     // Bewust 204 en geen 400. Dit is een meetendpoint: een afwijkend verzoek is
     // vaker een oude tab met verouderde code dan een aanval, en een foutmelding
     // in de console van een bezoeker is erger dan een gemiste meting.
+    //
+    // Wel loggen. Een endpoint dat stilzwijgend alles weggooit ziet er van
+    // buiten precies hetzelfde uit als een endpoint dat werkt, en dat is één
+    // keer eerder gebeurd: toen de eventlijst per ongeluk uit een clientmodule
+    // kwam, faalde elke parse en leek alles in orde.
+    console.warn('event geweigerd', fout instanceof Error ? fout.message : fout)
     return new NextResponse(null, { status: 204 })
   }
 

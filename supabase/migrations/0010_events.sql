@@ -165,34 +165,40 @@ as $$
         from venster
         where name = 'sentence_lost' and props->>'stood_ms' ~ '^[0-9]+$')),
 
+    -- Sorteren op het getal en niet op de jsonb-waarde. `order by x->>'count'`
+    -- vergelijkt tekst, en dan staat 9 boven 10 zodra het ergens druk wordt.
     'share_channels', coalesce((
-      select jsonb_agg(x order by x->>'count' desc) from (
-        select jsonb_build_object(
-                 'channel', props->>'channel',
-                 'place',   props->>'place',
-                 'count',   count(*)) as x
+      select jsonb_agg(jsonb_build_object('channel', kanaal, 'place', plek, 'count', aantal)
+                       order by aantal desc)
+      from (
+        select props->>'channel' as kanaal, props->>'place' as plek, count(*) as aantal
         from venster where name = 'share_click' and props ? 'channel'
-        group by props->>'channel', props->>'place') s), '[]'::jsonb),
+        group by 1, 2) s), '[]'::jsonb),
 
     'refusals', coalesce((
-      select jsonb_agg(x order by x->>'count' desc) from (
-        select jsonb_build_object('reason', props->>'reason', 'count', count(*)) as x
+      select jsonb_agg(jsonb_build_object('reason', reden, 'count', aantal) order by aantal desc)
+      from (
+        select props->>'reason' as reden, count(*) as aantal
         from venster where name = 'post_refused'
-        group by props->>'reason') s), '[]'::jsonb),
+        group by 1) s), '[]'::jsonb),
 
     'by_day', coalesce((
-      select jsonb_agg(x order by x->>'day') from (
-        select jsonb_build_object(
-                 'day',      to_char(date_trunc('day', created_at), 'YYYY-MM-DD'),
-                 'events',   count(*),
-                 'sessions', count(distinct session_id)) as x
-        from venster group by date_trunc('day', created_at)) s), '[]'::jsonb),
+      select jsonb_agg(jsonb_build_object(
+               'day',      to_char(dag, 'YYYY-MM-DD'),
+               'events',   aantal,
+               'sessions', sessies) order by dag)
+      from (
+        select date_trunc('day', created_at) as dag,
+               count(*) as aantal,
+               count(distinct session_id) as sessies
+        from venster group by 1) s), '[]'::jsonb),
 
     'busiest_paths', coalesce((
-      select jsonb_agg(x order by x->>'count' desc) from (
-        select jsonb_build_object('path', path, 'count', count(*)) as x
+      select jsonb_agg(jsonb_build_object('path', pad, 'count', aantal) order by aantal desc)
+      from (
+        select path as pad, count(*) as aantal
         from venster where path is not null
-        group by path order by count(*) desc limit 12) s), '[]'::jsonb)
+        group by 1 order by count(*) desc limit 12) s), '[]'::jsonb)
   );
 $$;
 

@@ -4,12 +4,13 @@ import { MotionConfig, useReducedMotion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { browserClient, sessionId } from '@/lib/supabase-browser'
-import { formatNumber, formatShortMoment } from '@/lib/format'
+import { countryName, formatNumber, formatShortMoment } from '@/lib/format'
 import { track } from '@/lib/analytics'
 import { Composer } from './composer'
 import { Erasing } from './eraser'
 import { Eye } from './eye'
 import { InkReveal } from './ink-reveal'
+import { Pin } from './pin'
 import { ReportLink } from './report-link'
 
 export type LiveMessage = {
@@ -239,12 +240,13 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
 
   return (
     <MotionConfig reducedMotion="user">
-      {/* Wie, wanneer, hoe vaak gelezen — in één korte regel boven de zin.
-          Hier stond eerst een volzin met land, standtijd tot op de seconde en
-          het aantal gelijktijdige kijkers, plus een kopje erboven. Dat waren
-          vier dingen die allemaal om aandacht vroegen naast de zin waar het
-          om gaat. Eén regel met drie feiten is genoeg; de rest staat op de
-          permalink voor wie doorklikt. */}
+      {/* Wie, waarvandaan, wanneer, hoe vaak gelezen — in één korte regel boven
+          de zin. Hier stond eerst een volzin met land, standtijd tot op de
+          seconde en het aantal gelijktijdige kijkers, plus een kopje erboven.
+          Dat waren vier dingen die allemaal om aandacht vroegen naast de zin
+          waar het om gaat. Vier feiten met een icoontje ertussen lezen als één
+          regel; de standtijd en de kijkers staan op de permalink voor wie
+          doorklikt. */}
       {msg && <Byline message={msg} mine={mineId === msg.id} />}
 
       {/* Eén zin tegelijk op het vel. Zolang de oude weggegomd wordt is de
@@ -293,7 +295,14 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
 /* -------------------------------------------------------------------- */
 
 /**
- * De regel boven de zin: wie het schreef, wanneer, en hoe vaak hij gelezen is.
+ * De regel boven de zin: wie het schreef, waarvandaan, wanneer, en hoe vaak hij
+ * gelezen is.
+ *
+ * Het land staat er omdat het van een naamloze zin een zin van iemand maakt:
+ * een vreemde in Brazilië die nu, terwijl jij kijkt, dit op het vel heeft gezet.
+ * Alleen het land, nooit fijner — dat komt uit de rand van Vercel en gaat niet
+ * verder dan wat er ook op de permalink staat. Ontbreekt het (een IP dat de
+ * rand niet kan plaatsen), dan valt het stukje gewoon weg.
  *
  * Bewust geen live-teller en geen oplopende standtijd. Bij weinig verkeer staat
  * een live-teller vrijwel altijd op nul, en een klok die per seconde verspringt
@@ -302,12 +311,21 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
  */
 function Byline({ message, mine }: { message: LiveMessage; mine: boolean }) {
   const naam = message.author_name?.trim()
+  const land = countryName(message.country)
   const reads = message.views ?? 0
 
   return (
     <p className="meta mt-(--line-h) text-[0.85rem]">
       {mine && <span className="text-(--flame)">yours · </span>}
-      {naam ? `@${naam}` : "anonymous"} · {formatShortMoment(message.created_at)}
+      {naam ? `@${naam}` : "anonymous"}
+      {land && (
+        <>
+          {" · "}
+          <Pin /> {land}
+        </>
+      )}
+      {" · "}
+      {formatShortMoment(message.created_at)}
       {reads > 0 && (
         <>
           {" · "}

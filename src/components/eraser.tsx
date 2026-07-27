@@ -1,73 +1,106 @@
 'use client'
 
-import { animate, motion, useMotionTemplate, useMotionValue, useReducedMotion, useTransform } from 'motion/react'
-import { useEffect, useId } from 'react'
+import {
+  animate,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+  type MotionValue,
+} from 'motion/react'
+import { useEffect, useId, useRef, useState } from 'react'
+
+import { RAND, STAART, grens, houding, planErase, type Plan, type Regel } from '@/lib/erase-path'
 
 /**
  * Uitgommen in plaats van doorhalen.
  *
- * Hier stond eerst een doorhaling: een golvende streep die van links naar
- * rechts over de oude zin werd getrokken. Die vertelde het verkeerde verhaal.
- * Doorhalen doe je met iets dat blíjft staan — de streep is het bewijs dat er
- * ooit iets stond. Op dit vel blijft er niets staan: de zin van je voorganger
- * is weg en het papier moet leeg zijn voor de volgende.
+ * Hier stond eerst een doorhaling: een golvende streep over de oude zin. Die
+ * vertelde het verkeerde verhaal. Doorhalen doe je met iets dat blíjft staan —
+ * de streep is het bewijs dat er ooit iets stond. Op dit vel blijft er niets
+ * staan: de zin van je voorganger is weg en het papier moet leeg zijn voor de
+ * volgende.
  *
- * Het loste bovendien een layoutprobleem niet op maar maakte het erger. De
- * doorgehaalde zin bleef staan terwijl de nieuwe er al onder gerenderd werd,
- * dus het vel werd tijdens de wissel ineens een paar regels langer en klapte
- * daarna weer terug. Nu staat er op elk moment precies één zin op het vel:
- * eerst gaat de oude weg, dan komt de nieuwe.
+ * De eerste versie gomde met één rechte haal over het hele tekstblok, van
+ * buiten het papier links tot buiten het papier rechts. Dat was sneller te
+ * bouwen en meteen te zien: een gum die begint waar niets staat en eindigt waar
+ * niets staat, in één vloeiende beweging, is geen gum maar een schuifdeur.
+ *
+ * Deze versie meet eerst waar de tekst werkelijk staat. Elke regel krijgt zijn
+ * eigen haal, van de eerste letter tot de laatste letter van díé regel, met de
+ * gum die er heen en weer overheen schuurt. Een zin van drie woorden is in een
+ * halve seconde weg; een zin van vier regels kost vier halen met een sprong
+ * terug naar de kantlijn tussen elke twee.
+ *
+ * Het rekenwerk staat in lib/erase-path.ts, zodat het te controleren is zonder
+ * ernaar te hoeven kijken. Hier blijft alleen het meten en het tekenen over.
  */
-
-/** Hoe lang de haal duurt. Korter voelt als wissen, langer als schrobben. */
-const DUUR = 1.05
 
 export function Erasing({ text, onDone }: { text: string; onDone: () => void }) {
   const reduce = useReducedMotion()
 
+  const doos = useRef<HTMLSpanElement>(null)
+  const zetsel = useRef<HTMLSpanElement>(null)
+
+  const [plan, setPlan] = useState<(Plan & { hoogte: number }) | null>(null)
+  const klok = useMotionValue(0)
+
   /**
-   * De positie van de gum, in procenten van de breedte van de zin. Hij begint
-   * links buiten de tekst en eindigt rechts erbuiten, zodat de eerste en de
-   * laatste letter net zo goed geraakt worden als alles ertussen.
+   * Opmeten waar de regels staan.
+   *
+   * Een Range over de tekstknoop geeft de rechthoeken van de regels die de
+   * browser daadwerkelijk heeft afgebroken — inclusief wat `text-wrap: balance`
+   * ervan gemaakt heeft. Zelf woorden opmeten en groeperen zou hetzelfde
+   * antwoord moeten geven, maar alleen zolang je elke afbreekregel die de
+   * layout-engine kent ook zelf naspeelt.
    */
-  const x = useMotionValue(-24)
-
-  // De rand loopt vóór de gum uit. Een harde grens leest als een schuifdeur;
-  // een verloop van een procent of vijftien leest als inkt die loslaat.
-  const voor = useTransform(x, (v) => v + 15)
-  const staart = useTransform(x, (v) => v - 28)
-  const gumX = useTransform(x, (v) => `${(v + 5).toFixed(2)}%`)
-
-  // De gum begint en eindigt buiten de tekst, want anders wordt de eerste of de
-  // laatste letter half gegomd. Maar buiten de tekst ligt al gauw ook buiten het
-  // vel, en een gum die naast het papier in de lucht hangt is geen gum. Dus:
-  // hij komt op in de kantlijn en tilt weer op aan het eind van de regel.
-  const zichtbaar = useTransform(x, [-24, -12, 94, 112], [0, 1, 1, 0])
-
-  // Wat rechts van de gum ligt staat er nog; links ervan is het weg. De hoek
-  // is niet 90 graden: niemand gomt kaarsrecht.
-  const inkt = useMotionTemplate`linear-gradient(96deg, transparent ${x}%, #000 ${voor}%)`
-
-  // En wat net weg is laat een veeg achter die vanzelf uitdooft.
-  const veeg = useMotionTemplate`linear-gradient(96deg, transparent ${staart}%, rgba(0,0,0,0.65) ${x}%, transparent ${voor}%)`
-
   useEffect(() => {
-    // Zonder animatie geen gum: dan is het gewoon weg en komt de nieuwe zin.
+    const blok = doos.current
+    const tekst = zetsel.current
+    if (!blok || !tekst) return
+
+    const kader = blok.getBoundingClientRect()
+    const bereik = document.createRange()
+    bereik.selectNodeContents(tekst)
+
+    const gemaakt = planErase(
+      Array.from(bereik.getClientRects()).map((r) => ({
+        top: r.top - kader.top,
+        bottom: r.bottom - kader.top,
+        left: r.left - kader.left,
+        right: r.right - kader.left,
+      })),
+      kader.height,
+    )
+
+    // Niets te gommen — dan hoeft er ook niet gewacht te worden.
+    if (!gemaakt) {
+      onDone()
+      return
+    }
+    setPlan({ ...gemaakt, hoogte: kader.height })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  /* De haal zelf. Lineair, want alle versnelling zit al in de baan. */
+  useEffect(() => {
     if (reduce) {
       const timer = setTimeout(onDone, 240)
       return () => clearTimeout(timer)
     }
+    if (!plan) return
 
     // onComplete en niet de finished-promise: die laatste blijft hangen als de
     // animatie wordt afgebroken, en dan blijft het bord op de oude zin staan.
-    const bezig = animate(x, 122, {
-      duration: DUUR,
-      ease: [0.5, 0, 0.5, 1],
+    const bezig = animate(klok, plan.einde, {
+      duration: plan.einde,
+      ease: 'linear',
       onComplete: onDone,
     })
     return () => bezig.stop()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [plan, reduce])
 
   if (reduce) {
     return (
@@ -78,49 +111,120 @@ export function Erasing({ text, onDone }: { text: string; onDone: () => void }) 
   }
 
   return (
-    <span className="relative block">
-      {/* De inkt die verdwijnt. Deze staat in de normale stroom en bepaalt dus
-          de hoogte van het blok — de twee lagen hieronder liggen erover. */}
-      <motion.span
+    <span ref={doos} className="relative block">
+      {/* Deze bepaalt de hoogte van het blok en levert de regelposities. Tot er
+          gemeten is staat hij er gewoon zichtbaar; daarna nemen de lagen het
+          over en verdwijnt hij zonder zijn ruimte op te geven. */}
+      <span
+        ref={zetsel}
         aria-hidden="true"
         className="block"
-        style={{ maskImage: inkt, WebkitMaskImage: inkt }}
+        style={{ visibility: plan ? 'hidden' : 'visible' }}
       >
         {text}
+      </span>
+
+      {plan?.regels.map((regel, i) => (
+        <LijnLaag key={i} klok={klok} regel={regel} tekst={text} hoogte={plan.hoogte} />
+      ))}
+
+      {plan && <GumLaag klok={klok} regels={plan.regels} einde={plan.einde} />}
+    </span>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Eén regel tekst, met zijn eigen grens.
+ *
+ * Elke laag toont de hele zin maar laat er met clip-path alleen zijn eigen
+ * regel van zien. Dat is bewust: de tekst in losse regels opknippen zou de
+ * afbreking van de browser moeten naspelen, en die klopt per definitie beter
+ * dan wat wij ervan zouden maken.
+ */
+function LijnLaag({
+  klok,
+  regel,
+  tekst,
+  hoogte,
+}: {
+  klok: MotionValue<number>
+  regel: Regel
+  tekst: string
+  hoogte: number
+}) {
+  const g = useTransform(klok, (k) => grens(regel, k))
+  const voor = useTransform(g, (v) => v + RAND)
+  const achter = useTransform(g, (v) => v - STAART)
+
+  const inkt = useMotionTemplate`linear-gradient(94deg, transparent ${g}px, #000 ${voor}px)`
+  const veeg = useMotionTemplate`linear-gradient(94deg, transparent ${achter}px, rgba(0,0,0,0.65) ${g}px, transparent ${voor}px)`
+
+  const band = `inset(${regel.boven.toFixed(1)}px 0 ${(hoogte - regel.onder).toFixed(1)}px 0)`
+
+  return (
+    <>
+      <motion.span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 block"
+        style={{ clipPath: band, maskImage: inkt, WebkitMaskImage: inkt }}
+      >
+        {tekst}
       </motion.span>
 
-      {/* De veeg: hetzelfde vel tekst, maar alleen zichtbaar in een smalle band
-          achter de gum aan. Zonder dit is het een nette wipe; met dit is het
-          iets dat met moeite van het papier af gaat. */}
+      {/* De veeg die achter de gum aan hangt. Zonder dit is het een nette wipe;
+          met dit is het iets dat met moeite van het papier af gaat. */}
       <motion.span
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 block text-(--ink-soft)"
         style={{
+          clipPath: band,
           maskImage: veeg,
           WebkitMaskImage: veeg,
-          opacity: 0.3,
-          filter: 'blur(1.7px)',
+          opacity: 0.32,
+          filter: 'blur(1.6px)',
         }}
       >
-        {text}
+        {tekst}
       </motion.span>
+    </>
+  )
+}
 
-      <motion.span
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 z-10 -mt-4.25 -ml-9.25 block sm:-mt-5.25 sm:-ml-11.75"
-        style={{ left: gumX, opacity: zichtbaar }}
-      >
-        {/* Het heen-en-weer zit op een eigen laag, zodat het onafhankelijk van
-            de doorlopende beweging naar rechts kan blijven lopen. */}
-        <motion.span
-          className="block"
-          animate={{ rotate: [-8, -2.5, -10, -4, -8], y: [0, -2.5, 1.5, -1.5, 0] }}
-          transition={{ duration: 0.42, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <Gum />
-        </motion.span>
-      </motion.span>
-    </span>
+function GumLaag({
+  klok,
+  regels,
+  einde,
+}: {
+  klok: MotionValue<number>
+  regels: Regel[]
+  einde: number
+}) {
+  const x = useTransform(klok, (k) => houding(k, regels, einde).x)
+  const y = useTransform(klok, (k) => houding(k, regels, einde).y)
+  const hoek = useTransform(klok, (k) => houding(k, regels, einde).hoek)
+  const schaal = useTransform(klok, (k) => houding(k, regels, einde).schaal)
+  const dekking = useTransform(klok, (k) => houding(k, regels, einde).dekking)
+
+  return (
+    <motion.span
+      aria-hidden="true"
+      className="pointer-events-none absolute top-0 left-0 z-10 block"
+      // left/top zetten de gum op de gemeten plek; de x/y van -50% trekken hem
+      // daar vervolgens omheen in plaats van eronder vandaan.
+      style={{
+        left: x,
+        top: y,
+        x: '-50%',
+        y: '-50%',
+        rotate: hoek,
+        scale: schaal,
+        opacity: dekking,
+      }}
+    >
+      <Gum />
+    </motion.span>
   )
 }
 
@@ -140,11 +244,7 @@ function Gum() {
   const vorm = `gum-vorm-${uid}`
 
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 104 46"
-      className="h-auto w-18.5 sm:w-23.5"
-    >
+    <svg aria-hidden="true" viewBox="0 0 104 46" className="h-auto w-18.5 sm:w-23.5">
       <defs>
         <linearGradient id={vlak} x1="0" y1="0" x2="1" y2="0">
           {/* Twee stops op dezelfde offset: dat geeft een harde scheiding in

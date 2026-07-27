@@ -1,6 +1,7 @@
 'use client'
 
 import { sessionId } from './session'
+import type { AnalyticsEvent, AnalyticsParams } from './analytics-events'
 
 /**
  * Meten wat mensen hier doen, zonder derde partij en zonder cookies.
@@ -14,36 +15,11 @@ import { sessionId } from './session'
  * De events gaan naar onze eigen database, via /api/event. Dat is gratis, er
  * komt geen cookie aan te pas, en de belofte in SPEC.md blijft staan.
  *
- * Alle namen staan hieronder in één lijst. Dat is geen bureaucratie: de
- * serverkant weigert alles wat er niet in staat, en een rapport met
- * `share_click` naast `shareClick` is stiller kapot dan een foutmelding.
+ * De namen staan in lib/analytics-events, apart van dit bestand, omdat de route
+ * handler ze ook nodig heeft en een clientmodule daar niet te importeren is.
  */
 
-export const ANALYTICS_EVENTS = [
-  /* Voorpagina */
-  'board_view', // Voorpagina geladen, met de standen van dat moment.
-  'takeover_watched', // Iemand anders nam over terwijl deze bezoeker keek.
-  'sentence_lost', // Datzelfde moment, maar het was zijn eigen zin.
-  /* De trechter van het schrijven */
-  'write_start', // Eerste aanslag in het veld.
-  'write_submit', // Op versturen gedrukt.
-  'sentence_posted', // Meteen live.
-  'sentence_queued', // In de wachtrij gezet.
-  'sentence_promoted', // Vanuit de wachtrij alsnog live.
-  'post_refused', // Server zei nee (filter, snelheidslimiet, te lang).
-  'write_again', // Na afloop nog een keer.
-  /* Wat er daarna mee gebeurt */
-  'share_click', // Deelknop of deellink aangeklikt.
-  'report_open', // Meldknop aangeklikt.
-  'report_sent', // Melding daadwerkelijk verstuurd.
-  /* Rondkijken */
-  'sentence_view', // Permalink bekeken.
-  'archive_search', // In het archief gezocht.
-] as const
-
-export type AnalyticsEvent = (typeof ANALYTICS_EVENTS)[number]
-
-export type AnalyticsParams = Record<string, string | number | boolean | null | undefined>
+export type { AnalyticsEvent, AnalyticsParams } from './analytics-events'
 
 /**
  * Alleen in productie.
