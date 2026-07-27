@@ -348,7 +348,14 @@ body {
 :where(input[type='text'], textarea):focus-visible {
   outline: none;
   box-shadow: none;
-  caret-color: var(--flame);
+}
+
+/* Het grote veld tekent zijn eigen cursor (zie pen-caret.tsx), dus de
+   ingebouwde moet volledig weg. Hier stond eerst `caret-color: var(--flame)`,
+   waardoor je er twee tegelijk zag: de zelfgetekende pennenpunt én de
+   systeemcursor die even hoog is als de regelafstand. */
+#zin {
+  caret-color: transparent;
 }
 
 ::selection {

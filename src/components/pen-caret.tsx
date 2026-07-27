@@ -70,12 +70,29 @@ export function PenCaret({
     const s = spiegel.getBoundingClientRect()
     merk.remove()
 
+    // De spiegel is betrouwbaar voor links-rechts, maar niet voor de hoogte:
+    // hij rendeert zijn regelvakken net iets anders dan een textarea, en een
+    // paar pixels verschil zie je meteen als de cursor onder de lijn hangt.
+    //
+    // De verticale positie komt daarom uit dezelfde geijkte formule die de
+    // tekst zelf op de lijn zet: basislijn = C + lettergrootte * k, en per
+    // regel daar de regelhoogte bij. De spiegel bepaalt alleen nog op welke
+    // regel we zitten.
+    const root = getComputedStyle(document.documentElement)
+    const regelhoogte = parseFloat(getComputedStyle(field).lineHeight)
+    const c = parseFloat(root.getPropertyValue('--baseline-c'))
+    const k = parseFloat(root.getPropertyValue('--baseline-k'))
+    if (!Number.isFinite(regelhoogte) || !Number.isFinite(c) || !Number.isFinite(k)) return
+
+    const basisInRegel = c + size * k
+    const regel = Math.max(0, Math.round((m.top - s.top - basisInRegel) / regelhoogte))
+    const basislijn = regel * regelhoogte + basisInRegel
+
     setPos({
       x: m.left - s.left,
-      // De bovenkant van het merkteken is de basislijn. De pen staat er net
-      // boven en steekt een klein stukje onder de lijn door, zoals een echte.
-      y: m.top - s.top - size * 0.76,
-      h: size * 0.9,
+      // De pen staat op de lijn en steekt er nauwelijks onderdoor.
+      y: basislijn - size * 0.72,
+      h: size * 0.8,
     })
   }, [fieldRef, value])
 
