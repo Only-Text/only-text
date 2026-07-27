@@ -36,6 +36,8 @@ Sentences ever written: ${board.stats?.total_messages ?? 0}
 - ${SITE}/m/<id> — one sentence, permanent, with how long it lasted
 - ${SITE}/archive — every sentence ever written
 - ${SITE}/records — longest and shortest reigns
+- ${SITE}/stats.json — public figures, no key needed
+- ${SITE}/press — description, numbers and permission to reproduce anything here
 
 ## Rules for writing
 

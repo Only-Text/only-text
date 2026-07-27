@@ -7,6 +7,7 @@ import { browserClient, sessionId } from '@/lib/supabase-browser'
 import { countryName, formatDurationLong, formatNumber } from '@/lib/format'
 import { Composer } from './composer'
 import { InkReveal } from './ink-reveal'
+import { ReportLink } from './report-link'
 
 export type LiveMessage = {
   id: number
@@ -250,7 +251,7 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
         }}
       />
 
-      <Footline state={state} connected={connected} />
+      <Footline state={state} connected={connected} messageId={msg?.id ?? null} />
     </MotionConfig>
   )
 }
@@ -302,13 +303,31 @@ function Standing({ message, mine }: { message: LiveMessage; mine: boolean }) {
   )
 }
 
-function Footline({ state, connected }: { state: BoardState; connected: boolean }) {
+function Footline({
+  state,
+  connected,
+  messageId,
+}: {
+  state: BoardState
+  connected: boolean
+  messageId: number | null
+}) {
   const total = state.stats?.total_messages ?? 0
   return (
     <p className="meta mt-(--line-h) text-[0.82rem] leading-(--line-h)">
       {formatNumber(total)} sentences have stood here.
       {state.queue_length > 0 && (
-        <> {state.queue_length} {state.queue_length === 1 ? 'person is' : 'people are'} waiting their turn.</>
+        <>
+          {' '}
+          {state.queue_length} {state.queue_length === 1 ? 'person is' : 'people are'} waiting their
+          turn.
+        </>
+      )}
+      {messageId && (
+        <>
+          {' · '}
+          <ReportLink id={messageId} />
+        </>
       )}
       {!connected && <span className="text-(--ink-faint)"> · connecting</span>}
     </p>

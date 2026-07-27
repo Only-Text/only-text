@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { Sheet } from '@/components/sheet'
 import { formatDuration, formatMoment, formatNumber, countryName } from '@/lib/format'
 import { getMessage } from '@/lib/data'
+import { ReportLink } from '@/components/report-link'
 
 /**
  * De permalink: één bericht, bevroren.
@@ -81,6 +82,10 @@ export default async function MessagePage({ params }: Props) {
           ) : (
             <>It is up right now. Go and take it.</>
           )}
+        </p>
+
+        <p className="meta text-[0.85rem]">
+          <ReportLink id={message.id} />
         </p>
 
         <p className="meta text-[0.85rem]">
