@@ -45,7 +45,7 @@ export default async function RecordsPage() {
         <Lijst titel="Held the longest" items={records.longest} />
         <Lijst titel="Gone in a blink" items={records.shortest} />
         {records.most_seen.length > 0 && (
-          <Lijst titel="Seen by the most people" items={records.most_seen} kijkers />
+          <Lijst titel="Read by the most people" items={records.most_seen} kijkers />
         )}
       </Sheet>
 
@@ -87,7 +87,7 @@ function Lijst({
             <span className="meta block text-[0.8rem] leading-(--line-h)">
               {item.author_name ?? 'anonymous'} ·{' '}
               {kijkers
-                ? `${formatNumber(item.peak_viewers)} at once`
+                ? `${formatNumber(item.views)} readers`
                 : formatDuration(item.duration_ms)}
             </span>
           </li>

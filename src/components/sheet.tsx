@@ -24,7 +24,10 @@ export function Sheet({
       className={`sheet ${single ? 'sheet--single' : ''}`}
       style={{ transform: `rotate(${tilt}deg)` }}
     >
-      <div className="ruled px-6 pb-(--line-h) pt-(--line-h) pl-[calc(var(--margin-x)+20px)] sm:pl-[calc(var(--margin-x)+28px)]">
+      {/* Geen padding aan de bovenkant: de eerste regel tekst hoort op de eerste
+          blauwe lijn te staan, net als op echt papier. Met een lege regel
+          erboven zweeft de kop en verlies je het houvast van het raster. */}
+      <div className="ruled px-6 pb-(--line-h) pt-0 pl-[calc(var(--margin-x)+20px)] sm:pl-[calc(var(--margin-x)+28px)]">
         {children}
       </div>
     </article>

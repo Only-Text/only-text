@@ -67,7 +67,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   const duur = message.duration_ms
     ? `stood for ${formatDuration(message.duration_ms)}`
     : 'currently up'
-  const kijkers = message.peak_viewers > 1 ? ` · seen by ${formatNumber(message.peak_viewers)}` : ''
+  const kijkers = message.views > 0 ? ` · read by ${formatNumber(message.views)}` : ''
   const wie = message.author_name ? `by ${message.author_name}` : 'by someone with no name'
 
   return new ImageResponse(

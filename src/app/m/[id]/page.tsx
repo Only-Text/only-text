@@ -73,8 +73,8 @@ export default async function MessagePage({ params }: Props) {
             <>
               It stood for{' '}
               <span className="text-(--ink)">{formatDuration(message.duration_ms)}</span>
-              {message.peak_viewers > 1 && (
-                <> and was read by {formatNumber(message.peak_viewers)} people at once</>
+              {message.views > 0 && (
+                <> and was read by {formatNumber(message.views)} {message.views === 1 ? 'person' : 'people'}</>
               )}
               .
             </>

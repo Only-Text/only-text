@@ -20,6 +20,7 @@ export type ArchiveItem = {
   char_count: number
   country: string | null
   peak_viewers: number
+  views: number
   waited_ms: number | null
 }
 
@@ -33,7 +34,12 @@ export async function getBoard(): Promise<BoardState> {
 }
 
 export async function getMessage(id: number): Promise<{
-  message: LiveMessage & { duration_ms: number | null; ended_at: string | null; peak_viewers: number }
+  message: LiveMessage & {
+    duration_ms: number | null
+    ended_at: string | null
+    peak_viewers: number
+    views: number
+  }
   previous: ArchiveItem | null
   next: ArchiveItem | null
 } | null> {
