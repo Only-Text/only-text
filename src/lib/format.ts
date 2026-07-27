@@ -75,6 +75,24 @@ export function countryName(code: string | null | undefined): string | null {
   }
 }
 
+/**
+ * `27 July, 14:32` — zonder jaartal.
+ *
+ * Op de voorpagina staat altijd iets van vandaag of gisteren, dus het jaartal
+ * voegt niets toe en kost wel breedte in een regel die kort moet blijven. In
+ * het archief en op de permalink staat het volledige moment wél.
+ */
+export function formatShortMoment(iso: string): string {
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+    .format(new Date(iso))
+    .replace(/(\d{1,2} \w+) at /, '$1, ')
+}
+
 /** `27 July 2026, 14:03` */
 export function formatMoment(iso: string): string {
   return new Intl.DateTimeFormat('en-GB', {

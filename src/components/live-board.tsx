@@ -4,8 +4,9 @@ import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'motion/
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { browserClient, sessionId } from '@/lib/supabase-browser'
-import { countryName, formatDurationLong, formatNumber } from '@/lib/format'
+import { formatNumber, formatShortMoment } from '@/lib/format'
 import { Composer } from './composer'
+import { Eye } from './eye'
 import { InkReveal } from './ink-reveal'
 import { ReportLink } from './report-link'
 
@@ -195,14 +196,13 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
 
   return (
     <MotionConfig reducedMotion="user">
-      {/* Een bijschrift boven de zin in plaats van uitleg eronder.
-          Zo weet je in één oogopslag wat dat grote stuk tekst is, zonder dat
-          er een alinea bij komt die er net zo belangrijk uitziet als de zin
-          zelf. De rest van de uitleg staat bij het invoerveld, want daar heb
-          je hem pas nodig. */}
-      <p className="meta text-[0.78rem] uppercase leading-(--line-h) tracking-[0.14em]">
-        the last thing anyone typed
-      </p>
+      {/* Wie, wanneer, hoe vaak gelezen — in één korte regel boven de zin.
+          Hier stond eerst een volzin met land, standtijd tot op de seconde en
+          het aantal gelijktijdige kijkers, plus een kopje erboven. Dat waren
+          vier dingen die allemaal om aandacht vroegen naast de zin waar het
+          om gaat. Eén regel met drie feiten is genoeg; de rest staat op de
+          permalink voor wie doorklikt. */}
+      {msg && <Byline message={msg} mine={mineId === msg.id} />}
 
       <div className="relative">
         {/* Het vorige bericht: doorgestreept, schuift weg. */}
@@ -241,8 +241,6 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
         </p>
       </div>
 
-      {msg && <Standing message={msg} mine={mineId === msg.id} />}
-
       <Composer
         queueLength={state.queue_length}
         onPosted={(id) => {
@@ -258,45 +256,26 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
 
 /* -------------------------------------------------------------------- */
 
-function Standing({ message, mine }: { message: LiveMessage; mine: boolean }) {
-  const [now, setNow] = useState(() => Date.now())
-
-  useEffect(() => {
-    const timer = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(timer)
-  }, [])
-
-  const standing = Math.max(0, now - new Date(message.created_at).getTime())
-  const land = countryName(message.country)
-  const who = message.author_name?.trim()
+/**
+ * De regel boven de zin: wie het schreef, wanneer, en hoe vaak hij gelezen is.
+ *
+ * Bewust geen live-teller en geen oplopende standtijd. Bij weinig verkeer staat
+ * een live-teller vrijwel altijd op nul, en een klok die per seconde verspringt
+ * trekt de aandacht weg van de zin. Het aantal lezers loopt wél op en blijft
+ * staan, dus dat is het getal dat iets betekent.
+ */
+function Byline({ message, mine }: { message: LiveMessage; mine: boolean }) {
+  const naam = message.author_name?.trim()
   const reads = message.views ?? 0
 
-  // Geen eigen marge: opeenvolgende alinea's op het vel krijgen die al via de
-  // liniatuur-regels. Allebei zetten geeft een lege regel ertussen.
   return (
-    <p className="marginalia text-[0.95rem] leading-(--line-h)">
-      {mine ? (
-        <strong className="text-(--flame)">This one is yours. </strong>
-      ) : null}
-      Written by {who ? <span className="text-(--ink)">{who}</span> : 'someone with no name'}
-      {land ? ` from ${land}` : ''} and has been up for{' '}
-      {/* De server rendert een andere seconde dan de browser een tel later.
-          Dat is geen fout maar de aard van een klok, dus laten we het verschil
-          hier expliciet toe in plaats van de waarde pas na hydratie te tonen —
-          zo staat er ook zonder JavaScript iets zinnigs. */}
-      <span suppressHydrationWarning className="tabular-nums text-(--ink)">
-        {formatDurationLong(standing)}
-      </span>
-      .
-      {/* Bewust het totaal en niet het aantal gelijktijdige kijkers. Bij honderd
-          bezoekers per maand staat die live-teller vrijwel altijd op nul of één,
-          en dan lijkt de site verlaten terwijl er die maand honderd mensen langs
-          zijn geweest. Dit getal loopt op en blijft staan. */}
+    <p className="meta mt-(--line-h) text-[0.85rem]">
+      {mine && <span className="text-(--flame)">yours · </span>}
+      {naam ? `@${naam}` : "anonymous"} · {formatShortMoment(message.created_at)}
       {reads > 0 && (
         <>
-          {' '}
-          <span className="tabular-nums text-(--ink)">{formatNumber(reads)}</span>{' '}
-          {reads === 1 ? 'person has' : 'people have'} read it so far.
+          {" · "}
+          <Eye /> <span className="tabular-nums">{formatNumber(reads)}</span>
         </>
       )}
     </p>

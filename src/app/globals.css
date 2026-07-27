@@ -154,13 +154,20 @@ body {
 }
 
 /* Alles wat op het vel staat moet in veelvouden van de regelhoogte vallen.
-   Eén element met een afwijkende line-height zet alle lijnen eronder scheef. */
-.ruled :where(p, li, h1, h2, h3, h4, blockquote, label, textarea, .on-rule) {
-  line-height: var(--line-h);
-  margin-block: 0;
-}
-.ruled :where(p, li, blockquote) + :where(p, li, blockquote) {
-  margin-top: var(--line-h);
+   Eén element met een afwijkende line-height zet alle lijnen eronder scheef.
+
+   In @layer base, en dat is geen detail: Tailwind zet zijn utilities in een
+   eigen laag, en CSS buiten elke laag wint altijd van CSS erbinnen. Stond dit
+   ongelaagd, dan deed een `mt-(--line-h)` op een alinea binnen het vel stilzwijgend
+   niets — de regel hieronder zou hem overrulen zonder foutmelding. */
+@layer base {
+  .ruled :where(p, li, h1, h2, h3, h4, blockquote, label, textarea, .on-rule) {
+    line-height: var(--line-h);
+    margin-block: 0;
+  }
+  .ruled :where(p, li, blockquote) + :where(p, li, blockquote) {
+    margin-top: var(--line-h);
+  }
 }
 
 /* Zet de basislijn op de lijn.
