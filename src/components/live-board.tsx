@@ -224,8 +224,15 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
           )}
         </AnimatePresence>
 
+        {/* data-nosnippet houdt de zin van een bezoeker uit het zoekresultaat.
+            Zonder dit zet Google een willekeurige vreemdentekst onder je titel
+            in de resultaten — mogelijk in een andere taal, mogelijk iets waar
+            je niet mee geassocieerd wilt worden. De uitleg eromheen wordt dan
+            als snippet gebruikt, en dat is precies wat je wil. De permalinks
+            tonen hun zin wél gewoon, want die zijn per stuk gearchiveerd. */}
         <p
           id="bericht"
+          data-nosnippet
           className="message text-[clamp(1.3rem,3.1vw,1.95rem)]"
           style={{ opacity: outgoing ? 0 : 1 }}
         >

@@ -24,7 +24,10 @@ const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://only-text.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: 'only-text.com',
+  title: {
+    default: 'only-text.com — a website that is one sentence long',
+    template: '%s · only-text.com',
+  },
   description:
     'One sentence sits at the top of this site. It belongs to whoever typed last. Type something and it is yours, until the next person comes along.',
   applicationName: 'only-text',
@@ -48,7 +51,7 @@ export const metadata: Metadata = {
     images: ['/og-default.png'],
   },
   robots: { index: true, follow: true },
-  alternates: { types: { 'application/rss+xml': `${SITE}/feed.xml` } },
+  alternates: { canonical: '/', types: { 'application/rss+xml': `${SITE}/feed.xml` } },
 }
 
 export const viewport: Viewport = {
