@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 
+import { track } from '@/lib/analytics'
+
 /**
  * Melden.
  *
@@ -43,8 +45,10 @@ export function ReportLink({ id, className = '' }: { id: number; className?: str
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({ id }),
               })
+              track('report_sent', { ok: res.ok })
               setStand(res.ok ? 'klaar' : 'fout')
             } catch {
+              track('report_sent', { ok: false })
               setStand('fout')
             }
           }}
@@ -67,7 +71,13 @@ export function ReportLink({ id, className = '' }: { id: number; className?: str
   return (
     <button
       type="button"
-      onClick={() => setStand('vragen')}
+      onClick={() => {
+        // Ook het openen meten, niet alleen het versturen. Het verschil tussen
+        // die twee is hoe vaak iemand twijfelt en zich bedenkt, en dat zegt iets
+        // over hoe de zin op dat moment overkwam.
+        track('report_open')
+        setStand('vragen')
+      }}
       className={`meta text-[0.8rem] underline underline-offset-2 hover:text-(--flame) ${className}`}
     >
       report this

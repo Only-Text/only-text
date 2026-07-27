@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { Sheet } from '@/components/sheet'
+import { Track } from '@/components/track'
 import { formatDuration, formatMoment } from '@/lib/format'
 import { getArchive } from '@/lib/data'
 
@@ -36,6 +37,12 @@ export default async function ArchivePage({
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-8 sm:py-16">
+      {/* De zoekterm zelf gaat er bewust niet in. Mensen zoeken in dit archief
+          naar hun eigen naam en naar wat ze zelf hebben getypt, en dat is niets
+          voor Google. Hoe vaak er gezocht wordt en of er iets gevonden werd is
+          genoeg om te weten of de zoekfunctie iets doet. */}
+      {q && <Track event="archive_search" params={{ results: items.length, term_length: q.length }} />}
+
       <Sheet tilt={-0.3}>
         <header>
           <h1 className="meta text-[0.8rem] leading-(--line-h) tracking-wide">

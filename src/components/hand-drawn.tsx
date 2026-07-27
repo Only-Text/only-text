@@ -237,32 +237,119 @@ export function HandBox({
   )
 }
 
+/* --------------------------------------------------------------------------
+   Onderstrepen met de pen
+   --------------------------------------------------------------------------
+   `text-decoration: underline` levert een wiskundig rechte lijn van exact één
+   dikte die precies bij de laatste letter ophoudt. Dat is het detail waaraan je
+   ziet dat het geen papier is: niemand streept zo aan. Een echte haal zakt in
+   het midden door, schiet aan het eind door, en is bij elk woord anders.
+
+   De vorm komt daarom uit dezelfde deterministische ruisgenerator als de
+   kaders. De seed bepaalt zowel het soort haal als de wiebel, dus elke link op
+   de pagina krijgt zijn eigen streep en die streep is op de server hetzelfde
+   als in de browser.
+   -------------------------------------------------------------------------- */
+
+type Streek = 'golf' | 'boog' | 'dubbel' | 'onderbroken'
+
+const STREKEN: Streek[] = ['golf', 'boog', 'dubbel', 'onderbroken']
+
 /**
- * Een golvende onderstreping, zoals iemand die iets aanstreept.
- * Gebruikt voor links en voor de actieve navigatie.
+ * Eén haal van links naar rechts. `bow` is hoeveel de lijn in het midden
+ * doorzakt — dat is het verschil tussen een liniaal en een pols.
  */
-export function HandUnderline({ seed = 'lijn' }: { seed?: string }) {
-  const rand = seedFrom(seed)
+function haal(rand: () => number, from: number, to: number, y: number, bow: number): string {
+  const steps = 9
   const pts: string[] = []
-  for (let i = 0; i <= 12; i++) {
-    const x = (i / 12) * 100
-    const y = 4 + (rand() - 0.5) * 2.6
-    pts.push(`${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(2)}`)
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps
+    const x = from + (to - from) * t
+    const yy = y + Math.sin(t * Math.PI) * bow + (rand() - 0.5) * 1.4
+    pts.push(`${i === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${yy.toFixed(2)}`)
   }
+  return pts.join(' ')
+}
+
+/**
+ * Een aanstreping onder een woord. De ouder moet `position: relative` hebben;
+ * gebruik in de praktijk `Penned` hieronder, die dat regelt.
+ */
+export function HandUnderline({ seed = 'lijn', variant }: { seed?: string; variant?: Streek }) {
+  const rand = seedFrom(seed)
+  // De eerste trek uit de generator kiest het soort haal. Zo hoeft er op de
+  // plek waar de link staat niets over de vorm besloten te worden.
+  const soort = variant ?? STREKEN[Math.floor(rand() * STREKEN.length)]
+
+  const paden: { d: string; width: number; opacity: number }[] =
+    soort === 'boog'
+      ? [{ d: haal(rand, -1, 101, 3.2, 2.6), width: 1.8, opacity: 0.9 }]
+      : soort === 'dubbel'
+        ? [
+            { d: haal(rand, -2, 101, 4.3, 0.5), width: 1.7, opacity: 0.9 },
+            // De tweede haal is korter en zit er net naast, zoals iemand die
+            // het nog een keer overdoet omdat de eerste te dun uitviel.
+            { d: haal(rand, 5, 95, 6.8, -0.6), width: 1.4, opacity: 0.45 },
+          ]
+        : soort === 'onderbroken'
+          ? [
+              // De pen laat even los. Dat gebeurt bij een snelle haal en het is
+              // meteen het duidelijkste bewijs dat er geen liniaal aan te pas kwam.
+              { d: haal(rand, -2, 43, 5.1, 0.5), width: 1.7, opacity: 0.9 },
+              { d: haal(rand, 53, 102, 4.6, 0.8), width: 1.7, opacity: 0.9 },
+            ]
+          : [{ d: haal(rand, -2, 102, 4.8, 0.4), width: 1.7, opacity: 0.9 }]
+
   return (
     <svg
       aria-hidden="true"
-      viewBox="0 0 100 8"
+      viewBox="0 0 100 12"
       preserveAspectRatio="none"
-      className="pointer-events-none absolute -bottom-1 left-0 h-[6px] w-full"
+      className="pointer-events-none absolute -bottom-1.75 left-0 h-2.5 w-full overflow-visible"
     >
-      <path
-        d={pts.join(' ')}
-        fill="none"
-        stroke="var(--stroke)"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-      />
+      {paden.map((p, i) => (
+        <path
+          key={i}
+          d={p.d}
+          fill="none"
+          // currentColor en niet --stroke: dan kleurt de haal mee met de link
+          // als je erover gaat, in plaats van als los streepje achter te blijven.
+          stroke="currentColor"
+          strokeWidth={p.width}
+          strokeLinecap="round"
+          // Zonder dit rekt de lijndikte mee met de breedte van het woord: een
+          // lange link krijgt dan een dunnere streep dan een korte.
+          vectorEffect="non-scaling-stroke"
+          opacity={p.opacity}
+        />
+      ))}
     </svg>
+  )
+}
+
+/**
+ * Zet de haal onder de tekst die je erin stopt.
+ *
+ * Waarom een extra span en niet gewoon `relative` op de link zelf: op het vel
+ * hebben de links de regelhoogte van de liniatuur (44px) als line-height, want
+ * anders zakt de hele regel van de blauwe lijn af. Een streep die aan de
+ * ónderkant van zo'n vak hangt komt vijftien pixels onder de tekst uit. Deze
+ * span heeft `leading-none` en sluit dus strak om de letters, terwijl de link
+ * eromheen zijn regelhoogte houdt.
+ */
+export function Penned({
+  children,
+  seed,
+  variant,
+}: {
+  children: ReactNode
+  seed: string
+  variant?: Streek
+}) {
+  return (
+    <span className="relative inline-block leading-none">
+      {children}
+      <HandUnderline seed={seed} variant={variant} />
+    </span>
   )
 }

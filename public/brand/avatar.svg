@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <!--
+    Profielfoto. Bluesky snijdt hem rond af, dus alles wat telt staat in het
+    midden en de hoeken mogen weg. Op veertig pixels in een tijdlijn moet de
+    inkt het dragen, niet de liniatuur — vandaar de haal die over meer dan de
+    helft van de breedte loopt.
+  -->
+  <rect width="1000" height="1000" fill="#FBF7EF"/>
+
+  <!-- de kantlijn, links, deels weggesneden door de ronde uitsnede -->
+  <line x1="215" y1="0" x2="215" y2="1000" stroke="#D99A92" stroke-width="9"/>
+
+  <!-- de regel waarop geschreven wordt, plus twee flauwe regels erboven en eronder -->
+  <line x1="0" y1="300" x2="1000" y2="300" stroke="#B9CDE0" stroke-width="7" opacity="0.55"/>
+  <line x1="0" y1="580" x2="1000" y2="580" stroke="#B9CDE0" stroke-width="11"/>
+  <line x1="0" y1="860" x2="1000" y2="860" stroke="#B9CDE0" stroke-width="7" opacity="0.55"/>
+
+  <!-- de haal inkt en de punt: het einde van een zin -->
+  <path d="M300 552 C 380 500, 450 596, 530 540 C 570 512, 600 528, 622 546"
+        fill="none" stroke="#22241D" stroke-width="52" stroke-linecap="round"/>
+  <circle cx="742" cy="548" r="34" fill="#22241D"/>
+</svg>

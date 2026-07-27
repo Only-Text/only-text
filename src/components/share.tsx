@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 import { HandButton } from './hand-drawn'
 import { formatDuration } from '@/lib/format'
+import { track } from '@/lib/analytics'
 
 /**
  * Het verliesmoment aanreiken.
@@ -51,10 +52,27 @@ export function Share({
 
   const kopieer = (wat: 'link' | 'tekst') => {
     void navigator.clipboard.writeText(wat === 'link' ? url : tekst).then(() => {
+      // Pas ná het kopiëren. Een mislukte clipboard-actie (geen toestemming,
+      // geen beveiligde verbinding) is geen deling en hoort er ook niet als
+      // deling in te staan.
+      track('share_click', {
+        channel: wat === 'link' ? 'copy_link' : 'copy_text',
+        place: 'permalink',
+        stood_ms: durationMs ?? undefined,
+        rank: rank ?? undefined,
+      })
       setGekopieerd(wat)
       setTimeout(() => setGekopieerd(null), 2500)
     })
   }
+
+  const naarBuiten = (channel: 'bluesky' | 'mastodon') =>
+    track('share_click', {
+      channel,
+      place: 'permalink',
+      stood_ms: durationMs ?? undefined,
+      rank: rank ?? undefined,
+    })
 
   return (
     <div className="mt-(--line-h)">
@@ -66,6 +84,7 @@ export function Share({
           href={`https://bsky.app/intent/compose?text=${encodeURIComponent(tekst)}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => naarBuiten('bluesky')}
           className="hand underline underline-offset-4 hover:text-(--flame)"
         >
           post on Bluesky
@@ -74,6 +93,7 @@ export function Share({
           href={`https://mastodonshare.com/share?text=${encodeURIComponent(tekst)}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => naarBuiten('mastodon')}
           className="hand underline underline-offset-4 hover:text-(--flame)"
         >
           on Mastodon
@@ -121,6 +141,7 @@ export function ShareNow({ id, body }: { id: number; body: string }) {
         shape="ellipse"
         onClick={() => {
           void navigator.clipboard.writeText(tekst).then(() => {
+            track('share_click', { channel: 'copy_text', place: 'after_post' })
             setGekopieerd(true)
             setTimeout(() => setGekopieerd(false), 2500)
           })
@@ -132,6 +153,7 @@ export function ShareNow({ id, body }: { id: number; body: string }) {
         href={`https://bsky.app/intent/compose?text=${encodeURIComponent(tekst)}`}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => track('share_click', { channel: 'bluesky', place: 'after_post' })}
         className="hand underline underline-offset-4 hover:text-(--flame)"
       >
         post it on Bluesky

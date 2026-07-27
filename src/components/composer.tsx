@@ -7,6 +7,7 @@ import { PenCaret } from './pen-caret'
 import { ShareNow } from './share'
 import { MAX_AUTHOR_LENGTH, MAX_BODY_LENGTH } from '@/lib/sanitize'
 import { formatDuration } from '@/lib/format'
+import { track } from '@/lib/analytics'
 import { rememberName, rememberedName } from '@/lib/supabase-browser'
 
 type Queued = { position: number; etaMs: number; token: string }
@@ -39,6 +40,12 @@ export function Composer({
   const verzonden = useRef('')
   const honeypot = useRef<HTMLInputElement>(null)
   const field = useRef<HTMLTextAreaElement>(null)
+
+  // Voor de meting: is er al één keer een toets aangeslagen, en sinds wanneer
+  // staat deze bezoeker in de wachtrij. Bewust refs en geen state, want geen van
+  // beide hoort iets opnieuw te tekenen.
+  const begonnen = useRef(false)
+  const inRijSinds = useRef(0)
 
   useEffect(() => {
     setName(rememberedName())
@@ -89,6 +96,9 @@ export function Composer({
         if (data.status === 'promoted') {
           setQueued(null)
           if (data.message_id) {
+            track('sentence_promoted', {
+              waited_ms: inRijSinds.current ? Date.now() - inRijSinds.current : undefined,
+            })
             setJustPosted({ id: data.message_id, body: verzonden.current })
             onPosted(data.message_id)
           }
@@ -120,6 +130,12 @@ export function Composer({
     setBusy(true)
     setError(null)
 
+    track('write_submit', {
+      body_length: body.trim().length,
+      has_name: name.trim().length > 0,
+      queue_length: queueLength,
+    })
+
     try {
       const res = await fetch('/api/post', {
         method: 'POST',
@@ -134,6 +150,9 @@ export function Composer({
       const data = await res.json()
 
       if (!res.ok || !data.ok) {
+        // De code, niet de hint. `cooldown` blijft `cooldown`; de zin eromheen
+        // mag morgen anders geformuleerd worden zonder dat het rapport breekt.
+        track('post_refused', { reason: data.error ?? 'unknown', status: res.status })
         setError(data.hint ?? 'That did not work.')
         if (typeof data.retry_after === 'number') setCooldown(data.retry_after)
         return
@@ -141,13 +160,22 @@ export function Composer({
 
       rememberName(name)
       verzonden.current = body
+      const lengte = body.trim().length
       setBody('')
       shownAt.current = Date.now()
+      begonnen.current = false
 
       if (data.live) {
+        track('sentence_posted', { body_length: lengte, has_name: name.trim().length > 0 })
         setJustPosted({ id: data.message.id, body: data.message.body })
         onPosted(data.message.id)
       } else if (data.queued) {
+        inRijSinds.current = Date.now()
+        track('sentence_queued', {
+          body_length: lengte,
+          position: data.position ?? 1,
+          eta_ms: data.eta_ms ?? 0,
+        })
         setQueued({
           position: data.position ?? 1,
           etaMs: data.eta_ms ?? 0,
@@ -155,6 +183,7 @@ export function Composer({
         })
       }
     } catch {
+      track('post_refused', { reason: 'network', status: 0 })
       setError('No connection. Try again in a moment.')
     } finally {
       setBusy(false)
@@ -207,7 +236,17 @@ export function Composer({
           ref={field}
           id="zin"
           value={body}
-          onChange={(e) => setBody(e.target.value.replace(/[\r\n]+/g, ' '))}
+          onChange={(e) => {
+            const nieuw = e.target.value.replace(/[\r\n]+/g, ' ')
+            // Eén keer per zin, bij de eerste letter. Dit is de bovenkant van de
+            // trechter: hoeveel mensen beginnen te typen tegenover hoeveel er
+            // uiteindelijk op versturen drukken.
+            if (!begonnen.current && nieuw.length > 0) {
+              begonnen.current = true
+              track('write_start', { queue_length: queueLength })
+            }
+            setBody(nieuw)
+          }}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onKeyDown={(e) => {
@@ -286,7 +325,14 @@ function AfterPost({
       </p>
       <ShareNow id={id} body={body} />
       <p className="meta text-[0.8rem]">
-        <button type="button" onClick={onAgain} className="underline underline-offset-4">
+        <button
+          type="button"
+          onClick={() => {
+            track('write_again')
+            onAgain()
+          }}
+          className="underline underline-offset-4"
+        >
           write another
         </button>
       </p>

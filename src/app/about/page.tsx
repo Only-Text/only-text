@@ -55,10 +55,11 @@ export default function AboutPage() {
 
         <p className="hand text-[1.02rem] font-bold">Privacy</p>
         <p className="hand text-[1rem]">
-          No accounts, no advertising, no tracking cookies. Your IP address is never stored: what
-          the database holds is a one-way hash of it with a server-side secret mixed in, used only
-          to keep one person from taking the whole page. Country is kept as a two-letter code, so a
-          sentence can say where in the world it came from.
+          No accounts and no advertising. Your IP address is never stored: what the database holds
+          is a one-way hash of it with a server-side secret mixed in, used only to keep one person
+          from taking the whole page. Country is kept as a two-letter code, so a sentence can say
+          where in the world it came from. Visits are counted with Google Analytics, which sets its
+          own cookies.
         </p>
 
         <p className="hand text-[1.02rem] font-bold">Something wrong</p>

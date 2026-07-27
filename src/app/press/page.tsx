@@ -101,10 +101,10 @@ export default async function PressPage() {
 
         <p className="hand text-[1.02rem] font-bold">What is logged</p>
         <p className="hand text-[1rem]">
-          No analytics, no advertising, no tracking cookies. IP addresses are never stored: the
-          database holds a one-way hash of the address with a server-side secret mixed in, used only
-          to stop one person from holding the page. Country is kept as a two-letter code so a
-          sentence can say where it came from.
+          No advertising. IP addresses are never stored: the database holds a one-way hash of the
+          address with a server-side secret mixed in, used only to stop one person from holding the
+          page. Country is kept as a two-letter code so a sentence can say where it came from.
+          Visits are counted with Google Analytics, which sets its own cookies.
         </p>
 
         <p className="hand text-[1.02rem] font-bold">Who made it</p>

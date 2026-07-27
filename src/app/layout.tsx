@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Shantell_Sans } from 'next/font/google'
 
+import { Analytics } from '@/components/analytics'
 import { BaselineCalibrator } from '@/components/baseline-calibrator'
 import './globals.css'
 
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </a>
         <BaselineCalibrator />
         {children}
+        <Analytics />
       </body>
     </html>
   )

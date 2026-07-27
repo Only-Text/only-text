@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { Sheet } from '@/components/sheet'
+import { Track } from '@/components/track'
 import { formatDuration, formatMoment, formatNumber, countryName } from '@/lib/format'
 import { getMessage } from '@/lib/data'
 import { ReportLink } from '@/components/report-link'
@@ -56,6 +57,21 @@ export default async function MessagePage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-8 sm:py-16">
+      {/* Welke zinnen worden er eigenlijk doorgestuurd? Als dat vooral de zinnen
+          zijn die het lang volhielden, is de standtijd het verhaal; zijn het
+          korte, dan is de grap het verhaal. Deze cijfers komen uit de gecachete
+          pagina en lopen dus tot een uur achter, wat voor een verdeling over
+          duizenden weergaven niet uitmaakt. */}
+      <Track
+        event="sentence_view"
+        params={{
+          stood_ms: message.duration_ms ?? undefined,
+          rank: message.rank ?? undefined,
+          reads: message.views,
+          is_live: !message.ended_at,
+        }}
+      />
+
       <Sheet tilt={0.4}>
         <header>
           <h1 className="meta text-[0.8rem] leading-(--line-h) tracking-wide">

@@ -1,11 +1,13 @@
 'use client'
 
-import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'motion/react'
+import { MotionConfig } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { browserClient, sessionId } from '@/lib/supabase-browser'
 import { formatNumber, formatShortMoment } from '@/lib/format'
+import { track } from '@/lib/analytics'
 import { Composer } from './composer'
+import { Erasing } from './eraser'
 import { Eye } from './eye'
 import { InkReveal } from './ink-reveal'
 import { ReportLink } from './report-link'
@@ -42,6 +44,12 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
   // nieuwer #100 overschrijven en draait de pagina terug in de tijd.
   const highest = useRef(initial.message?.id ?? 0)
   const reduce = useReducedMotion()
+
+  // Hetzelfde id als `mineId`, maar als ref. De realtime-listener wordt één keer
+  // opgezet en houdt daarmee voor altijd de waarde vast die bij het monteren
+  // gold; zonder deze ref zou hij denken dat niemand ooit zijn eigen zin
+  // verliest.
+  const mijnId = useRef<number | null>(null)
 
   const apply = useCallback((next: BoardState, prev?: Outgoing) => {
     const id = next.message?.id ?? 0
@@ -82,6 +90,17 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
       channel
         .on('broadcast', { event: 'takeover' }, ({ payload }) => {
           const p = payload as Record<string, unknown>
+
+          // Het moment waar het om draait: iemand kijkt en de zin verandert
+          // onder zijn ogen. Was het zijn eigen zin, dan is dit precies het
+          // moment waarop mensen een schermafbeelding maken.
+          const vorige = p.prev_id ? Number(p.prev_id) : null
+          if (vorige) {
+            track(mijnId.current === vorige ? 'sentence_lost' : 'takeover_watched', {
+              stood_ms: (p.prev_duration_ms as number | null) ?? undefined,
+            })
+          }
+
           apply(
             {
               message: {
@@ -185,7 +204,31 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
     return () => clearTimeout(timer)
   }, [state.message, state.queue_length, refetch])
 
-  /* Het doorgestreepte bericht weer opruimen. */
+  /* ------------------------------------------------------------------ */
+  /* Meting                                                              */
+  /* ------------------------------------------------------------------ */
+
+  /**
+   * De stand van het bord bij binnenkomst.
+   *
+   * GA telt zelf al hoeveel mensen de voorpagina openen. Wat het niet weet is
+   * hoe druk het op dat moment wás, en dat is juist de vraag: krijgen bezoekers
+   * een lege wachtrij te zien of staan er twintig mensen voor ze.
+   */
+  useEffect(() => {
+    track('board_view', {
+      sentences_total: initial.stats?.total_messages ?? 0,
+      queue_length: initial.queue_length,
+      viewers: initial.viewers,
+      has_message: Boolean(initial.message),
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  /* Noodrem. Normaal meldt de gum zelf dat hij klaar is, maar als die melding
+     om wat voor reden dan ook uitblijft — een tabblad dat naar de achtergrond
+     gaat halverwege de animatie, bijvoorbeeld — blijft de oude zin anders voor
+     altijd staan terwijl de nieuwe er allang is. */
   useEffect(() => {
     if (!outgoing) return
     const timer = setTimeout(() => setOutgoing(null), reduce ? 900 : 2600)
@@ -204,46 +247,31 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
           permalink voor wie doorklikt. */}
       {msg && <Byline message={msg} mine={mineId === msg.id} />}
 
-      <div className="relative">
-        {/* Het vorige bericht: doorgestreept, schuift weg. */}
-        <AnimatePresence>
-          {outgoing && (
-            <motion.p
-              key={outgoing.id}
-              initial={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={
-                reduce
-                  ? { opacity: 0 }
-                  : { opacity: 0, x: -60, rotate: 2.5, transition: { duration: 0.55 } }
-              }
-              className="message struck pointer-events-none absolute inset-x-0 top-0 text-[clamp(1.3rem,3.1vw,1.95rem)]"
-              style={{ willChange: 'transform' }}
-            >
-              {outgoing.body}
-            </motion.p>
-          )}
-        </AnimatePresence>
+      {/* Eén zin tegelijk op het vel. Zolang de oude weggegomd wordt is de
+          nieuwe er nog niet: dat is wat er op papier ook gebeurt, en het
+          scheelt de sprong in hoogte die je kreeg toen de twee even samen op
+          het vel stonden.
 
-        {/* data-nosnippet houdt de zin van een bezoeker uit het zoekresultaat.
-            Zonder dit zet Google een willekeurige vreemdentekst onder je titel
-            in de resultaten — mogelijk in een andere taal, mogelijk iets waar
-            je niet mee geassocieerd wilt worden. De uitleg eromheen wordt dan
-            als snippet gebruikt, en dat is precies wat je wil. De permalinks
-            tonen hun zin wél gewoon, want die zijn per stuk gearchiveerd. */}
-        <p
-          id="bericht"
-          data-nosnippet
-          className="message text-[clamp(1.3rem,3.1vw,1.95rem)]"
-          style={{ opacity: outgoing ? 0 : 1 }}
-        >
-          {msg ? <InkReveal key={msg.id} text={msg.body} /> : 'Nothing here right now.'}
-        </p>
-      </div>
+          data-nosnippet houdt de zin van een bezoeker uit het zoekresultaat.
+          Zonder dit zet Google een willekeurige vreemdentekst onder je titel
+          in de resultaten — mogelijk in een andere taal, mogelijk iets waar
+          je niet mee geassocieerd wilt worden. De uitleg eromheen wordt dan
+          als snippet gebruikt, en dat is precies wat je wil. De permalinks
+          tonen hun zin wél gewoon, want die zijn per stuk gearchiveerd. */}
+      <p id="bericht" data-nosnippet className="message text-[clamp(1.3rem,3.1vw,1.95rem)]">
+        {outgoing ? (
+          <Erasing key={outgoing.id} text={outgoing.body} onDone={() => setOutgoing(null)} />
+        ) : msg ? (
+          <InkReveal key={msg.id} text={msg.body} />
+        ) : (
+          'Nothing here right now.'
+        )}
+      </p>
 
       <Composer
         queueLength={state.queue_length}
         onPosted={(id) => {
+          mijnId.current = id
           setMineId(id)
           void refetch()
         }}
