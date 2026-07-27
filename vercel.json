@@ -1,0 +1,36 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "installCommand": "npm install",
+  "regions": ["fra1"],
+  "crons": [
+    {
+      "path": "/api/tick",
+      "schedule": "*/1 * * * *"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/og/(.*)",
+      "headers": [
+        {
+          "key": "cache-control",
+          "value": "public, immutable, no-transform, max-age=31536000"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "x-content-type-options", "value": "nosniff" },
+        { "key": "referrer-policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "x-frame-options", "value": "SAMEORIGIN" },
+        {
+          "key": "permissions-policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        }
+      ]
+    }
+  ]
+}

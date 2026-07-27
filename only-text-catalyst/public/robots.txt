@@ -1,9 +1,0 @@
-# Only Text - Robots.txt
-User-agent: *
-Allow: /
-
-# Sitemap
-Sitemap: https://only-text.com/sitemap.xml
-
-# Crawl-delay for respectful crawling
-Crawl-delay: 1
