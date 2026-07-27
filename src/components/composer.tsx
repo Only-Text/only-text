@@ -190,6 +190,11 @@ export function Composer({
       <label htmlFor="zin" className="hand block text-[1rem] font-bold">
         Write your sentence here:
       </label>
+      {/* De spelregel staat hier en niet bovenaan: pas op het moment dat je
+          gaat typen wil je weten wat er dan gebeurt. */}
+      <p className="meta text-[0.85rem]">
+        It takes over the page, until somebody types after you.
+      </p>
 
       <div className="on-rule relative text-[1.35rem]">
         <textarea

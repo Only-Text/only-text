@@ -64,8 +64,7 @@ export default function AboutPage() {
         <p className="hand text-[1.02rem] font-bold">Something wrong</p>
         <p className="hand text-[1rem]">
           Every sentence can be reported. Three reports and it comes off the front page
-          immediately, before anyone looks at it. Anything urgent: the contact address is on the
-          domain record.
+          immediately, before anyone looks at it.
         </p>
 
         <p className="meta text-[0.85rem]">

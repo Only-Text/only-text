@@ -182,6 +182,15 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
 
   return (
     <MotionConfig reducedMotion="user">
+      {/* Een bijschrift boven de zin in plaats van uitleg eronder.
+          Zo weet je in één oogopslag wat dat grote stuk tekst is, zonder dat
+          er een alinea bij komt die er net zo belangrijk uitziet als de zin
+          zelf. De rest van de uitleg staat bij het invoerveld, want daar heb
+          je hem pas nodig. */}
+      <p className="meta text-[0.78rem] uppercase leading-(--line-h) tracking-[0.14em]">
+        the last thing anyone typed
+      </p>
+
       <div className="relative">
         {/* Het vorige bericht: doorgestreept, schuift weg. */}
         <AnimatePresence>
@@ -211,14 +220,6 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
           {msg ? <InkReveal key={msg.id} text={msg.body} /> : 'Nothing here right now.'}
         </p>
       </div>
-
-      {/* De spelregel, één keer, in gewone dikte. Alles wat hierboven staat is
-          van een bezoeker; dit is het enige wat de site zelf zegt.
-          "Deze site is één zin lang" klopte niet: er staan meer zinnen op de
-          pagina. Het gaat om de zin bovenaan, dus dat staat er nu ook. */}
-      <p className="hand text-[0.98rem] leading-(--line-h) text-(--ink-soft)">
-        One sentence sits at the top. It belongs to whoever typed last.
-      </p>
 
       {msg && <Standing message={msg} viewers={state.viewers} mine={mineId === msg.id} />}
 
