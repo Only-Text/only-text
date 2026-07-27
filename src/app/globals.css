@@ -32,7 +32,10 @@
 }
 
 :root {
-  color-scheme: light dark;
+  /* Papier is licht. Een donkere variant is technisch prima te maken, maar
+     een notitieblok dat op systeemvoorkeur ineens zwart wordt is geen
+     notitieblok meer. */
+  color-scheme: light;
 
   --paper: #fbf7ef;
   --paper-deep: #eeefe9;
@@ -77,49 +80,12 @@
 
   --grain-blend: multiply;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.84' numOctaves='4' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.055'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  --grain-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.84' numOctaves='4' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.035'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 
   --stroke: #22241d;
 
   /* Een data-URI kan geen CSS-variabele lezen, dus de inktkleur zit in de
      SVG gebakken. Vandaar twee varianten in plaats van één met currentColor. */
   --strike-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'%3E%3Cpath d='M2 13.5 C 42 9, 76 17.5, 116 12.5 S 192 8, 231 15 S 281 10.5, 298 13' fill='none' stroke='%2322241d' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
-  --strike-svg-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'%3E%3Cpath d='M2 13.5 C 42 9, 76 17.5, 116 12.5 S 192 8, 231 15 S 281 10.5, 298 13' fill='none' stroke='%23ede8da' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    /* Echt zwart papier bestaat niet. Warm donkerbruin blijft papier;
-       #000 wordt een terminal. En de blend mode moet mee: multiply op een
-       donkere ondergrond maakt de korrel volledig onzichtbaar. */
-    --paper: #16160f;
-    --paper-deep: #101009;
-    --ink: #ede8da;
-    --ink-soft: #bdb9ab;
-    --ink-faint: #7d7a6e;
-    --rule: #2f3a45;
-    --margin-red: #5a3a38;
-    --edge: #3f3d33;
-    --grain-blend: screen;
-    --grain: var(--grain-dark);
-    --stroke: #ede8da;
-    --strike-svg: var(--strike-svg-dark);
-  }
-}
-
-:root[data-theme='dark'] {
-  --paper: #16160f;
-  --paper-deep: #101009;
-  --ink: #ede8da;
-  --ink-soft: #bdb9ab;
-  --ink-faint: #7d7a6e;
-  --rule: #2f3a45;
-  --margin-red: #5a3a38;
-  --edge: #3f3d33;
-  --grain-blend: screen;
-  --grain: var(--grain-dark);
-  --stroke: #ede8da;
-  --strike-svg: var(--strike-svg-dark);
 }
 
 html {
