@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 
+import { Penned } from './hand-drawn'
 import { track } from '@/lib/analytics'
 
 /**
@@ -78,9 +79,9 @@ export function ReportLink({ id, className = '' }: { id: number; className?: str
         track('report_open')
         setStand('vragen')
       }}
-      className={`meta text-[0.8rem] underline underline-offset-2 hover:text-(--flame) ${className}`}
+      className={`meta text-[0.8rem] hover:text-(--flame) ${className}`}
     >
-      report this
+      <Penned seed="meld-dit">report this</Penned>
     </button>
   )
 }

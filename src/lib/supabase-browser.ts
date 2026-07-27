@@ -28,21 +28,11 @@ export function browserClient(): SupabaseClient {
 }
 
 /**
- * Een sessie-id dat één tabblad lang meegaat. Gebruikt voor de kijkersteller.
- * Bewust sessionStorage en niet localStorage: twee tabbladen zijn twee kijkers.
+ * Verhuisd naar lib/session, zodat de metingen hem kunnen gebruiken zonder de
+ * hele Supabase-client mee te slepen. Hier blijft hij beschikbaar omdat de
+ * kijkersteller hem via deze module ophaalt.
  */
-export function sessionId(): string {
-  const KEY = 'only-text:session'
-  try {
-    const existing = sessionStorage.getItem(KEY)
-    if (existing) return existing
-    const fresh = crypto.randomUUID()
-    sessionStorage.setItem(KEY, fresh)
-    return fresh
-  } catch {
-    return crypto.randomUUID()
-  }
-}
+export { sessionId } from './session'
 
 /** Onthoudt de naam die iemand koos, zonder account. */
 export function rememberedName(): string {

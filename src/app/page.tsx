@@ -24,7 +24,11 @@ export default async function Home() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-8 sm:py-16">
-      <Sheet>
+      {/* Veertien regels: genoeg voor het bord met het invoerveld én voor het
+          bord vlak nadat je iets geplaatst hebt, zodat het vel tussen die twee
+          toestanden niet van maat verandert. Een langere zin rekt het vel nog
+          steeds op — dat hoort, want dan is er ook echt meer geschreven. */}
+      <Sheet lines={14}>
         <header>
           <h1 className="meta text-[0.8rem] leading-(--line-h) tracking-wide">only-text.com</h1>
         </header>

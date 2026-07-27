@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { HandButton } from './hand-drawn'
+import { HandButton, Penned } from './hand-drawn'
 import { formatDuration } from '@/lib/format'
 import { track } from '@/lib/analytics'
 
@@ -85,38 +85,42 @@ export function Share({
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => naarBuiten('bluesky')}
-          className="hand underline underline-offset-4 hover:text-(--flame)"
+          className="hand hover:text-(--flame)"
         >
-          post on Bluesky
+          <Penned seed="bluesky-perma">post on Bluesky</Penned>
         </a>
         <a
           href={`https://mastodonshare.com/share?text=${encodeURIComponent(tekst)}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => naarBuiten('mastodon')}
-          className="hand underline underline-offset-4 hover:text-(--flame)"
+          className="hand hover:text-(--flame)"
         >
-          on Mastodon
+          <Penned seed="mastodon-perma">on Mastodon</Penned>
         </a>
         <button
           type="button"
           onClick={() => kopieer('tekst')}
-          className="hand underline underline-offset-4 hover:text-(--flame)"
+          className="hand hover:text-(--flame)"
         >
-          {gekopieerd === 'tekst' ? 'copied' : 'copy the words'}
+          {/* De seed hangt aan de knop en niet aan het opschrift: anders
+              verandert de haal van vorm op het moment dat er "copied" staat. */}
+          <Penned seed="woorden-kopie">
+            {gekopieerd === 'tekst' ? 'copied' : 'copy the words'}
+          </Penned>
         </button>
         <button
           type="button"
           onClick={() => kopieer('link')}
-          className="hand underline underline-offset-4 hover:text-(--flame)"
+          className="hand hover:text-(--flame)"
         >
-          {gekopieerd === 'link' ? 'copied' : 'just the link'}
+          <Penned seed="link-kopie">{gekopieerd === 'link' ? 'copied' : 'just the link'}</Penned>
         </button>
       </div>
       <p className="meta text-[0.8rem]">
         The image people will see is{' '}
-        <a href={`/api/og/${id}`} className="underline underline-offset-4">
-          this one
+        <a href={`/api/og/${id}`} className="hover:text-(--flame)">
+          <Penned seed="de-afbeelding">this one</Penned>
         </a>
         , and it never changes.
       </p>
@@ -154,12 +158,12 @@ export function ShareNow({ id, body }: { id: number; body: string }) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => track('share_click', { channel: 'bluesky', place: 'after_post' })}
-        className="hand underline underline-offset-4 hover:text-(--flame)"
+        className="hand hover:text-(--flame)"
       >
-        post it on Bluesky
+        <Penned seed="bluesky-net-geplaatst">post it on Bluesky</Penned>
       </a>
-      <a href={`/m/${id}`} className="hand underline underline-offset-4">
-        see it on its own
+      <a href={`/m/${id}`} className="hand hover:text-(--flame)">
+        <Penned seed="op-zichzelf">see it on its own</Penned>
       </a>
     </div>
   )

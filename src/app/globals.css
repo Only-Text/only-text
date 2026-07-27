@@ -82,10 +82,6 @@
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.84' numOctaves='4' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.055'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 
   --stroke: #22241d;
-
-  /* Een data-URI kan geen CSS-variabele lezen, dus de inktkleur zit in de
-     SVG gebakken. Vandaar twee varianten in plaats van één met currentColor. */
-  --strike-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'%3E%3Cpath d='M2 13.5 C 42 9, 76 17.5, 116 12.5 S 192 8, 231 15 S 281 10.5, 298 13' fill='none' stroke='%2322241d' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 html {
@@ -238,37 +234,6 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
-   Met de hand doorgehaald. Een rechte streep leest als opmaak; een licht
-   golvende lijn leest als iemand die het wegstreept.
-   ------------------------------------------------------------------------- */
-
-.struck {
-  position: relative;
-  color: var(--ink-soft);
-}
-.struck::after {
-  content: '';
-  position: absolute;
-  left: -8px;
-  right: -8px;
-  top: 0;
-  bottom: 0;
-  background-image: var(--strike-svg);
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  transform: scaleX(0);
-  transform-origin: left center;
-  animation: strike 0.55s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-  pointer-events: none;
-}
-
-@keyframes strike {
-  to {
-    transform: scaleX(1) rotate(-0.5deg);
-  }
-}
-
-/* ---------------------------------------------------------------------------
    Inkt die intrekt: per woord, nooit per letter — bij per letter lezen
    screenreaders de zin letter voor letter voor.
    ------------------------------------------------------------------------- */
@@ -378,10 +343,6 @@ body {
     to {
       opacity: 1;
     }
-  }
-  .struck::after {
-    animation: none;
-    transform: scaleX(1);
   }
   .cursor-blink {
     animation: none;

@@ -38,6 +38,12 @@ export function Erasing({ text, onDone }: { text: string; onDone: () => void }) 
   const staart = useTransform(x, (v) => v - 28)
   const gumX = useTransform(x, (v) => `${(v + 5).toFixed(2)}%`)
 
+  // De gum begint en eindigt buiten de tekst, want anders wordt de eerste of de
+  // laatste letter half gegomd. Maar buiten de tekst ligt al gauw ook buiten het
+  // vel, en een gum die naast het papier in de lucht hangt is geen gum. Dus:
+  // hij komt op in de kantlijn en tilt weer op aan het eind van de regel.
+  const zichtbaar = useTransform(x, [-24, -12, 94, 112], [0, 1, 1, 0])
+
   // Wat rechts van de gum ligt staat er nog; links ervan is het weg. De hoek
   // is niet 90 graden: niemand gomt kaarsrecht.
   const inkt = useMotionTemplate`linear-gradient(96deg, transparent ${x}%, #000 ${voor}%)`
@@ -101,8 +107,8 @@ export function Erasing({ text, onDone }: { text: string; onDone: () => void }) 
 
       <motion.span
         aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 z-10 -mt-[17px] -ml-[37px] block sm:-mt-[21px] sm:-ml-[47px]"
-        style={{ left: gumX }}
+        className="pointer-events-none absolute top-1/2 z-10 -mt-4.25 -ml-9.25 block sm:-mt-5.25 sm:-ml-11.75"
+        style={{ left: gumX, opacity: zichtbaar }}
       >
         {/* Het heen-en-weer zit op een eigen laag, zodat het onafhankelijk van
             de doorlopende beweging naar rechts kan blijven lopen. */}
@@ -137,7 +143,7 @@ function Gum() {
     <svg
       aria-hidden="true"
       viewBox="0 0 104 46"
-      className="h-auto w-[74px] sm:w-[94px]"
+      className="h-auto w-18.5 sm:w-23.5"
     >
       <defs>
         <linearGradient id={vlak} x1="0" y1="0" x2="1" y2="0">

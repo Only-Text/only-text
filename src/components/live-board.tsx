@@ -1,6 +1,6 @@
 'use client'
 
-import { MotionConfig } from 'motion/react'
+import { MotionConfig, useReducedMotion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { browserClient, sessionId } from '@/lib/supabase-browser'
@@ -258,7 +258,15 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
           je niet mee geassocieerd wilt worden. De uitleg eromheen wordt dan
           als snippet gebruikt, en dat is precies wat je wil. De permalinks
           tonen hun zin wél gewoon, want die zijn per stuk gearchiveerd. */}
-      <p id="bericht" data-nosnippet className="message text-[clamp(1.3rem,3.1vw,1.95rem)]">
+      {/* mt-0 is niet overbodig. Hier omheen stond een div, en die brak de
+          `p + p`-regel uit de basislaag die elke alinea een lege regel boven
+          zich geeft. Nu de zin direct op de byline volgt zou die regel wél
+          aanslaan en zakt de zin een regel weg van zijn naamregel. */}
+      <p
+        id="bericht"
+        data-nosnippet
+        className="message mt-0 text-[clamp(1.3rem,3.1vw,1.95rem)]"
+      >
         {outgoing ? (
           <Erasing key={outgoing.id} text={outgoing.body} onDone={() => setOutgoing(null)} />
         ) : msg ? (

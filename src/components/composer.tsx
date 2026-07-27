@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
-import { HandButton } from './hand-drawn'
+import { HandButton, Penned } from './hand-drawn'
 import { PenCaret } from './pen-caret'
 import { ShareNow } from './share'
 import { MAX_AUTHOR_LENGTH, MAX_BODY_LENGTH } from '@/lib/sanitize'
@@ -320,9 +320,6 @@ function AfterPost({
   return (
     <div className="mt-(--line-h)">
       <p className="hand text-[1.05rem] font-bold">Your sentence is up.</p>
-      <p className="meta text-[0.9rem]">
-        From now on, what counts is how long you hold it.
-      </p>
       <ShareNow id={id} body={body} />
       <p className="meta text-[0.8rem]">
         <button
@@ -331,9 +328,9 @@ function AfterPost({
             track('write_again')
             onAgain()
           }}
-          className="underline underline-offset-4"
+          className="hover:text-(--flame)"
         >
-          write another
+          <Penned seed="nog-een">write another</Penned>
         </button>
       </p>
     </div>
