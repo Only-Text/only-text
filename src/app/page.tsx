@@ -1,6 +1,7 @@
+import Link from 'next/link'
+
 import { LiveBoard } from '@/components/live-board'
 import { Sheet } from '@/components/sheet'
-import { TurnLink, Turnable, TurnablePage } from '@/components/page-turn'
 import { getBoard } from '@/lib/data'
 
 /**
@@ -23,37 +24,31 @@ export default async function Home() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-8 sm:py-16">
-      <TurnablePage>
-        <Turnable>
-          <Sheet>
-            <header>
-              <h1 className="meta text-[0.8rem] leading-(--line-h) tracking-wide">
-                only-text.com
-              </h1>
-            </header>
+      <Sheet>
+        <header>
+          <h1 className="meta text-[0.8rem] leading-(--line-h) tracking-wide">only-text.com</h1>
+        </header>
 
-            <LiveBoard initial={board} />
-          </Sheet>
-        </Turnable>
+        <LiveBoard initial={board} />
+      </Sheet>
 
-        <nav className="mt-10 flex flex-wrap gap-x-6 gap-y-2 pl-1">
-          <NavLink href="/archive">everything ever written</NavLink>
-          <NavLink href="/records">records</NavLink>
-          <NavLink href="/about">what is this</NavLink>
-          <NavLink href="/raw">plain text</NavLink>
-        </nav>
-      </TurnablePage>
+      <nav className="mt-10 flex flex-wrap gap-x-6 gap-y-2 pl-1">
+        <NavLink href="/archive">everything ever written</NavLink>
+        <NavLink href="/records">records</NavLink>
+        <NavLink href="/about">what is this</NavLink>
+        <NavLink href="/raw">plain text</NavLink>
+      </nav>
     </main>
   )
 }
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <TurnLink
+    <Link
       href={href}
       className="marginalia relative text-[0.9rem] transition-colors hover:text-(--ink)"
     >
       {children}
-    </TurnLink>
+    </Link>
   )
 }

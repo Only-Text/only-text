@@ -123,6 +123,9 @@
 }
 
 html {
+  /* Het vel staat een halve graad scheef; zonder dit levert die rotatie
+     een paar pixels horizontale overloop op en dus een schuifbalk onderaan. */
+  overflow-x: hidden;
   background-color: var(--paper-deep);
   background-image: var(--grain);
   background-size: 180px 180px;
