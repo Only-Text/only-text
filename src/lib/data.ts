@@ -39,6 +39,8 @@ export async function getMessage(id: number): Promise<{
     ended_at: string | null
     peak_viewers: number
     views: number
+    rank: number | null
+    ranked_of: number
   }
   previous: ArchiveItem | null
   next: ArchiveItem | null

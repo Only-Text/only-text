@@ -18,7 +18,7 @@ const DAY = 24 * HOUR
 
 /** Compact, voor lijsten: `4m 12s`, `1h 03m`, `2d 5h`. */
 export function formatDuration(ms: number | null | undefined): string {
-  if (ms == null) return '—'
+  if (ms == null) return 'unknown'
   if (ms < SECOND) return `${Math.max(ms, 0)}ms`
   if (ms < MINUTE) {
     const s = ms / SECOND

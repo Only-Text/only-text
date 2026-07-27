@@ -84,7 +84,7 @@ export default async function StatsPage() {
         <Regel label="Times a sentence has been read" waarde={formatNumber(s.reads_total)} />
         <Regel
           label="Median time a sentence survives"
-          waarde={s.median_ms ? formatDuration(s.median_ms) : '—'}
+          waarde={s.median_ms ? formatDuration(s.median_ms) : 'not set yet'}
         />
         {s.shortest_ever && (
           <Regel label="Shortest life ever" waarde={formatDuration(s.shortest_ever.ms)} />

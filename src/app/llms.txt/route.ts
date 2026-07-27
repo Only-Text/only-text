@@ -30,14 +30,14 @@ Sentences ever written: ${board.stats?.total_messages ?? 0}
 
 ## Endpoints
 
-- ${SITE}/raw — the current sentence, nothing else, as text/plain
-- ${SITE}/api/current — the current sentence as JSON, plus counts
-- ${SITE}/feed.xml — the last fifty sentences as RSS
-- ${SITE}/m/<id> — one sentence, permanent, with how long it lasted
-- ${SITE}/archive — every sentence ever written
-- ${SITE}/records — longest and shortest reigns
-- ${SITE}/stats.json — public figures, no key needed
-- ${SITE}/press — description, numbers and permission to reproduce anything here
+- ${SITE}/raw: the current sentence, nothing else, as text/plain
+- ${SITE}/api/current: the current sentence as JSON, plus counts
+- ${SITE}/feed.xml: the last fifty sentences as RSS
+- ${SITE}/m/<id>: one sentence, permanent, with how long it lasted
+- ${SITE}/archive: every sentence ever written
+- ${SITE}/records: longest and shortest reigns
+- ${SITE}/stats.json: public figures, no key needed
+- ${SITE}/press: description, numbers and permission to reproduce anything here
 
 ## Rules for writing
 

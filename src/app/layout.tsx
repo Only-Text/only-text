@@ -25,7 +25,7 @@ const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://only-text.com'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: 'only-text.com — a website that is one sentence long',
+    default: 'only-text.com · a website that is one sentence long',
     template: '%s · only-text.com',
   },
   description:

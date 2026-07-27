@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { HandButton } from './hand-drawn'
 import { PenCaret } from './pen-caret'
+import { ShareNow } from './share'
 import { MAX_AUTHOR_LENGTH, MAX_BODY_LENGTH } from '@/lib/sanitize'
 import { formatDuration } from '@/lib/format'
 import { rememberName, rememberedName } from '@/lib/supabase-browser'
@@ -31,10 +32,11 @@ export function Composer({
   const [error, setError] = useState<string | null>(null)
   const [cooldown, setCooldown] = useState(0)
   const [queued, setQueued] = useState<Queued | null>(null)
-  const [justPosted, setJustPosted] = useState<number | null>(null)
+  const [justPosted, setJustPosted] = useState<{ id: number; body: string } | null>(null)
   const [focused, setFocused] = useState(false)
 
   const shownAt = useRef(Date.now())
+  const verzonden = useRef('')
   const honeypot = useRef<HTMLInputElement>(null)
   const field = useRef<HTMLTextAreaElement>(null)
 
@@ -86,8 +88,10 @@ export function Composer({
         if (stopped) return
         if (data.status === 'promoted') {
           setQueued(null)
-          setJustPosted(data.message_id ?? null)
-          if (data.message_id) onPosted(data.message_id)
+          if (data.message_id) {
+            setJustPosted({ id: data.message_id, body: verzonden.current })
+            onPosted(data.message_id)
+          }
         } else if (data.status === 'waiting' && typeof data.position === 'number') {
           setQueued((q) => (q ? { ...q, position: data.position!, etaMs: data.eta_ms ?? 0 } : q))
         } else {
@@ -136,12 +140,13 @@ export function Composer({
       }
 
       rememberName(name)
+      verzonden.current = body
       setBody('')
       shownAt.current = Date.now()
 
       if (data.live) {
-        setJustPosted(data.message?.id ?? null)
-        onPosted(data.message?.id ?? 0)
+        setJustPosted({ id: data.message.id, body: data.message.body })
+        onPosted(data.message.id)
       } else if (data.queued) {
         setQueued({
           position: data.position ?? 1,
@@ -157,7 +162,13 @@ export function Composer({
   }
 
   if (justPosted) {
-    return <AfterPost id={justPosted} onAgain={() => setJustPosted(null)} />
+    return (
+      <AfterPost
+        id={justPosted.id}
+        body={justPosted.body}
+        onAgain={() => setJustPosted(null)}
+      />
+    )
   }
 
   if (queued) {
@@ -258,36 +269,27 @@ export function Composer({
   )
 }
 
-function AfterPost({ id, onAgain }: { id: number; onAgain: () => void }) {
-  const [copied, setCopied] = useState(false)
-  const url = typeof window === 'undefined' ? '' : `${window.location.origin}/m/${id}`
-
+function AfterPost({
+  id,
+  body,
+  onAgain,
+}: {
+  id: number
+  body: string
+  onAgain: () => void
+}) {
   return (
     <div className="mt-(--line-h)">
       <p className="hand text-[1.05rem] font-bold">Your sentence is up.</p>
       <p className="meta text-[0.9rem]">
         From now on, what counts is how long you hold it.
       </p>
-      <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <HandButton
-          seed="deelknop"
-          shape="ellipse"
-          onClick={() => {
-            void navigator.clipboard.writeText(url).then(() => {
-              setCopied(true)
-              setTimeout(() => setCopied(false), 2500)
-            })
-          }}
-        >
-          {copied ? 'link copied' : 'share the proof'}
-        </HandButton>
-        <a href={`/m/${id}`} className="hand text-[0.95rem] underline underline-offset-4">
-          see it on its own
-        </a>
-        <button type="button" onClick={onAgain} className="meta text-[0.85rem] underline">
+      <ShareNow id={id} body={body} />
+      <p className="meta text-[0.8rem]">
+        <button type="button" onClick={onAgain} className="underline underline-offset-4">
           write another
         </button>
-      </div>
+      </p>
     </div>
   )
 }

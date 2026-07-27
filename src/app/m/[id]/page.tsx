@@ -6,6 +6,7 @@ import { Sheet } from '@/components/sheet'
 import { formatDuration, formatMoment, formatNumber, countryName } from '@/lib/format'
 import { getMessage } from '@/lib/data'
 import { ReportLink } from '@/components/report-link'
+import { Share } from '@/components/share'
 
 /**
  * De permalink: één bericht, bevroren.
@@ -23,14 +24,14 @@ type Props = { params: Promise<{ id: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
   const found = await getMessage(Number(id))
-  if (!found) return { title: 'Not found · only-text.com' }
+  if (!found) return { title: 'Not found' }
 
   const { message } = found
   const kort = message.body.length > 70 ? `${message.body.slice(0, 68)}…` : message.body
   const duur = message.duration_ms ? `Stood for ${formatDuration(message.duration_ms)}.` : 'Up now.'
 
   return {
-    title: `${kort} · only-text.com`,
+    title: kort,
     description: `${duur} One sentence at a time, on only-text.com.`,
     openGraph: {
       type: 'article',
@@ -74,6 +75,7 @@ export default async function MessagePage({ params }: Props) {
             <>
               It stood for{' '}
               <span className="text-(--ink)">{formatDuration(message.duration_ms)}</span>
+              {message.rank && <> · rank #{message.rank} of {message.ranked_of}</>}
               {message.views > 0 && (
                 <> and was read by {formatNumber(message.views)} {message.views === 1 ? 'person' : 'people'}</>
               )}
@@ -84,7 +86,15 @@ export default async function MessagePage({ params }: Props) {
           )}
         </p>
 
-        <p className="meta text-[0.85rem]">
+        <Share
+          id={message.id}
+          body={message.body}
+          durationMs={message.duration_ms}
+          rank={message.rank}
+          reads={message.views}
+        />
+
+        <p className="meta mt-(--line-h) text-[0.85rem]">
           <ReportLink id={message.id} />
         </p>
 
