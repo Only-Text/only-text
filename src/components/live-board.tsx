@@ -17,6 +17,7 @@ export type LiveMessage = {
   country: string | null
   waited_ms: number | null
   peak_viewers?: number
+  views?: number
 }
 
 export type BoardState = {
@@ -89,6 +90,7 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
                 min_until: String(p.min_until),
                 country: (p.country as string | null) ?? null,
                 waited_ms: (p.waited_ms as number | null) ?? null,
+                views: 0,
               },
               queue_length: Number(p.queue_length ?? 0),
               viewers: state.viewers,
@@ -140,9 +142,19 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
     const beat = async () => {
       if (stopped || document.visibilityState !== 'visible') return
       const { data } = await sb.rpc('heartbeat', { p_session: me })
-      if (!stopped && typeof data === 'number') {
-        setState((s) => ({ ...s, viewers: data }))
-      }
+      const hart = data as { live?: number; views?: number; message_id?: number } | null
+      if (stopped || !hart) return
+
+      setState((s) => ({
+        ...s,
+        viewers: hart.live ?? s.viewers,
+        // Het totaal hoort bij het bericht dat op dat moment live stond. Is er
+        // ondertussen overgenomen, dan laten we het oude getal met rust.
+        message:
+          s.message && hart.message_id === s.message.id
+            ? { ...s.message, views: hart.views ?? s.message.views }
+            : s.message,
+      }))
     }
 
     void beat()
@@ -221,7 +233,7 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
         </p>
       </div>
 
-      {msg && <Standing message={msg} viewers={state.viewers} mine={mineId === msg.id} />}
+      {msg && <Standing message={msg} mine={mineId === msg.id} />}
 
       <Composer
         queueLength={state.queue_length}
@@ -238,15 +250,7 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
 
 /* -------------------------------------------------------------------- */
 
-function Standing({
-  message,
-  viewers,
-  mine,
-}: {
-  message: LiveMessage
-  viewers: number
-  mine: boolean
-}) {
+function Standing({ message, mine }: { message: LiveMessage; mine: boolean }) {
   const [now, setNow] = useState(() => Date.now())
 
   useEffect(() => {
@@ -257,6 +261,7 @@ function Standing({
   const standing = Math.max(0, now - new Date(message.created_at).getTime())
   const land = countryName(message.country)
   const who = message.author_name?.trim()
+  const reads = message.views ?? 0
 
   // Geen eigen marge: opeenvolgende alinea's op het vel krijgen die al via de
   // liniatuur-regels. Allebei zetten geeft een lege regel ertussen.
@@ -275,11 +280,15 @@ function Standing({
         {formatDurationLong(standing)}
       </span>
       .
-      {viewers > 1 && (
+      {/* Bewust het totaal en niet het aantal gelijktijdige kijkers. Bij honderd
+          bezoekers per maand staat die live-teller vrijwel altijd op nul of één,
+          en dan lijkt de site verlaten terwijl er die maand honderd mensen langs
+          zijn geweest. Dit getal loopt op en blijft staan. */}
+      {reads > 0 && (
         <>
           {' '}
-          Right now,{' '}
-          <span className="tabular-nums text-(--ink)">{formatNumber(viewers)}</span> people are reading it.
+          <span className="tabular-nums text-(--ink)">{formatNumber(reads)}</span>{' '}
+          {reads === 1 ? 'person has' : 'people have'} read it so far.
         </>
       )}
     </p>
