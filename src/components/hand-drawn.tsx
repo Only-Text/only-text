@@ -13,7 +13,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 
 /** Kleine, snelle hashfunctie. Zelfde tekst in, altijd hetzelfde pad uit. */
-function seedFrom(text: string): () => number {
+export function seedFrom(text: string): () => number {
   let h = 2166136261
   for (let i = 0; i < text.length; i++) {
     h ^= text.charCodeAt(i)

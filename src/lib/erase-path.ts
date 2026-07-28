@@ -17,13 +17,13 @@
 /* -------------------------------------------------------------------------- */
 
 /** Ongeveer zoveel pixels tekst per heen-en-weer-beweging. */
-const PIXELS_PER_HAAL = 110
+const PIXELS_PER_HAAL = 130
 /** Hoe lang één haal duurt. Ongeveer zes per seconde is het tempo van een hand. */
-const SECONDEN_PER_HAAL = 0.16
+const SECONDEN_PER_HAAL = 0.15
 /** Ook één kort woord verdient meer dan één veeg. */
 const MINSTE_HALEN = 2
 /** Van het eind van een regel terug naar het begin van de volgende. */
-const SPRONG = 0.22
+const SPRONG = 0.16
 /** De gum optillen aan het eind. */
 const AFRONDEN = 0.16
 /**
@@ -32,12 +32,7 @@ const AFRONDEN = 0.16
  * PIXELS_PER_HAAL / π gaat de gum daadwerkelijk even de andere kant op in
  * plaats van alleen langzamer vooruit te gaan.
  */
-const TERUGSLAG = 46
-/**
- * Een bovengrens voor het geheel. Vier volle regels zijn eerlijk gezien ook
- * echt veel gom, maar niemand wacht vier seconden op de zin van de volgende.
- */
-const LANGST = 2.6
+const TERUGSLAG = 54
 
 /** De zachte rand van de veeg. Een harde grens leest als een schuifdeur. */
 export const RAND = 15
@@ -100,18 +95,17 @@ export function planErase(stukken: Vlak[], hoogte: number): Plan | null {
   // Eerst uitrekenen hoe lang het van nature zou duren, en dan pas eventueel
   // inkorten. Zo houden de regels onderling hun verhouding: een lange regel
   // duurt ook na het inkorten langer dan een korte.
-  // Het optillen aan het eind gaat van hetzelfde budget af. Zonder die aftrek
-  // duurt het geheel precies AFRONDEN langer dan de bovengrens toestaat, en
-  // dat valt bij vier volle regels net op.
-  const ruimte = LANGST - AFRONDEN
-  const ruw = halen.reduce((a, h) => a + h * SECONDEN_PER_HAAL, 0) + SPRONG * (rauw.length - 1)
-  const rem = ruw > ruimte ? ruimte / ruw : 1
-
+  // Hier stond een bovengrens op de totale duur: een lange zin werd evenredig
+  // ingekort zodat het geheel binnen tweeënhalve seconde bleef. Dat kostte
+  // precies het verkeerde. Een gum heeft één snelheid, en zodra de langste zin
+  // wordt samengeperst schuurt hij dáár merkbaar sneller dan bij een korte zin
+  // — je ziet twee verschillende handen. Nu bepaalt de hoeveelheid tekst alleen
+  // nog hoe lang het duurt, nooit hoe snel het gaat.
   let klok = 0
   const regels: Regel[] = rauw.map((r, i) => {
     const van = klok
-    const tot = van + halen[i] * SECONDEN_PER_HAAL * rem
-    klok = tot + SPRONG * rem
+    const tot = van + halen[i] * SECONDEN_PER_HAAL
+    klok = tot + SPRONG
     return {
       // De grens tussen twee regels ligt er halverwege tussenin. Met overlap
       // zou de staart van een 'g' uit de eerste regel pas verdwijnen als de
@@ -138,7 +132,13 @@ export function planErase(stukken: Vlak[], hoogte: number): Plan | null {
  */
 export function grens(r: Regel, k: number): number {
   const begin = r.links - RAND
-  const eind = r.rechts + 2
+  // Voorbij de laatste letter, en wel een hele staart voorbij. De veeg hangt
+  // achter de grens aan, van `grens - STAART` tot `grens + RAND`. Stopte de
+  // grens op de laatste letter, dan bleef die band voor altijd over het laatste
+  // stukje tekst liggen en zag je de laatste twee letters als grijze schim
+  // staan nadat het gommen klaar was. De gum zelf stopt wél op de laatste
+  // letter: die volgt zijn eigen baan, niet deze grens.
+  const eind = r.rechts + 2 + STAART
   if (k <= r.van) return begin
   if (k >= r.tot) return eind
   return begin + (eind - begin) * ((k - r.van) / (r.tot - r.van))

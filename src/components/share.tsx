@@ -77,7 +77,7 @@ export function Share({
   return (
     <div className="mt-(--line-h)">
       <p className="hand text-[1rem] font-bold">Take the credit</p>
-      <div className="on-rule flex flex-wrap items-baseline gap-x-4 gap-y-1 text-[0.9rem] leading-(--line-h)">
+      <div className="on-rule flex flex-wrap items-baseline gap-x-4 text-[0.9rem] leading-(--line-h)">
         {/* Bluesky straft externe links niet af, in tegenstelling tot vrijwel
             elk ander platform. Daarom staat die vooraan. */}
         <a
@@ -139,7 +139,7 @@ export function ShareNow({ id, body }: { id: number; body: string }) {
   const tekst = `I just took over only-text.com. The whole homepage is my sentence until somebody types after me.\n\n"${body}"\n\n${url}`
 
   return (
-    <div className="on-rule mt-0 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-[0.9rem] leading-(--line-h)">
+    <div className="on-rule mt-0 flex flex-wrap items-baseline gap-x-4 text-[0.9rem] leading-(--line-h)">
       <HandButton
         seed="deelknop"
         shape="ellipse"

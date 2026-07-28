@@ -264,7 +264,7 @@ export function Composer({
         <PenCaret fieldRef={field} value={body} visible={focused} />
       </div>
 
-      <div className="on-rule mt-0 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-[0.95rem] leading-(--line-h)">
+      <div className="on-rule mt-0 flex flex-wrap items-baseline gap-x-4 text-[0.95rem] leading-(--line-h)">
         <span className="hand text-[0.95rem]">
           from:{' '}
           <label htmlFor="naam" className="sr-only">

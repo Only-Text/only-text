@@ -23,8 +23,8 @@
   --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
 
   --color-paper: #fbf7ef;
-  --color-ink: #22241d;
-  --color-ink-soft: #4d4f46;
+  --color-ink: #3e4147;
+  --color-ink-soft: #5f6369;
   --color-rule: #b9cde0;
   --color-margin: #d99a92;
   --color-accent: #f7a501;
@@ -39,12 +39,30 @@
 
   --paper: #fbf7ef;
   --paper-deep: #eeefe9;
-  --ink: #22241d;
-  --ink-soft: #4d4f46;
-  --ink-faint: #86887c;
+
+  /* Potlood, geen inkt.
+     ------------------------------------------------------------------
+     Hier stond bijna-zwart (#22241d). Dat is de kleur van een fineliner:
+     vlak, volledig dekkend, en met precies één tint van begin tot eind.
+     Grafiet is dat niet. Het is koeler, het haalt de honderd procent nooit
+     omdat het licht van de deeltjes terugkaatst, en het legt zich niet
+     helemaal vlak op de vezels van het papier.
+
+     De koele grijzen hieronder doen het eerste twee. Het derde — de korrel
+     ín de letter — vraagt om `background-clip: text` over elk stuk tekst,
+     en dat botst met het masker waarmee de zin weggegomd wordt: de
+     achtergrond van de alinea wordt achter de gemaskeerde letters door
+     geschilderd, en dan gaat er niets meer weg. Vandaar de zachte rand
+     hieronder in plaats daarvan.
+
+     Alle drie de tinten houden hun contrast op crème: 9,3:1 voor de tekst
+     en 5,7:1 voor de bijschriften, ruim boven wat WCAG vraagt. */
+  --ink: #3e4147;
+  --ink-soft: #5f6369;
+  --ink-faint: #8b8e93;
   --rule: #b9cde0;
   --margin-red: #d99a92;
-  --edge: #22241d;
+  --edge: #3a3d42;
   --accent: #f7a501;
   --flame: #f54e00;
 
@@ -81,7 +99,9 @@
   --grain-blend: multiply;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.84' numOctaves='4' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.055'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 
-  --stroke: #22241d;
+  /* De getekende vormen: iets lichter dan de tekst. Een potloodlijn die je
+     langs een woord trekt druk je minder hard aan dan de letters zelf. */
+  --stroke: #4a4e54;
 }
 
 html {
@@ -100,6 +120,13 @@ body {
   font-variation-settings: 'BNCE' 14, 'INFM' 12, 'SPAC' 0;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+
+  /* De zachte rand van grafiet.
+     Een letterrand uit een vectorfont is wiskundig scherp; een potloodlijn
+     rafelt uit in de vezels ernaast. Een halve pixel schaduw in dezelfde
+     kleur, op dertig procent, geeft die uitloop zonder dat de tekst waziger
+     of vetter wordt. Groter dan dit en het wordt een slagschaduw. */
+  text-shadow: 0 0.4px 0.7px color-mix(in oklab, var(--ink) 30%, transparent);
 }
 
 /* ---------------------------------------------------------------------------
@@ -166,6 +193,22 @@ body {
   }
 }
 
+/* Een rij die afbreekt landt op de volgende lijn, niet ertussenin.
+   ---------------------------------------------------------------------------
+   De rijen met knoppen en links op het vel zijn flex-containers waarvan elk
+   item precies één regel hoog is. Zodra er een verticale tussenruimte tussen
+   twee rijen staat — ook maar vier pixels — komt de tweede rij en alles
+   eronder van de liniatuur af. Op een breed scherm valt dat niet op omdat de
+   rij niet afbreekt; op een telefoon breekt hij altijd af, en dan staat de
+   halve pagina scheef.
+
+   Bewust buiten @layer: Tailwind zet zijn utilities in een eigen laag, en CSS
+   buiten elke laag wint daarvan. Een losse `gap-y-*` op zo'n rij hoort hier
+   niet te winnen, hoe goedbedoeld ook. */
+.ruled .on-rule {
+  row-gap: 0;
+}
+
 /* Zet de basislijn op de lijn.
    ---------------------------------------------------------------------------
    De verschuiving is het verschil tussen waar de basislijn van nature ligt
@@ -215,7 +258,9 @@ body {
 .message {
   font-family: var(--font-hand);
   font-variation-settings: 'BNCE' 45, 'INFM' 30, 'SPAC' 0;
-  font-weight: 500;
+  /* 500 was de dikte van een viltstift. Een potlood zet een dunnere lijn, ook
+     als je er stevig op drukt. */
+  font-weight: 450;
   letter-spacing: -0.005em;
   text-wrap: balance;
   overflow-wrap: anywhere;

@@ -11,7 +11,7 @@
  *     npx tsx scripts/test-erase.mjs
  */
 
-import { grens, houding, planErase, RAND } from '../src/lib/erase-path.ts'
+import { grens, houding, planErase, RAND, STAART } from '../src/lib/erase-path.ts'
 
 let gezakt = 0
 
@@ -67,6 +67,23 @@ console.log('\nEén korte zin')
   // De hele regel moet weg zijn, en geen letter eerder.
   bijna(grens(r, 0), r.links - RAND, 0.01, 'aan het begin staat er nog niets weggegomd')
   ok(grens(r, r.tot) >= r.rechts, 'aan het eind is de laatste letter weg')
+}
+
+console.log('\nEr blijft niets staan')
+{
+  // Dit ging mis: de veeg hangt achter de grens aan, van `grens - STAART` tot
+  // `grens + RAND`. Stopte de grens op de laatste letter, dan lag die band
+  // daarna voor altijd over het laatste stukje tekst en bleven er twee letters
+  // als grijze schim staan.
+  for (const breedtes of [[180], [BLOK], [BLOK, 300], [BLOK, BLOK, 240]]) {
+    const plan = planErase(vlakken(breedtes), REGEL * breedtes.length)
+    let schoon = true
+    for (const r of plan.regels) {
+      // De achterkant van de veegband moet voorbij de laatste letter liggen.
+      if (grens(r, plan.einde) - STAART < r.rechts) schoon = false
+    }
+    ok(schoon, `[${breedtes}] geen veeg over de laatste letters`)
+  }
 }
 
 console.log('\nEen zin van drie regels')
@@ -160,8 +177,43 @@ console.log('\nBlijft op het papier')
     // precies wat een hand doet; een halve gum eroverheen niet meer.
     const uitsteek = rechtst + HALVE_GUM - (BLOK + RECHTERMARGE)
     ok(uitsteek < HALVE_GUM / 2, `[${breedtes}] steekt rechts ${uitsteek.toFixed(0)}px buiten het vel`)
-    ok(plan.einde <= 2.6, `[${breedtes}] duurt hooguit 2,6s (${plan.einde.toFixed(2)}s)`)
+    ok(plan.einde <= 3, `[${breedtes}] duurt hooguit 3s (${plan.einde.toFixed(2)}s)`)
   }
+}
+
+console.log('\nEén hand, één snelheid')
+{
+  // Hier zat de tweede fout: een bovengrens op de totale duur perste de langste
+  // zin samen, waardoor die merkbaar sneller gegomd werd dan een korte. Meer
+  // tekst hoort langer te duren, nooit sneller te gaan.
+  const tempo = (breedtes) => {
+    const plan = planErase(vlakken(breedtes), REGEL * breedtes.length)
+    const px = plan.regels.reduce((a, r) => a + (r.rechts - r.links), 0)
+    const tijd = plan.regels.reduce((a, r) => a + (r.tot - r.van), 0)
+    return px / tijd
+  }
+
+  const kort = tempo([180])
+  const vier = tempo([BLOK, BLOK, BLOK, 200])
+  const lang = tempo([BLOK])
+
+  // De snelheid verschilt alleen nog door het afronden op hele halen.
+  ok(
+    Math.abs(vier - lang) / lang < 0.05,
+    `vier regels gaan even snel als één (${vier.toFixed(0)} vs ${lang.toFixed(0)} px/s)`,
+  )
+  // Een kort woord mag wél trager: MINSTE_HALEN geeft ook twee woorden twee
+  // halen, want één veeg over een woord van drie letters is geen gommen. Wat
+  // niet mag is dat korte tekst juist sneller weggaat dan lange.
+  ok(
+    kort <= lang * 1.05,
+    `een kort woord wordt niet afgeraffeld (${kort.toFixed(0)} vs ${lang.toFixed(0)} px/s)`,
+  )
+
+  // En meer tekst duurt dan ook echt langer.
+  const duur = (b) => planErase(vlakken(b), REGEL * b.length).einde
+  ok(duur([BLOK]) > duur([180]), 'een volle regel duurt langer dan een kort woord')
+  ok(duur([BLOK, BLOK, BLOK, 200]) > duur([BLOK, 300]), 'vier regels duren langer dan twee')
 }
 
 console.log('\nRafelranden')

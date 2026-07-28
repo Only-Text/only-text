@@ -37,7 +37,19 @@ import { RAND, STAART, grens, houding, planErase, type Plan, type Regel } from '
  * ernaar te hoeven kijken. Hier blijft alleen het meten en het tekenen over.
  */
 
-export function Erasing({ text, onDone }: { text: string; onDone: () => void }) {
+export function Erasing({
+  text,
+  onDone,
+  tempo = 1,
+}: {
+  text: string
+  onDone: () => void
+  /**
+   * Vertrager voor de demo op /design/eraser. Dezelfde baan, langzamer
+   * afgespeeld — een animatie van een seconde beoordeel je niet op een seconde.
+   */
+  tempo?: number
+}) {
   const reduce = useReducedMotion()
 
   const doos = useRef<HTMLSpanElement>(null)
@@ -94,13 +106,13 @@ export function Erasing({ text, onDone }: { text: string; onDone: () => void }) 
     // onComplete en niet de finished-promise: die laatste blijft hangen als de
     // animatie wordt afgebroken, en dan blijft het bord op de oude zin staan.
     const bezig = animate(klok, plan.einde, {
-      duration: plan.einde,
+      duration: plan.einde * tempo,
       ease: 'linear',
       onComplete: onDone,
     })
     return () => bezig.stop()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan, reduce])
+  }, [plan, reduce, tempo])
 
   if (reduce) {
     return (

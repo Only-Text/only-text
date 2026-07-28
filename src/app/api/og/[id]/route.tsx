@@ -37,8 +37,10 @@ async function loadFont(bestand: string): Promise<Buffer> {
 }
 
 const PAPER = '#FBF7EF'
-const INK = '#22241D'
-const INK_SOFT = '#4D4F46'
+// Dezelfde grafiettinten als op het vel zelf. Wijken die af, dan ziet iemand
+// die de link doorstuurt een ander product dan wie erop klikt.
+const INK = '#3E4147'
+const INK_SOFT = '#5F6369'
 const RULE = '#B9CDE0'
 const MARGIN = '#D99A92'
 
