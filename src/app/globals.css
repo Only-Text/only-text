@@ -73,8 +73,12 @@
   --line-h: 44px;
 
   /* De lijnen liggen op exacte veelvouden van de regelhoogte. De tekst wordt
-     er met een formule naartoe geschoven; zie --baseline-k hieronder. */
-  --rule-offset: 1px;
+     er met een formule naartoe geschoven; zie --baseline-k hieronder.
+
+     De halve pixel hoort bij de vorm van de lijn: die is geen blok van één
+     pixel meer maar een driehoek van twee, met zijn top een halve pixel hoger.
+     Zie de liniatuur verderop. */
+  --rule-offset: 1.5px;
 
   /* De twee getallen die tekst op de lijn zetten.
      ------------------------------------------------------------------
@@ -154,23 +158,50 @@ body {
   box-shadow: 5px 5px 0 0 var(--edge);
 }
 
-/* De liniatuur. Twee lagen: de rode kantlijn en de blauwe regels. */
+/* De liniatuur. Twee lagen: de rode kantlijn en de blauwe regels.
+   ---------------------------------------------------------------------------
+   Het vel staat een halve graad scheef, en dat is met een lijn van één pixel
+   niet netjes te tekenen. Twee dingen gaan er mis, en ze willen tegengestelde
+   oplossingen:
+
+   1. Een verloop met een harde kleurstop wordt niet ontkarteld. De browser
+      kijkt per pixel of het midden ervan aan de ene of de andere kant van de
+      grens ligt, en meer niet. Over de hoogte van het vel gaf dat zes sprongen
+      van een hele pixel: de kantlijn liep trapsgewijs.
+   2. Maak je de stop zacht, dan klopt de plaats wel maar verdeelt de lijn zich
+      over twee pixels zodra hij er tussenin ligt — en dat is op een scheef vel
+      bijna overal. De donkerste pixel per rij schommelde daardoor tussen 50%
+      en 100%, en zo'n lijn oogt om en om aan en uit.
+
+   Wat allebei oplost is breedte. Een baan van twee pixels heeft altijd minstens
+   één pixel die er helemaal in valt, hoe de lijn ook ligt: de kern blijft dus
+   overal even donker, terwijl de zachte randen van een halve pixel de plaats
+   vloeiend houden. Gemeten over de hele kantlijn: donkerste pixel 100% op elke
+   rij, en tussen twee opeenvolgende rijen verschuift hij hoogstens 0,07 pixel.
+
+   De blauwe regels blijven één pixel. Ze hebben dezelfde schommeling, maar het
+   kleurverschil met het papier is zo klein dat je hem niet ziet, en twee pixels
+   blauw maken van een schrijfblok een ruitjesschrift.
+
+   Let op bij wijzigen: --rule-offset compenseert dat de top van het blauwe
+   driehoekje een halve pixel hoger ligt dan de bovenkant van het blokje dat
+   hier eerst stond. */
 .ruled {
   --margin-x: 88px;
   background-image:
     linear-gradient(
       to right,
-      transparent 0 var(--margin-x),
+      transparent calc(var(--margin-x) - 0.5px),
       var(--margin-red) var(--margin-x),
-      var(--margin-red) calc(var(--margin-x) + 1px),
-      transparent calc(var(--margin-x) + 1px)
+      var(--margin-red) calc(var(--margin-x) + 2px),
+      transparent calc(var(--margin-x) + 2.5px)
     ),
     repeating-linear-gradient(
       to bottom,
       transparent 0,
-      transparent calc(var(--line-h) - 1px),
+      transparent calc(var(--line-h) - 2px),
       var(--rule) calc(var(--line-h) - 1px),
-      var(--rule) var(--line-h)
+      transparent var(--line-h)
     );
   background-position: 0 0, 0 var(--rule-offset);
   background-repeat: repeat-y, repeat;
