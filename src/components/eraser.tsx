@@ -37,6 +37,15 @@ import { RAND, STAART, grens, houding, planErase, type Plan, type Regel } from '
  * ernaar te hoeven kijken. Hier blijft alleen het meten en het tekenen over.
  */
 
+/**
+ * De breedte van het gummetje in pixels, en dus de enige maat die de baan van
+ * buitenaf nodig heeft: hoe ver de gum mag terugveren zonder dat de zachte rand
+ * van de veeg onder hem vandaan komt. Moet gelijk blijven aan de klassen op het
+ * svg hieronder (w-18.5 = 74px, sm:w-23.5 = 94px) en aan het breekpunt van
+ * Tailwind, dat op 640px staat.
+ */
+const GUM_BREED = (w: Window) => (w.matchMedia('(min-width: 640px)').matches ? 94 : 74)
+
 export function Erasing({
   text,
   onDone,
@@ -84,6 +93,7 @@ export function Erasing({
         right: r.right - kader.left,
       })),
       kader.height,
+      GUM_BREED(window) / 2,
     )
 
     // Niets te gommen — dan hoeft er ook niet gewacht te worden.

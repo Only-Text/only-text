@@ -16,28 +16,50 @@
 /* De maatvoering                                                             */
 /* -------------------------------------------------------------------------- */
 
-/** Ongeveer zoveel pixels tekst per heen-en-weer-beweging. */
-const PIXELS_PER_HAAL = 130
-/** Hoe lang één haal duurt. Ongeveer zes per seconde is het tempo van een hand. */
-const SECONDEN_PER_HAAL = 0.15
+/** Hoe lang één heen-en-weer duurt. Ongeveer zeven per seconde is een hand. */
+const SECONDEN_PER_HAAL = 0.145
 /** Ook één kort woord verdient meer dan één veeg. */
 const MINSTE_HALEN = 2
 /** Van het eind van een regel terug naar het begin van de volgende. */
 const SPRONG = 0.16
 /** De gum optillen aan het eind. */
-const AFRONDEN = 0.16
+const AFRONDEN = 0.22
 /**
- * Hoe ver de gum bij elke haal terugveert, in pixels. Dit getal bepaalt of je
- * de beweging naar achteren écht ziet: pas als de terugslag groter is dan
- * PIXELS_PER_HAAL / π gaat de gum daadwerkelijk even de andere kant op in
- * plaats van alleen langzamer vooruit te gaan.
+ * Nadat de gum van een regel af is loopt de grens nog even door, tot voorbij
+ * het punt waar de veegband hem nog raakt. Zonder dit blijft die band voor
+ * altijd over het laatste stukje tekst liggen en zie je de laatste letters als
+ * grijze schim staan. Het is onzichtbaar: op dat moment is er niets meer om
+ * weg te halen, alleen de veeg schuift van het papier af.
  */
-const TERUGSLAG = 54
+const NASLEEP = 0.18
 
 /** De zachte rand van de veeg. Een harde grens leest als een schuifdeur. */
 export const RAND = 15
 /** Hoe lang de veeg achter de gum aan blijft hangen. */
 export const STAART = 34
+
+/**
+ * Ruimte tussen de zachte rand en de rand van de gum.
+ *
+ * Dit getal is de hele reden dat de vorige versie niet klopte. De grens liep
+ * met een eigen, langere baan dan de gum, terwijl de gum onderweg terugveert.
+ * Op het diepste punt van een haal lag de grens daardoor tachtig pixels vóór
+ * het midden van de gum — en die is maar zevenenveertig pixels breed vanaf zijn
+ * midden. De zachte rand kwam dus onder de gum vandaan en je zag de tekst
+ * vervagen op een plek waar de gum nog helemaal niet geweest was.
+ *
+ * Nu volgt de grens de gum, en de terugslag wordt zó gekozen dat de grens plus
+ * zijn zachte rand altijd binnen de gum vallen. Weg is dus pas weg als het
+ * eronder gezeten heeft.
+ */
+const SPELING = 4
+
+/**
+ * Hoeveel pixels tekst er per heen-en-weer wordt afgelegd, uitgedrukt in
+ * terugslagen. Onder π zou de gum alleen langzamer vooruit gaan in plaats van
+ * echt terug; 2,6 laat hem duidelijk terugveren zonder stil te staan.
+ */
+const HAAL_PER_TERUGSLAG = 2.6
 
 /* -------------------------------------------------------------------------- */
 
@@ -57,6 +79,8 @@ export type Regel = {
   van: number
   tot: number
   halen: number
+  /** Hoe ver de gum op deze regel terugveert, in pixels. */
+  terugslag: number
 }
 
 export type Plan = { regels: Regel[]; einde: number }
@@ -68,9 +92,12 @@ export type Houding = { x: number; y: number; hoek: number; schaal: number; dekk
 /**
  * Van gemeten tekstvlakken naar een plan: welke regel wanneer weggaat.
  *
- * Geeft null terug als er niets te gommen valt.
+ * `halveGum` is de halve breedte van het gummetje in pixels. Die bepaalt hoe
+ * ver er teruggeveerd mag worden en dus ook hoeveel halen een regel krijgt:
+ * op een telefoon is de gum kleiner, dus veert hij minder ver terug en zijn er
+ * meer, kortere halen nodig. Geeft null terug als er niets te gommen valt.
  */
-export function planErase(stukken: Vlak[], hoogte: number): Plan | null {
+export function planErase(stukken: Vlak[], hoogte: number, halveGum: number): Plan | null {
   const bruikbaar = stukken.filter((s) => s.right - s.left > 1 && s.bottom - s.top > 1)
   if (bruikbaar.length === 0) return null
 
@@ -88,13 +115,14 @@ export function planErase(stukken: Vlak[], hoogte: number): Plan | null {
     }
   }
 
+  // De terugslag past binnen de gum, met de zachte rand erbij. Zie SPELING.
+  const terugslag = Math.max(8, halveGum - RAND - SPELING)
+  const pixelsPerHaal = terugslag * HAAL_PER_TERUGSLAG
+
   const halen = rauw.map((r) =>
-    Math.max(MINSTE_HALEN, Math.round((r.right - r.left) / PIXELS_PER_HAAL)),
+    Math.max(MINSTE_HALEN, Math.round((r.right - r.left) / pixelsPerHaal)),
   )
 
-  // Eerst uitrekenen hoe lang het van nature zou duren, en dan pas eventueel
-  // inkorten. Zo houden de regels onderling hun verhouding: een lange regel
-  // duurt ook na het inkorten langer dan een korte.
   // Hier stond een bovengrens op de totale duur: een lange zin werd evenredig
   // ingekort zodat het geheel binnen tweeënhalve seconde bleef. Dat kostte
   // precies het verkeerde. Een gum heeft één snelheid, en zodra de langste zin
@@ -118,30 +146,12 @@ export function planErase(stukken: Vlak[], hoogte: number): Plan | null {
       van,
       tot,
       halen: halen[i],
+      terugslag,
     }
   })
 
-  return { regels, einde: regels[regels.length - 1].tot + AFRONDEN }
-}
-
-/**
- * De grens tussen weg en nog niet weg, in pixels vanaf links.
- *
- * Deze loopt netjes van links naar rechts: wat gegomd is komt niet meer terug,
- * ook al gaat de gum zelf tussendoor even naar achteren.
- */
-export function grens(r: Regel, k: number): number {
-  const begin = r.links - RAND
-  // Voorbij de laatste letter, en wel een hele staart voorbij. De veeg hangt
-  // achter de grens aan, van `grens - STAART` tot `grens + RAND`. Stopte de
-  // grens op de laatste letter, dan bleef die band voor altijd over het laatste
-  // stukje tekst liggen en zag je de laatste twee letters als grijze schim
-  // staan nadat het gommen klaar was. De gum zelf stopt wél op de laatste
-  // letter: die volgt zijn eigen baan, niet deze grens.
-  const eind = r.rechts + 2 + STAART
-  if (k <= r.van) return begin
-  if (k >= r.tot) return eind
-  return begin + (eind - begin) * ((k - r.van) / (r.tot - r.van))
+  const laatste = regels[regels.length - 1]
+  return { regels, einde: laatste.tot + Math.max(AFRONDEN, NASLEEP) }
 }
 
 /**
@@ -156,18 +166,27 @@ function achterstand(r: Regel, s: number): number {
 }
 
 /**
- * Het midden van de gum op een regel, in pixels vanaf links.
+ * De grens tussen weg en nog niet weg, in pixels vanaf links.
  *
- * Bewust niet afgeleid van `grens`. De grens loopt van een stukje vóór de
- * eerste letter tot een stukje voorbij de laatste, want de veeg heeft een
- * zachte rand die ergens moet beginnen en eindigen. De gum zelf hoort precies
- * op de inkt te staan: op de eerste letter als hij aanzet en op de laatste als
- * hij klaar is. Het verschil van een centimeter of twee valt weg onder de gum,
- * die vijf keer zo breed is, maar aan het eind van een volle regel scheelt het
- * of hij nog op het vel ligt of ernaast.
+ * Dit is de drager van de beweging van de gum: dezelfde baan, maar zonder het
+ * terugveren. De gum raakt hem aan het begin en eind van elke haal en ligt er
+ * de rest van de tijd achter — nooit ervoor. Daarmee is weg pas weg als de gum
+ * eroverheen is gegaan.
  */
+export function grens(r: Regel, k: number): number {
+  if (k <= r.van) return r.links
+  if (k < r.tot) return r.links + (r.rechts - r.links) * ((k - r.van) / (r.tot - r.van))
+
+  // Nasleep: de grens trekt door tot de veegband van de tekst af is. Er valt
+  // op dat moment niets meer weg te halen, dus je ziet er alleen de veeg van
+  // verdwijnen.
+  const na = Math.min(1, (k - r.tot) / NASLEEP)
+  return r.rechts + (STAART + RAND) * na
+}
+
+/** Het midden van de gum op een regel, in pixels vanaf links. */
 function midden(r: Regel, s: number): number {
-  return r.links + (r.rechts - r.links) * s - TERUGSLAG * achterstand(r, s)
+  return r.links + (r.rechts - r.links) * s - r.terugslag * achterstand(r, s)
 }
 
 /**

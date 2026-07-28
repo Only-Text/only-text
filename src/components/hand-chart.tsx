@@ -150,8 +150,15 @@ export function HandBars({
   const regel = 30
   const H = data.length * regel + 10
   const W = 340
-  const labelBreedte = 132
+
+  // De labelkolom groeit mee met het langste label in plaats van vast te staan
+  // op de breedte van een hostnaam. Zonder dit wordt "Copied the words, right
+  // after writing" afgekapt op precies het stuk dat het interessant maakt, en
+  // dan is een leesbaar label erger dan een code.
+  const langste = Math.max(...data.map((d) => d.label.length))
+  const labelBreedte = Math.min(Math.max(langste * 5.4 + 12, 132), 210)
   const spoor = W - labelBreedte - 56
+  const maxTekens = Math.floor((labelBreedte - 12) / 5.4)
 
   // Breedte begrenzen en niet de hoogte. Met een maxHeight vecht de begrenzing
   // tegen de verhouding van de viewBox: de tekening krimpt dan om in de hoogte
@@ -179,7 +186,7 @@ export function HandBars({
               fill={GRAFIET}
               style={SCHRIFT(11)}
             >
-              {d.label.length > 22 ? `${d.label.slice(0, 21)}…` : d.label}
+              {d.label.length > maxTekens ? `${d.label.slice(0, maxTekens - 1)}…` : d.label}
             </text>
 
             {breedte > 0 && (
