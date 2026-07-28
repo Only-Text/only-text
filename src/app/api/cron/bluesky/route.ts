@@ -29,6 +29,12 @@ export async function GET(request: Request) {
     }
   }
 
+  // Harde schakelaar, los van de drempel in de databank. Die drempel doet het
+  // werk, maar tijdens het testen wil je een knop die niet van data afhangt.
+  if (process.env.BLUESKY_POSTING === 'off') {
+    return NextResponse.json({ posted: false, reason: 'posting is switched off' })
+  }
+
   const supabase = createServiceClient()
   const { data, error } = await supabase.rpc('get_digest')
   if (error || !data) {

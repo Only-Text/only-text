@@ -87,7 +87,10 @@ export default async function WhatPeopleDoPage({ searchParams }: Props) {
   const venster = Math.min(Math.max(Number(days) || 7, 1), 60)
 
   const supabase = createServiceClient()
-  const { data, error } = await supabase.rpc('get_event_report', { p_days: venster })
+  const [{ data, error }, { data: corpus }] = await Promise.all([
+    supabase.rpc('get_event_report', { p_days: venster }),
+    supabase.rpc('get_corpus'),
+  ])
 
   if (error || !data) {
     return (
@@ -120,6 +123,8 @@ export default async function WhatPeopleDoPage({ searchParams }: Props) {
           close it and the count starts over, because nothing is stored to recognise you by. That
           makes these numbers a little high, and it is the trade we wanted.
         </p>
+
+        <Corpus c={corpus as CorpusCijfers | null} />
 
         {leeg && (
           <p className="hand text-[1.05rem]">
@@ -317,6 +322,70 @@ export default async function WhatPeopleDoPage({ searchParams }: Props) {
         </Link>
       </nav>
     </main>
+  )
+}
+
+type CorpusCijfers = {
+  sentences: number
+  questions_pct: number | null
+  answers_pct: number | null
+  took_it_back_from_themselves: number
+  came_back_after_losing: number
+  most_common_first_word: string | null
+  median_characters: number | null
+}
+
+/**
+ * Wat mensen typen, in vier zinnen.
+ *
+ * Bewust proza en geen tabel. Dit is het stuk waar volgens het onderzoek uit
+ * geciteerd wordt, en een journalist neemt een zin over, geen rij uit een lijst.
+ * Om diezelfde reden blijft het kort: nog vijf cijfers erbij maakt het niet
+ * completer, alleen minder overneembaar.
+ *
+ * Elk onderdeel verdwijnt als het nog niets betekent. Een percentage bij zeven
+ * zinnen is geen bevinding maar ruis, en de databank geeft daar null terug in
+ * plaats van een getal dat overtuigender oogt dan het is.
+ */
+function Corpus({ c }: { c: CorpusCijfers | null }) {
+  if (!c || c.sentences < 5) return null
+
+  const stukken: string[] = []
+  if (c.questions_pct !== null) stukken.push(`${c.questions_pct}% of them asked a question`)
+  if (c.answers_pct !== null) {
+    stukken.push(`${c.answers_pct}% picked up a word from the sentence they replaced`)
+  }
+  if (c.median_characters) stukken.push(`the middle one is ${c.median_characters} characters long`)
+
+  return (
+    <>
+      <Kop>What people write</Kop>
+      <p className="hand text-[1rem]">
+        {formatNumber(c.sentences)} sentences so far
+        {stukken.length > 0 ? `: ${stukken.join(', ')}` : '.'}
+        {stukken.length > 0 && '.'}
+      </p>
+      {c.most_common_first_word && (
+        <p className="hand text-[1rem]">
+          More of them begin with &ldquo;{c.most_common_first_word}&rdquo; than with any other word.
+        </p>
+      )}
+      {c.came_back_after_losing > 0 && (
+        <p className="hand text-[1rem]">
+          {formatNumber(c.came_back_after_losing)}{' '}
+          {c.came_back_after_losing === 1 ? 'person has' : 'people have'} lost the page and come back
+          to take it again.
+          {c.took_it_back_from_themselves > 0 && (
+            <>
+              {' '}
+              {formatNumber(c.took_it_back_from_themselves)}{' '}
+              {c.took_it_back_from_themselves === 1 ? 'sentence was' : 'sentences were'} replaced by
+              the same person who wrote the one before.
+            </>
+          )}
+        </p>
+      )}
+    </>
   )
 }
 
