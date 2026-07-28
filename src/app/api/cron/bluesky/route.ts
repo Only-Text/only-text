@@ -43,48 +43,56 @@ export async function GET(request: Request) {
 
   const d = data as {
     worth_posting: boolean
-    record_broken: boolean
     ended_today: number
-    median_others_ms: number | null
-    candidate: {
+    median_ms: number | null
+    ranked_of: number
+    candidates: {
       id: number
       body: string
       author: string | null
       duration_ms: number
       rank: number
-      ranked_of: number
       reads: number
+      words: number
+      is_record: boolean
       permalink: string
       image: string
-    } | null
+    }[]
   }
 
-  if (!d.worth_posting || !d.candidate) {
-    return NextResponse.json({ posted: false, reason: 'nothing worth posting today' })
+  if (!d.worth_posting || d.candidates.length === 0) {
+    return NextResponse.json({ posted: false, reason: 'nothing came off the page today' })
   }
 
-  const c = d.candidate
+  const dag = { endedToday: d.ended_today, medianMs: d.median_ms, rankedOf: d.ranked_of }
 
-  // Het model kiest de invalshoek, de feiten liggen vast en worden achteraf
-  // gecontroleerd. Klopt er iets niet, dan komt hier de vaste tekst uit.
-  const { tekst, door } = await schrijfPost({
-    body: c.body,
-    author: c.author,
-    durationMs: c.duration_ms,
-    rank: c.rank,
-    rankedOf: c.ranked_of,
-    reads: c.reads,
-    recordBroken: d.record_broken,
-    endedToday: d.ended_today,
-    medianOthersMs: d.median_others_ms,
-  })
+  // Het model kiest de zin én de invalshoek, de feiten liggen vast en worden
+  // achteraf gecontroleerd. Klopt er iets niet, dan komt hier de vaste tekst uit.
+  const { id, tekst, door } = await schrijfPost(
+    d.candidates.map((c) => ({
+      id: c.id,
+      body: c.body,
+      author: c.author,
+      durationMs: c.duration_ms,
+      rank: c.rank,
+      reads: c.reads,
+      words: c.words,
+      isRecord: c.is_record,
+    })),
+    dag,
+  )
+
+  const c = d.candidates.find((k) => k.id === id)
+  if (!c) {
+    return NextResponse.json({ posted: false, error: 'chosen_id_unknown' }, { status: 500 })
+  }
 
   try {
     const geplaatst = await post({
       text: tekst,
       url: c.permalink,
       title: c.body.length > 90 ? `${c.body.slice(0, 88)}…` : c.body,
-      description: `Stood for ${formatDuration(c.duration_ms)} on only-text.com. Rank #${c.rank} of all time.`,
+      description: `Stood for ${formatDuration(c.duration_ms)} on only-text.com. Rank #${c.rank} of ${d.ranked_of}.`,
       imageUrl: c.image,
       naschrift: naschriftVoor(c.id),
     })

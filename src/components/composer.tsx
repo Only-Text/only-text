@@ -230,6 +230,22 @@ export function Composer({
       <label htmlFor="zin" className="hand block text-[1rem] font-bold">
         Write your sentence here:
       </label>
+      {/* De spelregel staat hier en niet bovenaan: pas op het moment dat je gaat
+          typen wil je weten wat er dan gebeurt.
+
+          Deze regel stond er eerder al en ging er weer af omdat hij naast de zin
+          om aandacht stond te vragen. Hij komt terug met "for everyone" erbij,
+          want dat is het deel dat een nieuwe bezoeker niet kan raden en dat het
+          verschil maakt tussen een invoerveld en een knop die een hele website
+          verandert. Wie via een gedeelde link binnenkomt heeft de voorpagina
+          nooit gezien en weet dus niet dat die zin bovenin de site zelf is.
+
+          Of het werkt is te zien op /what-people-do: daar staat welk deel van de
+          bezoekers ook echt schrijft. Gaat dat niet omhoog, dan kan deze regel er
+          net zo makkelijk weer af. */}
+      <p className="meta text-[0.85rem]">
+        It replaces the sentence above, for everyone, until somebody types after you.
+      </p>
 
       <div className="on-rule relative text-[1.35rem]">
         <textarea

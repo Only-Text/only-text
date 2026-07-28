@@ -12,7 +12,9 @@
     "test:moderation": "tsx scripts/test-moderation.mjs",
     "test:erase": "tsx scripts/test-erase.mjs",
     "test": "npm run test:moderation && npm run test:erase && npm run test:backend",
-    "bsky:launch": "tsx scripts/bsky-launch.mjs"
+    "bsky:launch": "tsx scripts/bsky-launch.mjs",
+    "test:post": "tsx scripts/test-write-post.mjs",
+    "test:reply": "tsx scripts/test-write-reply.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.115.0",

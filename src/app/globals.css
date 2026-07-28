@@ -277,6 +277,97 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+   Grafieken op de liniatuur
+   ---------------------------------------------------------------------------
+   Een grafiek is hier geen plaatje maar een stuk tekst met een tekeningetje
+   ernaast. Elke rij is een gewone regel van het vel: label, staaf, getal, alle
+   drie op dezelfde basislijn en dus op dezelfde blauwe lijn.
+
+   Waarom dat moet: een tekening die met de breedte meeschaalt heeft een hoogte
+   die uit die breedte volgt, en dat is bijna nooit een veelvoud van de
+   regelhoogte. Zeven grafieken op een pagina schoven de tekst eronder zo een
+   halve regel omhoog. Een rij die uit tekstregels bestaat kan dat niet.
+
+   De rijen zijn divs en geen alinea's, want tussen twee alinea's zet de
+   liniatuurregel hierboven een lege regel. Tussen twee staven hoort niets.
+
+   Het spoor staat in rem en niet in procenten: de staven horen bij elkaar te
+   passen, niet bij het scherm. Op een telefoon is er geen ruimte voor een
+   labelkolom naast de staaf, dus gaat het label daar op zijn eigen regel staan
+   en mag het gewoon afbreken. Dat kost een regel per staaf en houdt het raster
+   heel; afkorten tot "The filter caught a w…" kost de zin.
+   ------------------------------------------------------------------------- */
+
+.grafiek {
+  --spoor: 10rem;
+  font-family: var(--font-hand);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  font-variation-settings: 'BNCE' 8, 'INFM' 6;
+
+  /* Een lege regel onder de grafiek. De alinea eronder is geen buur van een
+     alinea meer, dus de regel die daar normaal voor zorgt telt hier niet. */
+  margin-bottom: var(--line-h);
+}
+
+.grafiek-rij {
+  white-space: nowrap;
+}
+
+.grafiek-kop {
+  display: inline-block;
+  width: var(--kop);
+  padding-right: 0.45rem;
+  text-align: right;
+}
+
+/* De staaf hangt aan de basislijn, zoals een letter. Geen verschuiving dus:
+   de onderkant van het rechthoekje valt samen met de blauwe lijn. De halen
+   zakken er een haar doorheen, en dat is precies wat een potlood doet. */
+.grafiek-staaf {
+  display: inline-block;
+  height: auto;
+  vertical-align: baseline;
+  overflow: visible;
+}
+
+.grafiek-getal {
+  padding-left: 0.45rem;
+}
+
+/* Wie er afviel: kleiner en lichter, maar op een eigen regel en dus op de lijn.
+   De inspringing zet hem onder de staaf en niet onder het label. */
+.grafiek-noot {
+  font-size: 0.72rem;
+  opacity: 0.75;
+  padding-left: var(--kop);
+  white-space: nowrap;
+}
+
+/* Het enige vak met een echte tekening erin. Drie regels hoog, niet meer en
+   niet minder, zodat de liniatuur eronder doorloopt waar hij was. */
+.grafiek-vak {
+  height: calc(3 * var(--line-h));
+}
+
+@media (max-width: 640px) {
+  .grafiek {
+    --spoor: 6.5rem;
+    font-size: 0.76rem;
+  }
+  .grafiek-kop {
+    display: block;
+    width: auto;
+    padding-right: 0;
+    text-align: left;
+    white-space: normal;
+  }
+  .grafiek-noot {
+    padding-left: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Handschrift
    ------------------------------------------------------------------------- */
 

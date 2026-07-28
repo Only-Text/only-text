@@ -1,3 +1,5 @@
+import { Fragment } from 'react'
+
 import { seedFrom } from './hand-drawn'
 
 /**
@@ -18,6 +20,26 @@ import { seedFrom } from './hand-drawn'
  * Math.random() zou de server een ander pad tekenen dan de browser en klapt de
  * hydratie eruit. De seed komt uit het label, dus dezelfde staaf ziet er bij
  * elke herlading hetzelfde uit maar verschilt van de staaf eronder.
+ *
+ * Eén regel is één regel.
+ * ---------------------------------------------------------------------------
+ * Hier stond eerst de hele grafiek in één schaalbare tekening: labels, staven
+ * en getallen zaten samen in één viewBox die meeschaalde met de breedte van het
+ * scherm. Dat kost de liniatuur haar houvast. De hoogte van zo'n tekening volgt
+ * uit de breedte en is dus zelden een veelvoud van de regelhoogte, en alles wat
+ * eronder staat schuift het restant mee omhoog. Op deze pagina stonden zeven
+ * grafieken; na de derde stond de tekst een halve regel naast de lijn.
+ *
+ * Nu is elke rij een gewone tekstregel op het vel, met alleen de staaf zelf als
+ * tekening ernaast. De labels en getallen zijn echte tekst: ze staan op de lijn
+ * zoals de rest van de pagina, ze zijn te selecteren, en een schermlezer leest
+ * ze voor zonder omweg via aria-label.
+ *
+ * De staaf schaalt niet mee met de breedte van het scherm. Elke staaf krijgt
+ * een viewBox die precies zo breed is als de staaf zelf en een CSS-breedte in
+ * dezelfde verhouding, zodat de schaalfactor voor álle staven gelijk is: de
+ * arcering staat overal even schuin en even dicht op elkaar, en de dikte van
+ * een staaf is niet afhankelijk van zijn lengte.
  */
 
 type Reeks = { label: string; waarde: number; hint?: string }
@@ -25,8 +47,37 @@ type Reeks = { label: string; waarde: number; hint?: string }
 /** Grafiet, niet inkt. Alle lijnen in deze grafieken gebruiken deze kleur. */
 const GRAFIET = 'var(--ink-soft)'
 
-/** Eén letterinstelling voor alle tekst: hetzelfde handschrift als de site. */
-const SCHRIFT = (grootte: number) => ({ font: `400 ${grootte}px var(--font-hand)` })
+/** Tekeneenheden voor een volle staaf. De CSS-breedte van het spoor bepaalt
+ *  hoeveel pixels dat wordt; zie `--spoor` in globals.css. */
+const SPOOR = 200
+
+/** De dikte van een staaf, in dezelfde eenheden. */
+const DIK = 18
+const DIK_TRECHTER = 21
+
+/**
+ * De labelkolom groeit mee met het langste label in plaats van vast te staan op
+ * de breedte van een hostnaam. Zonder dit wordt "Copied the words, after
+ * writing" afgekapt op precies het stuk dat het interessant maakt, en dan is
+ * een leesbaar label erger dan een code.
+ *
+ * De breedte staat in em en niet in pixels, zodat de kolom klopt bij elke
+ * lettergrootte. 0,53em is de gemeten gemiddelde tekenbreedte van het
+ * handschrift; een schatting volstaat, want de kolom mag ruimer zijn dan nodig.
+ */
+const TEKENBREEDTE = 0.53
+const KOP_MAX_EM = 19
+const MAX_TEKENS = Math.floor((KOP_MAX_EM - 0.6) / TEKENBREEDTE)
+
+function kort(label: string): string {
+  return label.length > MAX_TEKENS ? `${label.slice(0, MAX_TEKENS - 1)}…` : label
+}
+
+/** De breedte van de labelkolom, afgeleid van het langste label in de reeks. */
+function kopBreedte(labels: string[]): string {
+  const langste = Math.min(Math.max(...labels.map((l) => l.length), 1), MAX_TEKENS)
+  return `${(langste * TEKENBREEDTE + 0.6).toFixed(2)}em`
+}
 
 /** Een lijn van links naar rechts die in het midden doorzakt, zoals een pols. */
 function haal(rand: () => number, x1: number, y1: number, x2: number, y2: number, bow: number) {
@@ -75,7 +126,7 @@ function Potloodlijn({ d, dd, width = 1.15 }: { d: string; dd: string; width?: n
   )
 }
 
-/** Het kader van een staaf: boven, rechts, onder. Links staat de as al. */
+/** Het kader van een staaf: boven, rechts, onder. Links staat de kolom al. */
 function staafPad(rand: () => number, x: number, y: number, breedte: number, h: number) {
   return [
     haal(rand, x, y, x + breedte, y, 0.6),
@@ -126,6 +177,42 @@ function Arcering({ d }: { d: string }) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Eén staaf                                                           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Het getekende deel van een rij: verder niets dan een rechthoekje grafiet.
+ *
+ * Hij staat op de basislijn en dus op de blauwe lijn, net als de letters
+ * ernaast. Nul tekenen we niet: een streepje van niets leest als een meting die
+ * mislukt is, terwijl er gewoon niemand was.
+ */
+function Staaf({ deel, seed, dik = DIK }: { deel: number; seed: string; dik?: number }) {
+  const breedte = deel > 0 ? Math.max(deel * SPOOR, 4) : 0
+  if (breedte === 0) return null
+
+  const rand = seedFrom(seed)
+  const rand2 = seedFrom(`${seed}:2`)
+
+  return (
+    <svg
+      viewBox={`0 0 ${breedte.toFixed(1)} ${dik}`}
+      className="grafiek-staaf"
+      style={{ width: `calc(var(--spoor) * ${(breedte / SPOOR).toFixed(4)})` }}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <Potloodlijn
+        d={staafPad(rand, 0, 0, breedte, dik)}
+        dd={staafPad(rand2, 0, 0.4, breedte, dik)}
+        width={dik > DIK ? 1.25 : 1.15}
+      />
+      <Arcering d={arcering(rand, 0, 0, breedte, dik)} />
+    </svg>
+  )
+}
+
+/* ------------------------------------------------------------------ */
 /* Staven, liggend                                                     */
 /* ------------------------------------------------------------------ */
 
@@ -147,65 +234,20 @@ export function HandBars({
   if (data.length === 0) return null
 
   const hoogste = Math.max(...data.map((d) => d.waarde), 1)
-  const regel = 30
-  const H = data.length * regel + 10
-  const W = 340
 
-  // De labelkolom groeit mee met het langste label in plaats van vast te staan
-  // op de breedte van een hostnaam. Zonder dit wordt "Copied the words, right
-  // after writing" afgekapt op precies het stuk dat het interessant maakt, en
-  // dan is een leesbaar label erger dan een code.
-  const langste = Math.max(...data.map((d) => d.label.length))
-  const labelBreedte = Math.min(Math.max(langste * 5.4 + 12, 132), 210)
-  const spoor = W - labelBreedte - 56
-  const maxTekens = Math.floor((labelBreedte - 12) / 5.4)
-
-  // Breedte begrenzen en niet de hoogte. Met een maxHeight vecht de begrenzing
-  // tegen de verhouding van de viewBox: de tekening krimpt dan om in de hoogte
-  // te passen en blijft met witruimte ernaast halverwege hangen.
   return (
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      className="mt-1 block h-auto w-full max-w-110 overflow-visible"
-      role="img"
-      aria-label={data.map((d) => `${d.label}: ${d.waarde}`).join(', ')}
+    <div
+      className="grafiek"
+      style={{ '--kop': kopBreedte(data.map((d) => d.label)) } as React.CSSProperties}
     >
-      {data.map((d, i) => {
-        const rand = seedFrom(`${seed}:${d.label}`)
-        const rand2 = seedFrom(`${seed}:${d.label}:2`)
-        const y = i * regel + 7
-        const breedte = Math.max((d.waarde / hoogste) * spoor, d.waarde > 0 ? 3 : 0)
-        const h = 14
-
-        return (
-          <g key={d.label}>
-            <text
-              x={labelBreedte - 7}
-              y={y + h - 2}
-              textAnchor="end"
-              fill={GRAFIET}
-              style={SCHRIFT(11)}
-            >
-              {d.label.length > maxTekens ? `${d.label.slice(0, maxTekens - 1)}…` : d.label}
-            </text>
-
-            {breedte > 0 && (
-              <>
-                <Potloodlijn
-                  d={staafPad(rand, labelBreedte, y, breedte, h)}
-                  dd={staafPad(rand2, labelBreedte, y + 0.4, breedte, h)}
-                />
-                <Arcering d={arcering(rand, labelBreedte, y, breedte, h)} />
-              </>
-            )}
-
-            <text x={labelBreedte + breedte + 8} y={y + h - 2} fill={GRAFIET} style={SCHRIFT(11)}>
-              {d.hint ?? `${d.waarde}${eenheid}`}
-            </text>
-          </g>
-        )
-      })}
-    </svg>
+      {data.map((d, i) => (
+        <div key={`${d.label}:${i}`} className="on-rule grafiek-rij">
+          <span className="grafiek-kop">{kort(d.label)}</span>
+          <Staaf deel={d.waarde / hoogste} seed={`${seed}:${d.label}`} />
+          <span className="grafiek-getal tabular-nums">{d.hint ?? `${d.waarde}${eenheid}`}</span>
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -222,79 +264,42 @@ export function HandBars({
  * over zichzelf heen.
  *
  * Het getal dat je wil zien is niet hoeveel er overbleven maar hoeveel er
- * afvielen, en waar. Dat staat daarom apart onder elke staaf en niet als
- * percentage achteraan de regel.
+ * afvielen, en waar. Dat staat daarom op een eigen regel onder de staaf en niet
+ * als percentage achteraan de regel.
  */
 export function HandFunnel({ stappen, seed }: { stappen: Reeks[]; seed: string }) {
   if (stappen.length === 0) return null
 
   const top = Math.max(stappen[0]?.waarde ?? 0, 1)
-  const regel = 44
-  const W = 340
-  const labelBreedte = 132
-  const spoor = W - labelBreedte - 62
-  const H = stappen.length * regel + 8
 
   return (
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      className="mt-1 block h-auto w-full max-w-115 overflow-visible"
-      role="img"
-      aria-label={stappen.map((s) => `${s.label}: ${s.waarde}`).join(', ')}
+    <div
+      className="grafiek"
+      style={{ '--kop': kopBreedte(stappen.map((s) => s.label)) } as React.CSSProperties}
     >
       {stappen.map((s, i) => {
-        const rand = seedFrom(`${seed}:${s.label}`)
-        const rand2 = seedFrom(`${seed}:${s.label}:2`)
-        const y = i * regel + 8
-        const breedte = Math.max((s.waarde / top) * spoor, s.waarde > 0 ? 4 : 0)
-        const h = 17
         const vorige = stappen[i - 1]
         const verloren = vorige ? vorige.waarde - s.waarde : 0
-        const deel = top > 0 ? Math.round((s.waarde / top) * 100) : 0
+        const deel = Math.round((s.waarde / top) * 100)
 
         return (
-          <g key={s.label}>
-            <text
-              x={labelBreedte - 7}
-              y={y + h - 3}
-              textAnchor="end"
-              fill={GRAFIET}
-              style={SCHRIFT(11.5)}
-            >
-              {s.label}
-            </text>
+          <Fragment key={`${s.label}:${i}`}>
+            <div className="on-rule grafiek-rij">
+              <span className="grafiek-kop">{kort(s.label)}</span>
+              <Staaf deel={s.waarde / top} seed={`${seed}:${s.label}`} dik={DIK_TRECHTER} />
+              <span className="grafiek-getal tabular-nums">
+                {s.waarde} · {deel}%
+              </span>
+            </div>
 
-            {breedte > 0 && (
-              <>
-                <Potloodlijn
-                  d={staafPad(rand, labelBreedte, y, breedte, h)}
-                  dd={staafPad(rand2, labelBreedte, y + 0.4, breedte, h)}
-                  width={1.25}
-                />
-                <Arcering d={arcering(rand, labelBreedte, y, breedte, h)} />
-              </>
+            {/* Wie hier afviel. Alleen zetten als er iets te verliezen viel. */}
+            {verloren > 0 && (
+              <div className="on-rule grafiek-noot">{verloren} dropped off here</div>
             )}
-
-            <text x={labelBreedte + breedte + 8} y={y + h - 3} fill={GRAFIET} style={SCHRIFT(11.5)}>
-              {s.waarde} · {deel}%
-            </text>
-
-            {/* Wie hier afviel. Alleen tekenen als er iets te verliezen viel. */}
-            {vorige && verloren > 0 && (
-              <text
-                x={labelBreedte + 2}
-                y={y + h + 12}
-                fill={GRAFIET}
-                opacity={0.72}
-                style={SCHRIFT(9.5)}
-              >
-                {verloren} dropped off here
-              </text>
-            )}
-          </g>
+          </Fragment>
         )
       })}
-    </svg>
+    </div>
   )
 }
 
@@ -308,6 +313,11 @@ export function HandFunnel({ stappen, seed }: { stappen: Reeks[]; seed: string }
  * Geen assen en geen raster: op papier trek je een lijn en zet je er links en
  * rechts een getal bij. Wat je wil weten is de vorm, en die is zonder raster
  * beter te zien.
+ *
+ * Dit is de enige grafiek die wél als tekening meeschaalt met de breedte, want
+ * een lijn ís de vorm en die valt niet in rijen uiteen. Het vak eromheen is
+ * daarom precies drie regels hoog; de tekening past zichzelf daarbinnen in. Wat
+ * eronder staat blijft zo op de liniatuur staan.
  */
 export function HandLine({
   punten,
@@ -346,43 +356,57 @@ export function HandLine({
   }
 
   return (
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      className="mt-1 block h-auto w-full max-w-115 overflow-visible"
-      role="img"
-      aria-label={punten.map((p) => `${p.label}: ${p.waarde}`).join(', ')}
-    >
-      <Potloodlijn d={trek(rand, 0)} dd={trek(rand2, 0.5)} width={1.5} />
-
-      {punten.map((p, i) => {
-        const [x, y] = plek(i, p.waarde)
-        return (
-          <g key={p.label}>
-            <circle cx={x} cy={y} r={1.9} fill={GRAFIET} opacity={0.75} />
-            {/* Alleen de hoogste en de laatste krijgen hun getal erbij; alles
-                labelen maakt er weer een tabel van. */}
-            {(p.waarde === hoogste || i === punten.length - 1) && (
-              <text x={Math.min(x + 4, W - 24)} y={y - 6} fill={GRAFIET} style={SCHRIFT(10)}>
-                {p.waarde}
-              </text>
-            )}
-          </g>
-        )
-      })}
-
-      <text x={links} y={H - 5} fill={GRAFIET} opacity={0.6} style={SCHRIFT(10)}>
-        {punten[0].label}
-      </text>
-      <text
-        x={rechts}
-        y={H - 5}
-        textAnchor="end"
-        fill={GRAFIET}
-        opacity={0.6}
-        style={SCHRIFT(10)}
+    <div className="grafiek grafiek-vak">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="xMidYMid meet"
+        className="block h-full w-full overflow-visible"
+        role="img"
+        aria-label={punten.map((p) => `${p.label}: ${p.waarde}`).join(', ')}
       >
-        {punten[punten.length - 1].label}
-      </text>
-    </svg>
+        <Potloodlijn d={trek(rand, 0)} dd={trek(rand2, 0.5)} width={1.5} />
+
+        {punten.map((p, i) => {
+          const [x, y] = plek(i, p.waarde)
+          return (
+            <g key={`${p.label}:${i}`}>
+              <circle cx={x} cy={y} r={1.9} fill={GRAFIET} opacity={0.75} />
+              {/* Alleen de hoogste en de laatste krijgen hun getal erbij; alles
+                  labelen maakt er weer een tabel van. */}
+              {(p.waarde === hoogste || i === punten.length - 1) && (
+                <text
+                  x={Math.min(x + 4, W - 24)}
+                  y={y - 6}
+                  fill={GRAFIET}
+                  style={{ font: `400 10px var(--font-hand)` }}
+                >
+                  {p.waarde}
+                </text>
+              )}
+            </g>
+          )
+        })}
+
+        <text
+          x={links}
+          y={H - 5}
+          fill={GRAFIET}
+          opacity={0.6}
+          style={{ font: `400 10px var(--font-hand)` }}
+        >
+          {punten[0].label}
+        </text>
+        <text
+          x={rechts}
+          y={H - 5}
+          textAnchor="end"
+          fill={GRAFIET}
+          opacity={0.6}
+          style={{ font: `400 10px var(--font-hand)` }}
+        >
+          {punten[punten.length - 1].label}
+        </text>
+      </svg>
+    </div>
   )
 }

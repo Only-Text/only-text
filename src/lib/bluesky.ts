@@ -119,6 +119,39 @@ export async function post(opts: {
   return { uri: result.uri, cid: result.cid }
 }
 
+/**
+ * Antwoordt onder een bestaand bericht.
+ *
+ * Deze functie stond hier bewust niet, met het argument dat een app-wachtwoord
+ * volledige toegang geeft en een zelfstandig antwoordend account daarmee een
+ * groot oppervlak heeft. Dat argument klopt nog steeds; wat veranderd is, is dat
+ * er nu een rem omheen staat die er toen niet was. Wie deze functie aanroept
+ * moet drie dingen geregeld hebben, en ze staan alle drie in
+ * `/api/cron/replies`: het bericht is eerst geclaimd in de databank zodat er
+ * nooit twee keer geantwoord wordt, er zit een harde bovengrens op het aantal
+ * antwoorden per draai, en de tekst komt langs dezelfde controle als de posts.
+ *
+ * Zonder die drie hoort dit niet aangeroepen te worden.
+ */
+export async function antwoordOp(opts: {
+  text: string
+  parent: { uri: string; cid: string }
+  root: { uri: string; cid: string }
+}): Promise<{ uri: string; cid: string }> {
+  const agent = await bluesky()
+  const rt = new RichText({ text: opts.text })
+  await rt.detectFacets(agent)
+
+  const result = await agent.post({
+    text: rt.text,
+    facets: rt.facets,
+    langs: ['en'],
+    reply: { root: opts.root, parent: opts.parent },
+  })
+
+  return { uri: result.uri, cid: result.cid }
+}
+
 export type Bericht = {
   soort: 'mention' | 'reply' | 'quote' | 'dm'
   van: string
@@ -127,6 +160,12 @@ export type Bericht = {
   wanneer: string
   link: string | null
   gelezen: boolean
+  /** Waar dit bericht staat, zodat er een antwoord onder kan. Leeg bij een DM. */
+  uri?: string
+  cid?: string
+  /** De bovenkant van de draad. Bij een losse vermelding is dat het bericht zelf. */
+  rootUri?: string
+  rootCid?: string
 }
 
 /**
@@ -140,7 +179,15 @@ export async function inbox(limit = 40): Promise<Bericht[]> {
   const meldingen = await agent.listNotifications({ limit })
   for (const n of meldingen.data.notifications) {
     if (!['mention', 'reply', 'quote'].includes(n.reason)) continue
-    const record = n.record as { text?: string; createdAt?: string }
+    const record = n.record as {
+      text?: string
+      createdAt?: string
+      reply?: { root?: { uri?: string; cid?: string } }
+    }
+    // De wortel van de draad, want een antwoord moet zowel zijn buurman als de
+    // bovenkant meesturen. Is dit een losse vermelding, dan is het bericht zelf
+    // de bovenkant.
+    const wortel = record.reply?.root
     uit.push({
       soort: n.reason as 'mention' | 'reply' | 'quote',
       van: n.author.handle,
@@ -149,6 +196,10 @@ export async function inbox(limit = 40): Promise<Bericht[]> {
       wanneer: n.indexedAt,
       link: `https://bsky.app/profile/${n.author.handle}/post/${n.uri.split('/').pop()}`,
       gelezen: n.isRead,
+      uri: n.uri,
+      cid: n.cid,
+      rootUri: wortel?.uri ?? n.uri,
+      rootCid: wortel?.cid ?? n.cid,
     })
   }
 
