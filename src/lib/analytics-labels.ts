@@ -44,9 +44,12 @@ const KANALEN: Record<string, string> = {
   copy_link: 'Copied the link',
 }
 
+// Kort gehouden omdat het achter een kanaalnaam komt te staan en het geheel
+// naast een staaf moet passen. "right after writing" en "from a permanent link"
+// zeggen niets meer dan dit en liepen over de kolom heen.
 const PLEKKEN: Record<string, string> = {
-  after_post: 'right after writing',
-  permalink: 'from a permanent link',
+  after_post: 'after writing',
+  permalink: 'from its own page',
 }
 
 const WEIGERINGEN: Record<string, string> = {
