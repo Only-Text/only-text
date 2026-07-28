@@ -93,7 +93,7 @@ export default async function ArchivePage({
             {items.map((item) => (
               <li key={item.id} className="mt-0">
                 <Link
-                  href={`/m/${item.id}`}
+                  href={`/thoughts/${item.id}`}
                   className="hand block text-[1.05rem] leading-(--line-h) hover:text-(--flame)"
                 >
                   {item.body}

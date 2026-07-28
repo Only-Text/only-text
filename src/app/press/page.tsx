@@ -109,13 +109,18 @@ export default async function PressPage() {
           no third-party analytics anywhere on it.
         </p>
 
-        <p className="hand text-[1.02rem] font-bold">Who made it</p>
-        <p className="hand text-[1rem] text-(--flame)">
-          [ nog in te vullen: je naam, je stad, en een e-mailadres dat je binnen een uur leest ]
+        <p className="hand text-[1.02rem] font-bold">Why it exists</p>
+        <p className="hand text-[1rem]">
+          Every feed is built the same way: room for everything, so post more. Everyone talks at
+          once and nothing stays. This is the opposite arrangement. There is one slot. Filling it
+          takes one sentence and no account, and the only thing you earn is time on a page that is
+          yours until somebody wants it more.
         </p>
-        <p className="hand text-[1rem] text-(--flame)">
-          [ nog in te vullen: waarom je het gemaakt hebt, in maximaal 150 woorden, één keer goed
-          geschreven zodat het in elk artikel hetzelfde staat ]
+        <p className="hand text-[1rem]">
+          That constraint changes what gets written. When there is room for everything, you post.
+          When there is room for one thing and a stranger is about to take it, you think first. What
+          ends up on the front page is shorter, odder and more deliberate than a feed produces, and
+          the archive is a record of what people say when saying it costs them something.
         </p>
       </Sheet>
 

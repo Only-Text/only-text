@@ -30,7 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [
       ...vast,
       ...zinnen.map((zin) => ({
-        url: `${SITE}/m/${zin.id}`,
+        url: `${SITE}/thoughts/${zin.id}`,
         lastModified: new Date(zin.ended_at ?? zin.created_at),
         changeFrequency: 'never' as const,
         priority: 0.5,

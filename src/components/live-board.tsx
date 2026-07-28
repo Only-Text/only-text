@@ -348,7 +348,7 @@ function Footline({
   const total = state.stats?.total_messages ?? 0
   return (
     <p className="meta mt-(--line-h) text-[0.82rem] leading-(--line-h)">
-      {formatNumber(total)} sentences have stood here.
+      {formatNumber(total)} {total === 1 ? 'sentence has' : 'sentences have'} stood here.
       {state.queue_length > 0 && (
         <>
           {' '}

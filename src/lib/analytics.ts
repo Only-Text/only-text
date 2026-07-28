@@ -120,7 +120,7 @@ const ECHTE_PADEN = new Set([
 function bekendPad(pad: string): string {
   if (ECHTE_PADEN.has(pad)) return pad
   // De permalink houdt zijn nummer: welke zin wordt bekeken is het punt.
-  if (/^\/m\/\d{1,12}$/.test(pad)) return pad
+  if (/^\/thoughts\/\d{1,12}$/.test(pad)) return pad
   if (/^\/design\/[a-z0-9-]{1,40}$/.test(pad)) return pad
   return '/404'
 }

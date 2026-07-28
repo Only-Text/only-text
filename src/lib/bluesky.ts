@@ -45,6 +45,16 @@ export async function post(opts: {
   title: string
   description: string
   imageUrl?: string
+  /**
+   * Eén regel die als antwoord onder het bericht komt te staan.
+   *
+   * Een draad van twee levert op Bluesky merkbaar meer antwoorden op dan één
+   * los bericht, en er is hier ook echt een tweede ding te zeggen: het bericht
+   * gaat over één zin, en niet iedereen die langsscrolt weet wat de site is.
+   * Die uitleg hoort niet in het bericht zelf, want dan gaat het over ons in
+   * plaats van over wat iemand schreef.
+   */
+  naschrift?: string
 }): Promise<{ uri: string; cid: string }> {
   const agent = await bluesky()
 
@@ -87,6 +97,24 @@ export async function post(opts: {
       },
     },
   })
+
+  // Het naschrift mag niet fataal zijn: het hoofdbericht staat er al, en een
+  // draad van één is beter dan een mislukte aanroep die de cron op 502 zet.
+  if (opts.naschrift) {
+    try {
+      const ref = { uri: result.uri, cid: result.cid }
+      const staart = new RichText({ text: opts.naschrift })
+      await staart.detectFacets(agent)
+      await agent.post({
+        text: staart.text,
+        facets: staart.facets,
+        langs: ['en'],
+        reply: { root: ref, parent: ref },
+      })
+    } catch (e) {
+      console.error('naschrift plaatsen faalde', e)
+    }
+  }
 
   return { uri: result.uri, cid: result.cid }
 }

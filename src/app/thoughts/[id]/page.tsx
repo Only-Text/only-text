@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: kort,
     description: `${duur} One sentence at a time, on only-text.com.`,
-    alternates: { canonical: `/m/${message.id}` },
+    alternates: { canonical: `/thoughts/${message.id}` },
     openGraph: {
       type: 'article',
       title: kort,
@@ -70,9 +70,9 @@ export default async function MessagePage({ params }: Props) {
   const postJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SocialMediaPosting',
-    '@id': `${SITE}/m/${message.id}#post`,
-    url: `${SITE}/m/${message.id}`,
-    mainEntityOfPage: `${SITE}/m/${message.id}`,
+    '@id': `${SITE}/thoughts/${message.id}#post`,
+    url: `${SITE}/thoughts/${message.id}`,
+    mainEntityOfPage: `${SITE}/thoughts/${message.id}`,
     isPartOf: { '@id': `${SITE}#website` },
     headline: message.body,
     text: message.body,
@@ -161,7 +161,7 @@ export default async function MessagePage({ params }: Props) {
           {previous && (
             <>
               Before this:{' '}
-              <Link href={`/m/${previous.id}`} className="underline underline-offset-4">
+              <Link href={`/thoughts/${previous.id}`} className="underline underline-offset-4">
                 {previous.body.slice(0, 46)}
                 {previous.body.length > 46 ? '…' : ''}
               </Link>
@@ -171,7 +171,7 @@ export default async function MessagePage({ params }: Props) {
           {next && (
             <>
               After this:{' '}
-              <Link href={`/m/${next.id}`} className="underline underline-offset-4">
+              <Link href={`/thoughts/${next.id}`} className="underline underline-offset-4">
                 {next.body.slice(0, 46)}
                 {next.body.length > 46 ? '…' : ''}
               </Link>

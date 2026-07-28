@@ -16,7 +16,7 @@ export const runtime = 'nodejs'
  * dat te verversen. Eén vaste afbeelding op de voorpagina zou dus voor altijd
  * bevriezen op wat er toevallig stond bij de eerste scrape.
  *
- * Daarom: deel je een bericht, dan deel je /m/<id>, en die laat voor altijd
+ * Daarom: deel je een bericht, dan deel je /thoughts/<id>, en die laat voor altijd
  * de zin zien die er stond toen jij hem deelde.
  */
 

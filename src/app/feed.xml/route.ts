@@ -20,7 +20,7 @@ export async function GET() {
 
   const entries = items
     .map((item) => {
-      const link = `${SITE}/m/${item.id}`
+      const link = `${SITE}/thoughts/${item.id}`
       const duur = formatDuration(item.duration_ms)
       return `    <item>
       <title>${esc(item.body.length > 90 ? `${item.body.slice(0, 88)}…` : item.body)}</title>

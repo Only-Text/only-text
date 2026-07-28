@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { formatDuration } from '@/lib/format'
 import { post } from '@/lib/bluesky'
-import { schrijfPost } from '@/lib/write-post'
+import { schrijfPost, naschriftVoor } from '@/lib/write-post'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -45,6 +45,7 @@ export async function GET(request: Request) {
     worth_posting: boolean
     record_broken: boolean
     ended_today: number
+    median_others_ms: number | null
     candidate: {
       id: number
       body: string
@@ -75,6 +76,7 @@ export async function GET(request: Request) {
     reads: c.reads,
     recordBroken: d.record_broken,
     endedToday: d.ended_today,
+    medianOthersMs: d.median_others_ms,
   })
 
   try {
@@ -84,6 +86,7 @@ export async function GET(request: Request) {
       title: c.body.length > 90 ? `${c.body.slice(0, 88)}…` : c.body,
       description: `Stood for ${formatDuration(c.duration_ms)} on only-text.com. Rank #${c.rank} of all time.`,
       imageUrl: c.image,
+      naschrift: naschriftVoor(c.id),
     })
 
     return NextResponse.json({ posted: true, uri: geplaatst.uri, message_id: c.id, written_by: door })

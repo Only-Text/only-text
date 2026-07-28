@@ -37,7 +37,7 @@ export function Share({
 }) {
   const [gekopieerd, setGekopieerd] = useState<'link' | 'tekst' | null>(null)
 
-  const url = `https://only-text.com/m/${id}`
+  const url = `https://only-text.com/thoughts/${id}`
   const stond = durationMs ? formatDuration(durationMs) : null
 
   const regels = [
@@ -135,7 +135,7 @@ export function Share({
  */
 export function ShareNow({ id, body }: { id: number; body: string }) {
   const [gekopieerd, setGekopieerd] = useState(false)
-  const url = `https://only-text.com/m/${id}`
+  const url = `https://only-text.com/thoughts/${id}`
   const tekst = `I just took over only-text.com. The whole homepage is my sentence until somebody types after me.\n\n"${body}"\n\n${url}`
 
   return (
@@ -162,7 +162,7 @@ export function ShareNow({ id, body }: { id: number; body: string }) {
       >
         <Penned seed="bluesky-net-geplaatst">post it on Bluesky</Penned>
       </a>
-      <a href={`/m/${id}`} className="hand hover:text-(--flame)">
+      <a href={`/thoughts/${id}`} className="hand hover:text-(--flame)">
         <Penned seed="op-zichzelf">see it on its own</Penned>
       </a>
     </div>

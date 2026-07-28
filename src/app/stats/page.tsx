@@ -109,7 +109,7 @@ export default async function StatsPage() {
               Stood for {formatDuration(s.longest_ever.ms)}, written{' '}
               {formatMoment(s.longest_ever.on)}
               {s.longest_ever.author ? ` by ${s.longest_ever.author}` : ''}.{' '}
-              <Link href={`/m/${s.longest_ever.id}`} className="underline underline-offset-4">
+              <Link href={`/thoughts/${s.longest_ever.id}`} className="underline underline-offset-4">
                 see it
               </Link>
             </p>

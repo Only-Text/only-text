@@ -104,7 +104,7 @@ const websiteJsonLd = {
       name: 'only-text.com',
       url: SITE,
       description: 'One sentence at a time, written by whoever turns up.',
-      sameAs: ['https://bsky.app/profile/only-text.bsky.social'],
+      sameAs: ['https://bsky.app/profile/only-text.com'],
     },
   ],
 }

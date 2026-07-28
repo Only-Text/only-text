@@ -31,6 +31,8 @@ export type Feiten = {
   reads: number
   recordBroken: boolean
   endedToday: number
+  /** Hoe lang de middelste zin van vandaag het volhield. Null op een stille dag. */
+  medianOthersMs?: number | null
 }
 
 /** De invalshoeken. Het model kiest er één die bij déze zin past. */
@@ -53,6 +55,15 @@ only-text.com is a website that holds exactly one sentence at a time. Whoever
 typed last owns the entire homepage. Anyone can take it from them without making
 an account. The only score is how long your sentence survives before somebody
 replaces it. Everything ever typed stays in a public archive.
+
+Who you are. You are not a person and you are not a brand: you are the page
+itself, keeping a log. You were there for every sentence that has ever stood
+here, you know exactly how long each one lasted, and you find that genuinely
+interesting the way a lighthouse keeper finds the weather interesting. You have
+no opinions about what people write and you never grade it. You notice, you
+record, and occasionally something is worth pointing at. You are dry rather than
+warm, and you would rather say one true thing than three nice ones. You have all
+the time in the world, so you are never in a hurry to be liked.
 
 Your job is to pick an angle and write around the facts you are given. Angles to
 choose from, though you are not limited to these:
@@ -89,7 +100,18 @@ function feitenblok(f: Feiten): string {
     `Its rank: #${f.rank} of ${formatNumber(f.rankedOf)} sentences ever`,
     `People who read it: ${formatNumber(f.reads)}`,
     f.recordBroken ? `This is the longest any sentence has ever stood.` : null,
-    `Sentences that came off the front page in the last 24 hours: ${formatNumber(f.endedToday)}`,
+    // "This one included" staat er niet voor de sier. Zonder die drie woorden
+    // leest het model het getal als iets wat naast deze zin gebeurde, en dan
+    // schrijft het "two came off the page, and this was not one of them" over
+    // een zin die per definitie van de pagina viel. Dat is geen verzonnen
+    // getal, dus de controle ziet het niet.
+    `Sentences that came off the front page in the last 24 hours, this one included: ${formatNumber(f.endedToday)}`,
+    // De vergelijking met de rest van de dag is vaak het hele verhaal: "twee
+    // minuten" zegt niets, "twee minuten terwijl de rest het geen twintig
+    // seconden volhield" zegt alles.
+    f.medianOthersMs
+      ? `How long the middle one of the other sentences today lasted: ${formatDuration(f.medianOthersMs)}`
+      : null,
     // Staat hier omdat "two words and nobody touched them" een goede zin is en
     // het model anders een getal zou gebruiken dat het nergens kreeg.
     `Words in the sentence: ${f.body.trim().split(/\s+/).length}`,
@@ -128,6 +150,30 @@ export function vasteTekst(f: Feiten): string {
     '',
     `Held it for ${formatDuration(f.durationMs)} ${wie}. Rank #${f.rank} of all time, read by ${formatNumber(f.reads)}.`,
   ].join('\n')
+}
+
+/**
+ * De regel die als antwoord onder het bericht komt.
+ *
+ * Het bericht zelf gaat over één zin van één vreemde, en dat is precies goed:
+ * daar gaat de site over. Maar wie er langsscrolt zonder de site te kennen ziet
+ * een citaat zonder wereld eromheen. Die uitleg hoort in het antwoord, niet in
+ * het bericht, want anders gaat het bericht over ons.
+ *
+ * Vast geschreven en niet door het model: een uitleg van wat je bent moet elke
+ * dag hetzelfde zijn, en dit is de ene plek waar één keer uitnodigen mag. Vier
+ * varianten zodat het geen automaat wordt, gekozen op het nummer van de zin,
+ * zodat dezelfde invoer altijd hetzelfde oplevert en dit te testen is.
+ */
+const NASCHRIFTEN = [
+  'If you are new here: only-text.com is one sentence long. Whoever typed it owns the page until somebody else types. That is the whole site.',
+  'The site behind this holds exactly one sentence. No accounts, no feed, no algorithm. You take the page by writing on it and you keep it until someone wants it more.',
+  'How it works: only-text.com has room for one sentence. Anyone can replace it, and the only score is how long yours stays up.',
+  'Context, if you just wandered in: the entire homepage is one sentence, it belongs to whoever typed last, and it is free to take.',
+]
+
+export function naschriftVoor(id: number): string {
+  return NASCHRIFTEN[Math.abs(id) % NASCHRIFTEN.length]
 }
 
 /* --------------------------------------------------------------------------
@@ -187,20 +233,33 @@ export async function schrijfPost(f: Feiten): Promise<{ tekst: string; door: 'ai
   }
 
   const client = new Anthropic()
-  const gesprek: Anthropic.MessageParam[] = [
+  const gesprek: Anthropic.Beta.BetaMessageParam[] = [
     { role: 'user', content: `Here are the facts.\n\n${feitenblok(f)}` },
   ]
 
   // Twee pogingen. De tweede krijgt te horen wat er mis was, want dat is
   // meestal genoeg en het scheelt een derde ronde.
   for (let poging = 0; poging < 2; poging++) {
-    let antwoord: Anthropic.Message
+    let antwoord: Anthropic.Beta.BetaMessage
     try {
-      antwoord = await client.messages.create({
+      antwoord = await client.beta.messages.create({
         model: 'claude-opus-5',
-        max_tokens: 2000,
+        // Ruim, want het budget dekt het denken én de tekst. De post zelf is
+        // 280 tekens; wat hier op raakt is het nadenken over de invalshoek, en
+        // een afgekapt antwoord kost een hele ronde.
+        max_tokens: 8000,
         thinking: { type: 'adaptive' },
-        output_config: { effort: 'medium' },
+        // Eén aanroep per dag, dus zuinig zijn levert hier niets op, en de
+        // moeilijkheid zit hem juist in de afweging: welke invalshoek past bij
+        // déze zin, en welk getal maakt het punt. Dat is precies waar een
+        // hogere inspanning voor is.
+        output_config: { effort: 'high' },
+        // Mensen typen hier wat ze willen. Wordt een zin geweigerd door de
+        // classificatie, dan valt de aanroep zonder dit terug op de vaste tekst
+        // en gaat de invalshoek verloren; met dit valt hij terug op een ander
+        // model en komt er alsnog een geschreven bericht uit.
+        betas: ['server-side-fallback-2026-07-01'],
+        fallbacks: 'default',
         system: SYSTEEM,
         messages: gesprek,
       })
@@ -214,7 +273,7 @@ export async function schrijfPost(f: Feiten): Promise<{ tekst: string; door: 'ai
     if (antwoord.stop_reason === 'refusal') break
 
     const tekst = antwoord.content
-      .filter((b): b is Anthropic.TextBlock => b.type === 'text')
+      .filter((b): b is Anthropic.Beta.BetaTextBlock => b.type === 'text')
       .map((b) => b.text)
       .join('')
       .trim()

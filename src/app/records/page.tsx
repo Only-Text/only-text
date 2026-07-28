@@ -79,7 +79,7 @@ function Lijst({
         {items.map((item, i) => (
           <li key={item.id}>
             <Link
-              href={`/m/${item.id}`}
+              href={`/thoughts/${item.id}`}
               className="hand block text-[1rem] leading-(--line-h) hover:text-(--flame)"
             >
               <span className="meta mr-3 tabular-nums">{i + 1}.</span>
