@@ -1,8 +1,13 @@
 # only-text.com
 
-One sentence sits at the top of this website. It belongs to whoever typed last.
-Type something and it is yours, until the next person comes along. What counts
-is not what you write but how long it survives.
+One sentence sits at the top of this website, written by one person somewhere in
+the world. It belongs to whoever typed last, so what is on it at any moment is
+whatever a stranger decided to say when they had the only slot and knew one
+other stranger would read it. Type something and it is yours, until the next
+person comes along.
+
+How long a sentence lasted is recorded next to it, and it is a fact about the
+sentence rather than the point of the site.
 
 ## How it works
 

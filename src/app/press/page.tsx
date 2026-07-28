@@ -42,18 +42,19 @@ export default async function PressPage() {
         <p className="hand text-[1.02rem] font-bold">In one paragraph</p>
         <p className="hand text-[1rem]">
           only-text.com is a website that holds exactly one sentence at a time. Whoever typed last
-          owns the page, and anyone can take it from them without making an account. What counts is
-          not what you write but how long it survives before somebody replaces it. Every sentence
-          gets a guaranteed minimum time on the front page, so nobody can be wiped out before they
-          have been read, and when it is busy a queue forms with a visible position. Everything ever
-          typed stays in a public archive, each with its own permanent link.
+          owns the page, and anyone can take it from them without making an account. What you are
+          reading at any moment is one person somewhere in the world and what they chose to say
+          when they had the only slot on it. Every sentence gets a guaranteed minimum time on the
+          front page, so nobody can be wiped out before they have been read, and when it is busy a
+          queue forms with a visible position. Everything ever typed stays in a public archive,
+          each with the country it came from and how long it stood.
         </p>
 
         <p className="hand text-[1.02rem] font-bold">In forty words</p>
         <p className="hand text-[1rem]">
-          A website that is one sentence long. It belongs to whoever typed last, anyone can take it,
-          and the only score is how long yours survives. No accounts, no advertising, no images at
-          all.
+          A website that is one sentence long. It belongs to whoever typed last, anyone can take
+          it, and what is on it is whatever a stranger somewhere in the world decided to say. No
+          accounts, no advertising, no images at all.
         </p>
 
         <p className="hand text-[1.02rem] font-bold">Numbers you can check yourself</p>

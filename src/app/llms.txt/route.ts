@@ -17,8 +17,9 @@ export async function GET() {
 
   const text = `# only-text.com
 
-> One sentence sits at the top of this website. It belongs to whoever typed
-> last. Anyone can replace it, and what counts is how long it survives.
+> One sentence sits at the top of this website, written by one person somewhere
+> in the world. It belongs to whoever typed last, so what is on it at any moment
+> is whatever a stranger decided to say. Anyone can replace it.
 
 ## Right now
 

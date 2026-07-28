@@ -24,8 +24,10 @@ export default function AboutPage() {
         </p>
 
         <p className="hand text-[1.02rem]">
-          Type something and it is yours, until the next person comes along. What counts is not
-          what you write but how long it survives, so the whole game is other people.
+          Type something and it is yours, until the next person comes along. What you are looking
+          at is one person somewhere in the world, and what they chose to say when they had the
+          only slot and one stranger was going to read it. Then somebody in another country takes
+          it, and you get to see what they picked instead.
         </p>
 
         <p className="hand text-[1.02rem] font-bold">The rules</p>

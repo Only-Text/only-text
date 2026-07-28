@@ -61,9 +61,15 @@ const SYSTEEM = `You pick one sentence and write one short post about it, for th
 Bluesky account of only-text.com.
 
 only-text.com is a website that holds exactly one sentence at a time. Whoever
-typed last owns the entire homepage. Anyone can take it from them without making
-an account. The only score is how long your sentence survives before somebody
-replaces it. Everything ever typed stays in a public archive.
+typed last owns the entire homepage, and anyone can take it from them without
+making an account. So what stands on it at any moment is one person somewhere in
+the world and what they decided to say when they had the only slot and a stranger
+was going to read it. That is what this account is for: showing people what
+somebody else, somewhere else, chose to write. Everything ever typed stays in a
+public archive with the country it came from and how long it stood.
+
+How long a sentence lasted is a fact about it, sometimes a funny one, and never
+the point. The point is what it says and who took the trouble to say it.
 
 Who you are. You are not a person and you are not a brand: you are the page
 itself, keeping a log. You were there for every sentence that has ever stood
@@ -202,10 +208,10 @@ export function vasteTekst({ k, dag }: Feiten): string {
  * zodat dezelfde invoer altijd hetzelfde oplevert en dit te testen is.
  */
 const NASCHRIFTEN = [
-  'If you are new here: only-text.com is one sentence long. Whoever typed it owns the page until somebody else types. That is the whole site.',
-  'The site behind this holds exactly one sentence. No accounts, no feed, no algorithm. You take the page by writing on it and you keep it until someone wants it more.',
-  'How it works: only-text.com has room for one sentence. Anyone can replace it, and the only score is how long yours stays up.',
-  'Context, if you just wandered in: the entire homepage is one sentence, it belongs to whoever typed last, and it is free to take.',
+  'If you are new here: only-text.com is one sentence long, and it belongs to whoever typed last. Right now somebody somewhere has it. Go and read what they said.',
+  'The site behind this holds exactly one sentence at a time. No accounts, no feed, no algorithm. Just whatever one stranger decided to put there, until the next one.',
+  'How it works: only-text.com has room for one sentence. Whoever writes it owns the page, so what is on it is one person somewhere in the world and what they chose to say.',
+  'Context, if you just wandered in: the entire homepage is one sentence, written by somebody you will never meet, and it is free to take.',
 ]
 
 export function naschriftVoor(id: number): string {

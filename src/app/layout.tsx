@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: '%s · only-text.com',
   },
   description:
-    'One sentence sits at the top of this site. It belongs to whoever typed last. Type something and it is yours, until the next person comes along.',
+    'One sentence sits at the top of this site, written by one person somewhere in the world. It belongs to whoever typed last, so what you read is whatever a stranger decided to say. Type something and it is yours, until the next one comes along.',
   applicationName: 'only-text',
   // Bewust een vaste, gebrande afbeelding op de homepage. Sociale platformen
   // cachen het scrape-resultaat per URL, en WhatsApp biedt geen enkele manier
@@ -86,7 +86,7 @@ const websiteJsonLd = {
       url: SITE,
       name: 'only-text.com',
       description:
-        'A website that is one sentence long. It belongs to whoever typed last, and what counts is how long it survives.',
+        'A website that is one sentence long, written by one stranger at a time from wherever they happen to be.',
       inLanguage: 'en',
       publisher: { '@id': `${SITE}#publisher` },
       potentialAction: {
