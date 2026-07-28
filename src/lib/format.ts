@@ -82,25 +82,36 @@ export function countryName(code: string | null | undefined): string | null {
  * voegt niets toe en kost wel breedte in een regel die kort moet blijven. In
  * het archief en op de permalink staat het volledige moment wél.
  */
-export function formatShortMoment(iso: string): string {
+/**
+ * De tijdzone is een parameter en geen aanname.
+ *
+ * Zonder mee te geven neemt Intl de zone van de machine, en die is op de server
+ * UTC en bij de bezoeker niet. Dat gaf op elke pagina met een tijd erop een
+ * hydratatiefout: de server schreef 10:44, de browser tekende 12:44, en React
+ * gooide de hele serverpagina weg om opnieuw te beginnen. Zie `<Moment>`, dat
+ * eerst met UTC rendert en pas na het monteren naar de echte zone gaat.
+ */
+export function formatShortMoment(iso: string, timeZone?: string): string {
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
     month: 'long',
     hour: '2-digit',
     minute: '2-digit',
+    ...(timeZone ? { timeZone } : {}),
   })
     .format(new Date(iso))
     .replace(/(\d{1,2} \w+) at /, '$1, ')
 }
 
 /** `27 July 2026, 14:03` */
-export function formatMoment(iso: string): string {
+export function formatMoment(iso: string, timeZone?: string): string {
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    ...(timeZone ? { timeZone } : {}),
   }).format(new Date(iso))
 }
 

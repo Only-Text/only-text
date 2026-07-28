@@ -4,7 +4,8 @@ import { MotionConfig, useReducedMotion } from 'motion/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { browserClient, sessionId } from '@/lib/supabase-browser'
-import { countryName, formatNumber, formatShortMoment } from '@/lib/format'
+import { countryName, formatNumber } from '@/lib/format'
+import { Moment } from './moment'
 import { track } from '@/lib/analytics'
 import { Composer } from './composer'
 import { Erasing } from './eraser'
@@ -397,7 +398,7 @@ function Byline({ message, mine }: { message: LiveMessage; mine: boolean }) {
         </>
       )}
       {" · "}
-      {formatShortMoment(message.created_at)}
+      <Moment iso={message.created_at} kort />
       {reads > 0 && (
         <>
           {" · "}

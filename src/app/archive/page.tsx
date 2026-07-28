@@ -3,7 +3,8 @@ import Link from 'next/link'
 
 import { Sheet } from '@/components/sheet'
 import { Track } from '@/components/track'
-import { formatDuration, formatMoment } from '@/lib/format'
+import { formatDuration } from '@/lib/format'
+import { Moment } from '@/components/moment'
 import { getArchive } from '@/lib/data'
 
 /**
@@ -99,7 +100,7 @@ export default async function ArchivePage({
                   {item.body}
                 </Link>
                 <span className="meta block text-[0.8rem] leading-(--line-h)">
-                  {item.author_name ?? 'anonymous'} · {formatMoment(item.created_at)} · stood{' '}
+                  {item.author_name ?? 'anonymous'} · <Moment iso={item.created_at} /> · stood{' '}
                   {formatDuration(item.duration_ms)}
                 </span>
               </li>

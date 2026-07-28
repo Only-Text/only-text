@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation'
 
 import { Sheet } from '@/components/sheet'
 import { Track } from '@/components/track'
-import { formatDuration, formatMoment, formatNumber, countryName } from '@/lib/format'
+import { formatDuration, formatNumber, countryName } from '@/lib/format'
+import { Moment } from '@/components/moment'
 import { getMessage } from '@/lib/data'
 import { ReportLink } from '@/components/report-link'
 import { Share } from '@/components/share'
@@ -126,7 +127,7 @@ export default async function MessagePage({ params }: Props) {
 
         <p className="marginalia text-[0.95rem]">
           Written {message.author_name ? `by ${message.author_name}` : 'by someone with no name'}
-          {land ? ` from ${land}` : ''} on {formatMoment(message.created_at)}.
+          {land ? ` from ${land}` : ''} on <Moment iso={message.created_at} />.
         </p>
 
         <p className="meta text-[0.9rem]">

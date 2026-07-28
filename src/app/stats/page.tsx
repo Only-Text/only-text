@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { Sheet } from '@/components/sheet'
-import { formatDuration, formatMoment, formatNumber } from '@/lib/format'
+import { formatDuration, formatNumber } from '@/lib/format'
+import { Moment } from '@/components/moment'
 import { getStats } from '@/lib/stats'
 
 export const metadata: Metadata = {
@@ -107,7 +108,7 @@ export default async function StatsPage() {
             <p className="hand text-[1rem]">&ldquo;{s.longest_ever.body}&rdquo;</p>
             <p className="meta text-[0.85rem]">
               Stood for {formatDuration(s.longest_ever.ms)}, written{' '}
-              {formatMoment(s.longest_ever.on)}
+              <Moment iso={s.longest_ever.on} />
               {s.longest_ever.author ? ` by ${s.longest_ever.author}` : ''}.{' '}
               <Link href={`/thoughts/${s.longest_ever.id}`} className="underline underline-offset-4">
                 see it
@@ -131,7 +132,7 @@ export default async function StatsPage() {
         <Regel label="Reading at this moment" waarde={formatNumber(s.reading_now)} />
 
         <p className="meta text-[0.8rem]">
-          Measured {formatMoment(s.generated_at)}. Nothing here is rounded up. The same numbers are
+          Measured <Moment iso={s.generated_at} />. Nothing here is rounded up. The same numbers are
           available as{' '}
           <Link href="/stats.json" className="underline underline-offset-4">
             JSON
