@@ -60,9 +60,15 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
     setState(next)
   }, [])
 
+  // Bewust zonder `cache: 'no-store'`. Dat stond hier en het lijkt onschuldig,
+  // maar het maakt van elke aanroep een databasequery, en deze functie wordt
+  // aangeroepen door iedereen die binnenkomt. Bij duizend gelijktijdige
+  // bezoekers is dat duizend queries in dezelfde seconde, op het moment dat je
+  // ze het minst kunt hebben. De route zegt zelf hoe vers hij is (één seconde),
+  // en dat is dezelfde versheid als de voorpagina aanhoudt.
   const refetch = useCallback(async () => {
     try {
-      const res = await fetch('/api/current', { cache: 'no-store' })
+      const res = await fetch('/api/current')
       if (!res.ok) return
       apply((await res.json()) as BoardState)
     } catch {
@@ -80,8 +86,16 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
     let channel: ReturnType<typeof sb.channel> | undefined
 
     void (async () => {
-      // Verplicht voor een privé-topic. Zonder dit weigert Realtime de join.
-      await sb.realtime.setAuth()
+      try {
+        // Verplicht voor een privé-topic. Zonder dit weigert Realtime de join.
+        await sb.realtime.setAuth()
+      } catch {
+        // Lukt dit niet, dan komt er geen kanaal. `connected` blijft false en
+        // het pollen hieronder neemt het over. Eerder liep deze fout als
+        // onafgevangen belofte weg en bleef de pagina staan op de zin die de
+        // server had gerenderd.
+        return
+      }
       if (cancelled) return
 
       channel = sb.channel('current', {
@@ -153,19 +167,69 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
   }, [])
 
   /* ------------------------------------------------------------------ */
+  /* Terugval: pollen zolang de WebSocket het niet doet                  */
+  /* ------------------------------------------------------------------ */
+
+  /* Realtime heeft een grens aan het aantal gelijktijdige verbindingen, en die
+     grens ligt bij het plan, niet bij ons. Wordt hij geraakt, dan komt iedereen
+     daarboven binnen op een pagina die nooit meer verandert: precies het ene
+     ding dat deze site doet. Hij zag er dan uit alsof hij het deed.
+
+     Dus pollen zodra we niet verbonden zijn, en stoppen zodra dat wel zo is.
+     Dat gaat via een route die het CDN een seconde vasthoudt, dus tienduizend
+     tabbladen die elke vier seconden kloppen kosten samen nog steeds één query
+     per seconde. Met spreiding erop, want tienduizend timers die tegelijk zijn
+     aangezet kloppen anders ook tegelijk. */
+  useEffect(() => {
+    if (connected) return
+
+    const tik = 3500 + Math.random() * 2500
+    const timer = setInterval(() => {
+      if (document.visibilityState === 'visible') void refetch()
+    }, tik)
+
+    return () => clearInterval(timer)
+  }, [connected, refetch])
+
+  /* ------------------------------------------------------------------ */
   /* Kijkersteller                                                       */
   /* ------------------------------------------------------------------ */
 
+  /* Het tempo komt van de server, niet van hier. Bij vijftig kijkers is elke
+     twintig seconden niets; bij tienduizend is het vijfhonderd aanroepen per
+     seconde. De server ziet als enige hoe druk het is, dus die bepaalt hoe vaak
+     er geklopt wordt, en hij rekent zijn telvenster op datzelfde getal uit.
+
+     Daarom een setTimeout die zichzelf opnieuw zet en geen setInterval: het
+     tempo verandert onderweg. */
   useEffect(() => {
     const sb = browserClient()
     const me = sessionId()
     let stopped = false
+    let timer: ReturnType<typeof setTimeout> | undefined
+    let elke = 20_000
 
     const beat = async () => {
-      if (stopped || document.visibilityState !== 'visible') return
-      const { data } = await sb.rpc('heartbeat', { p_session: me })
-      const hart = data as { live?: number; views?: number; message_id?: number } | null
-      if (stopped || !hart) return
+      if (stopped) return
+      if (document.visibilityState !== 'visible') {
+        plan()
+        return
+      }
+      const { data } = await sb.rpc('heartbeat', { p_session: me, p_every_ms: elke })
+      const hart = data as {
+        live?: number
+        views?: number
+        message_id?: number
+        next_ms?: number
+      } | null
+      if (stopped || !hart) {
+        plan()
+        return
+      }
+
+      // Wat de server zegt, met een ondergrens voor het geval een oude versie
+      // van de functie nog geen tempo teruggeeft.
+      elke = Math.min(120_000, Math.max(20_000, hart.next_ms ?? 20_000))
 
       setState((s) => ({
         ...s,
@@ -177,13 +241,21 @@ export function LiveBoard({ initial }: { initial: BoardState }) {
             ? { ...s.message, views: hart.views ?? s.message.views }
             : s.message,
       }))
+
+      plan()
+    }
+
+    // Met spreiding, anders kloppen alle tabbladen die tegelijk zijn geopend
+    // ook voor altijd tegelijk, en dat is precies de golf die je niet wilt.
+    function plan() {
+      if (stopped) return
+      timer = setTimeout(beat, elke * (0.85 + Math.random() * 0.3))
     }
 
     void beat()
-    const timer = setInterval(beat, 20_000)
     return () => {
       stopped = true
-      clearInterval(timer)
+      if (timer) clearTimeout(timer)
     }
   }, [])
 

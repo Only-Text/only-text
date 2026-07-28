@@ -6,14 +6,26 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 /**
- * De waarheid, ongecachet. De pagina zelf wordt een seconde gecachet; deze
- * route is wat de browser aanroept om het gat tussen de server-render en het
- * moment dat de WebSocket luistert te dichten, en na terugkeer uit een
- * slapend tabblad.
+ * Wat er nu op de voorpagina staat.
+ *
+ * De browser roept dit aan om het gat te dichten tussen de server-render en het
+ * moment dat de WebSocket luistert, na terugkeer uit een slapend tabblad, en
+ * als de WebSocket het helemaal niet doet: dan is dit de terugval en wordt er
+ * gepollt.
+ *
+ * Die laatste taak is de reden dat hier een cache op zit waar eerst `no-store`
+ * stond. Ongecachet is elke aanroep een query, en dan schaalt dit lineair mee
+ * met het aantal bezoekers: precies verkeerd om, want de terugval moet het juist
+ * uithouden op het moment dat het druk is. Eén seconde is dezelfde versheid als
+ * de voorpagina zelf aanhoudt, en daarmee bedient het CDN duizend tabbladen met
+ * één query per seconde.
+ *
+ * `stale-while-revalidate` staat er ruim op: liever een seconde oude tekst dan
+ * een lege terwijl de databank het even zwaar heeft.
  */
 export async function GET() {
   const board = await getBoard()
   return NextResponse.json(board, {
-    headers: { 'cache-control': 'no-store' },
+    headers: { 'cache-control': 'public, s-maxage=1, stale-while-revalidate=59' },
   })
 }
