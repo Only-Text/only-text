@@ -1,5 +1,15 @@
+import type { Metadata } from 'next'
+
 import { HandBars, HandFunnel, HandLine } from '@/components/hand-chart'
 import { Sheet } from '@/components/sheet'
+
+/* Een werkbank, net als /design. Hij staat in geen enkel menu en in de sitemap
+   staat hij ook niet, maar dat houdt niemand tegen: een pagina die bestaat wordt
+   gevonden. Vandaar dezelfde regel als de rest van de werkbanken. */
+export const metadata: Metadata = {
+  title: 'Chart bench',
+  robots: { index: false, follow: false },
+}
 
 export default function GrafiekTest() {
   return (
