@@ -404,13 +404,20 @@ export async function schrijfPost(
     if (!fout) return { id: gekozen.id, tekst, door: 'ai' }
 
     console.warn(`schrijfPost: poging ${poging + 1} afgekeurd, ${fout}`)
-    gesprek.push(
-      { role: 'assistant', content: rauw },
-      {
-        role: 'user',
-        content: `That does not work: ${fout}. Write it again, and this time use only what is in the facts of the sentence you chose.`,
-      },
-    )
+
+    // De tweede poging krijgt alleen de gekozen zin te zien.
+    //
+    // Beide afkeuringen die dit in het echt opleverde waren dezelfde fout: het
+    // model koos zin A en schreef vervolgens het aantal seconden van zin B op,
+    // of citeerde B terwijl het A had gekozen. Dat is geen slordigheid maar een
+    // voorspelbaar gevolg van een stapel waarin alle feiten door elkaar staan.
+    // Kiezen is gebeurd, dus de stapel mag weg; wat overblijft is één zin met
+    // haar eigen getallen, en dan valt er niets meer te verwarren.
+    gesprek.length = 0
+    gesprek.push({
+      role: 'user',
+      content: `Write the post about this sentence, and only this one.\n\n${feitenblok({ k: gekozen, dag })}\n\nYour previous attempt was rejected: ${fout}. Use only the facts above. Answer with the same id you were given here.`,
+    })
   }
 
   return terugval
