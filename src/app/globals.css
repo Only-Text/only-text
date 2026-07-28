@@ -350,20 +350,33 @@ body {
   height: calc(3 * var(--line-h));
 }
 
-@media (max-width: 640px) {
-  .grafiek {
-    --spoor: 6.5rem;
-    font-size: 0.76rem;
-  }
-  .grafiek-kop {
+/* Het label op een eigen regel zodra de kolom er niet meer naast past.
+   ---------------------------------------------------------------------------
+   Niet op het gewone breekpunt van de site maar ruimer, want dit gaat niet over
+   telefoons: bij een smal venster op een laptop staat de kantlijn er nog steeds
+   en houdt het vel maar een paar honderd pixels tekst over. Een kolom van
+   twintig tekens past daar niet naast een staaf.
+
+   Grafieken met korte labels blijven wél naast elkaar staan. Bij "phone · 1" is
+   een eigen regel voor het label weggegooide ruimte; de component rekent uit of
+   het past en zet er dan `grafiek-kort` op. */
+@media (max-width: 820px) {
+  .grafiek:not(.grafiek-kort) .grafiek-kop {
     display: block;
     width: auto;
     padding-right: 0;
     text-align: left;
     white-space: normal;
   }
-  .grafiek-noot {
+  .grafiek:not(.grafiek-kort) .grafiek-noot {
     padding-left: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .grafiek {
+    --spoor: 6.5rem;
+    font-size: 0.76rem;
   }
 }
 

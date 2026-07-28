@@ -69,11 +69,25 @@ export async function GET(request: Request) {
     return NextResponse.json({ replied: 0, reason: 'no sentence on the page' })
   }
 
+  // Bluesky telt mislukte aanmeldingen: tien per dag, daarna komt ook de juiste
+  // sleutel er niet meer in. Deze cron draait elk kwartier, dus zonder deze rem
+  // maakt één verkeerde omgevingsvariabele het account een dag lang onbruikbaar.
+  const { data: geblokkeerd } = await supabase.rpc('bsky_auth_blocked')
+  if (geblokkeerd) {
+    return NextResponse.json({ replied: 0, reason: 'holding off after a failed login' })
+  }
+
   let binnen
   try {
     binnen = await inbox(40)
   } catch (e) {
     console.error('inbox lezen faalde', e)
+    // Alleen bij een afgewezen aanmelding wachten. Een dienst die er even uit
+    // ligt is geen reden om een uur te zwijgen, en telt ook niet mee.
+    const status = (e as { status?: number })?.status
+    if (status === 401 || status === 400) {
+      await supabase.rpc('bsky_auth_failed')
+    }
     return NextResponse.json({ error: 'inbox_unavailable' }, { status: 502 })
   }
 

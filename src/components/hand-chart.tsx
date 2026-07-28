@@ -79,6 +79,21 @@ function kopBreedte(labels: string[]): string {
   return `${(langste * TEKENBREEDTE + 0.6).toFixed(2)}em`
 }
 
+/**
+ * Past label, staaf en getal op een telefoon naast elkaar?
+ *
+ * Op een smal scherm gaat het label anders op een eigen regel staan (zie
+ * globals.css). Dat is nodig zodra de kolom breed wordt, maar het kost een
+ * regel per staaf, en bij "phone · 1" is dat zonde. Achttien tekens voor label
+ * en getal samen is de grens waarbinnen het bij 360 pixels breedte nog past,
+ * met een marge, want overlopen is erger dan een regel extra.
+ */
+const SMAL_MAX_TEKENS = 18
+
+function past(rijen: { label: string; waarde: string }[]): boolean {
+  return rijen.every((r) => r.label.length + r.waarde.length <= SMAL_MAX_TEKENS)
+}
+
 /** Een lijn van links naar rechts die in het midden doorzakt, zoals een pols. */
 function haal(rand: () => number, x1: number, y1: number, x2: number, y2: number, bow: number) {
   const stappen = 8
@@ -234,17 +249,23 @@ export function HandBars({
   if (data.length === 0) return null
 
   const hoogste = Math.max(...data.map((d) => d.waarde), 1)
+  const rijen = data.map((d) => ({
+    label: kort(d.label),
+    waarde: d.hint ?? `${d.waarde}${eenheid}`,
+    deel: d.waarde / hoogste,
+    seed: `${seed}:${d.label}`,
+  }))
 
   return (
     <div
-      className="grafiek"
-      style={{ '--kop': kopBreedte(data.map((d) => d.label)) } as React.CSSProperties}
+      className={`grafiek ${past(rijen) ? 'grafiek-kort' : ''}`}
+      style={{ '--kop': kopBreedte(rijen.map((r) => r.label)) } as React.CSSProperties}
     >
-      {data.map((d, i) => (
-        <div key={`${d.label}:${i}`} className="on-rule grafiek-rij">
-          <span className="grafiek-kop">{kort(d.label)}</span>
-          <Staaf deel={d.waarde / hoogste} seed={`${seed}:${d.label}`} />
-          <span className="grafiek-getal tabular-nums">{d.hint ?? `${d.waarde}${eenheid}`}</span>
+      {rijen.map((r, i) => (
+        <div key={`${r.label}:${i}`} className="on-rule grafiek-rij">
+          <span className="grafiek-kop">{r.label}</span>
+          <Staaf deel={r.deel} seed={r.seed} />
+          <span className="grafiek-getal tabular-nums">{r.waarde}</span>
         </div>
       ))}
     </div>
@@ -271,25 +292,26 @@ export function HandFunnel({ stappen, seed }: { stappen: Reeks[]; seed: string }
   if (stappen.length === 0) return null
 
   const top = Math.max(stappen[0]?.waarde ?? 0, 1)
+  const rijen = stappen.map((s) => ({
+    label: kort(s.label),
+    waarde: `${s.waarde} · ${Math.round((s.waarde / top) * 100)}%`,
+  }))
 
   return (
     <div
-      className="grafiek"
-      style={{ '--kop': kopBreedte(stappen.map((s) => s.label)) } as React.CSSProperties}
+      className={`grafiek ${past(rijen) ? 'grafiek-kort' : ''}`}
+      style={{ '--kop': kopBreedte(rijen.map((r) => r.label)) } as React.CSSProperties}
     >
       {stappen.map((s, i) => {
         const vorige = stappen[i - 1]
         const verloren = vorige ? vorige.waarde - s.waarde : 0
-        const deel = Math.round((s.waarde / top) * 100)
 
         return (
           <Fragment key={`${s.label}:${i}`}>
             <div className="on-rule grafiek-rij">
-              <span className="grafiek-kop">{kort(s.label)}</span>
+              <span className="grafiek-kop">{rijen[i].label}</span>
               <Staaf deel={s.waarde / top} seed={`${seed}:${s.label}`} dik={DIK_TRECHTER} />
-              <span className="grafiek-getal tabular-nums">
-                {s.waarde} · {deel}%
-              </span>
+              <span className="grafiek-getal tabular-nums">{rijen[i].waarde}</span>
             </div>
 
             {/* Wie hier afviel. Alleen zetten als er iets te verliezen viel. */}
