@@ -90,8 +90,43 @@ function apparaat(): 'phone' | 'tablet' | 'desktop' {
   return 'desktop'
 }
 
+/** De pagina's die echt bestaan. Zie `find src/app -name page.tsx`. */
+const ECHTE_PADEN = new Set([
+  '/',
+  '/about',
+  '/archive',
+  '/design',
+  '/press',
+  '/records',
+  '/stats',
+  '/what-people-do',
+])
+
+/**
+ * Alles wat geen bestaande pagina is wordt `/404`.
+ *
+ * De 404-pagina zit onder dezelfde layout, dus zonder deze filter telt elke bot
+ * die /wp-admin of /ai-summarizer probeert mee in "drukste pagina's". Dat
+ * gebeurde meteen op de eerste dag. Erger: het pad komt rechtstreeks uit de
+ * adresbalk, dus iedereen kon er zelf regels mee in het rapport zetten.
+ *
+ * Eén `/404`-emmer in plaats van weggooien, want hoeveel er misgetast wordt is
+ * zelf ook een getal dat iets zegt.
+ *
+ * Dit hoort hier en niet in de VisitTracker: het pad dat in de database belandt
+ * komt uit `track()` hieronder, niet uit wat de aanroeper meegeeft. Filteren op
+ * de plek van de aanroep raakt alleen een eigenschap en laat de kolom ongemoeid.
+ */
+function bekendPad(pad: string): string {
+  if (ECHTE_PADEN.has(pad)) return pad
+  // De permalink houdt zijn nummer: welke zin wordt bekeken is het punt.
+  if (/^\/m\/\d{1,12}$/.test(pad)) return pad
+  if (/^\/design\/[a-z0-9-]{1,40}$/.test(pad)) return pad
+  return '/404'
+}
+
 /** Elke geopende pagina, ook na navigatie binnen de site. */
-export function trackPageOpen(path: string): void {
+export function trackPageOpen(): void {
   paginas += 1
   track('page_open', {
     // De herkomst hoort bij het bezoek en niet bij de pagina: bij de tweede
@@ -100,7 +135,6 @@ export function trackPageOpen(path: string): void {
     referrer: paginas === 1 ? herkomst() : undefined,
     device: apparaat(),
     page: paginas,
-    path,
   })
 }
 
@@ -174,7 +208,7 @@ export function track(name: AnalyticsEvent, params: AnalyticsParams = {}): void 
   // Dat is de noemer onder "hoeveel procent schrijft er iets".
   if (name === 'sentence_posted' || name === 'sentence_promoted') heeftGeschreven = true
 
-  wachtrij.push({ name, path: window.location.pathname, props })
+  wachtrij.push({ name, path: bekendPad(window.location.pathname), props })
 
   if (wachtrij.length >= BUNDEL) {
     versturen()
