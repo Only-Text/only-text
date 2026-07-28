@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
 
 import { createServiceClient } from '@/lib/supabase'
-import { formatDuration, formatNumber } from '@/lib/format'
+import { formatDuration } from '@/lib/format'
 import { post } from '@/lib/bluesky'
+import { schrijfPost } from '@/lib/write-post'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -37,12 +38,14 @@ export async function GET(request: Request) {
   const d = data as {
     worth_posting: boolean
     record_broken: boolean
+    ended_today: number
     candidate: {
       id: number
       body: string
       author: string | null
       duration_ms: number
       rank: number
+      ranked_of: number
       reads: number
       permalink: string
       image: string
@@ -54,20 +57,19 @@ export async function GET(request: Request) {
   }
 
   const c = d.candidate
-  const wie = c.author ? `by @${c.author}` : 'by nobody in particular'
-  const kop = d.record_broken
-    ? 'A new record on only-text.com.'
-    : 'This one just came off the front page.'
 
-  // De tekst wordt samengesteld uit databasevelden, niet geschreven. Er kan dus
-  // geen cijfer of citaat in staan dat er niet is.
-  const tekst = [
-    kop,
-    '',
-    `"${c.body}"`,
-    '',
-    `Held it for ${formatDuration(c.duration_ms)} ${wie}. Rank #${c.rank} of all time, read by ${formatNumber(c.reads)}.`,
-  ].join('\n')
+  // Het model kiest de invalshoek, de feiten liggen vast en worden achteraf
+  // gecontroleerd. Klopt er iets niet, dan komt hier de vaste tekst uit.
+  const { tekst, door } = await schrijfPost({
+    body: c.body,
+    author: c.author,
+    durationMs: c.duration_ms,
+    rank: c.rank,
+    rankedOf: c.ranked_of,
+    reads: c.reads,
+    recordBroken: d.record_broken,
+    endedToday: d.ended_today,
+  })
 
   try {
     const geplaatst = await post({
@@ -78,7 +80,7 @@ export async function GET(request: Request) {
       imageUrl: c.image,
     })
 
-    return NextResponse.json({ posted: true, uri: geplaatst.uri, message_id: c.id })
+    return NextResponse.json({ posted: true, uri: geplaatst.uri, message_id: c.id, written_by: door })
   } catch (e) {
     console.error('bluesky-post faalde', e)
     return NextResponse.json(

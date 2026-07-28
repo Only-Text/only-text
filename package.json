@@ -14,6 +14,7 @@
     "test": "npm run test:moderation && npm run test:erase && npm run test:backend"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.115.0",
     "@atproto/api": "^0.19.19",
     "@supabase/supabase-js": "^2.109.0",
     "@types/pg": "^8.20.0",

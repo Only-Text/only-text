@@ -49,6 +49,79 @@ const WACHT_MS = 2000
 const wachtrij: Uitgaand[] = []
 let timer: ReturnType<typeof setTimeout> | undefined
 
+/* -------------------------------------------------------------------- */
+/* Het bezoek als geheel                                                 */
+/* -------------------------------------------------------------------- */
+
+const begonnen = Date.now()
+let paginas = 0
+let heeftGeschreven = false
+let afgesloten = false
+
+/**
+ * Waar komt deze bezoeker vandaan?
+ *
+ * Alleen de hostnaam, nooit de hele verwijzende URL. Die bevat op zoeksites de
+ * zoekterm en op sociale platformen soms een gebruikersnaam, en dat hoeft hier
+ * niet te liggen om te weten dat er verkeer van Bluesky komt.
+ */
+function herkomst(): string {
+  try {
+    const verwijzer = document.referrer
+    if (!verwijzer) return 'direct'
+    const host = new URL(verwijzer).hostname.replace(/^www\./, '')
+    return host === window.location.hostname ? 'internal' : host.slice(0, 60)
+  } catch {
+    return 'direct'
+  }
+}
+
+/**
+ * Grof apparaat, uit de breedte van het venster.
+ *
+ * Bewust niet uit de user agent. Die is een lange, unieke tekenreeks waarmee je
+ * bezoekers kunt herkennen, en dat is precies wat deze meting niet wil kunnen.
+ * Een venster is drie hokjes breed en verder niets.
+ */
+function apparaat(): 'phone' | 'tablet' | 'desktop' {
+  const breedte = window.innerWidth
+  if (breedte < 640) return 'phone'
+  if (breedte < 1024) return 'tablet'
+  return 'desktop'
+}
+
+/** Elke geopende pagina, ook na navigatie binnen de site. */
+export function trackPageOpen(path: string): void {
+  paginas += 1
+  track('page_open', {
+    // De herkomst hoort bij het bezoek en niet bij de pagina: bij de tweede
+    // pagina is de verwijzer de site zelf, en dan zou "internal" het echte
+    // kanaal overschreeuwen in het rapport.
+    referrer: paginas === 1 ? herkomst() : undefined,
+    device: apparaat(),
+    page: paginas,
+    path,
+  })
+}
+
+/**
+ * Het einde van het bezoek, één keer.
+ *
+ * Het eerste van `pagehide` of "tabblad naar de achtergrond" telt. Op mobiel
+ * vuurt `pagehide` niet altijd, en wie terugkomt na tien minuten in een andere
+ * app was er ondertussen niet. Liever een duur die aan de korte kant klopt dan
+ * een die alleen op desktop bestaat.
+ */
+function bezoekAfsluiten(): void {
+  if (afgesloten) return
+  afgesloten = true
+  track('visit_end', {
+    seconds: Math.min(Math.round((Date.now() - begonnen) / 1000), 7200),
+    pages: paginas,
+    wrote: heeftGeschreven,
+  })
+}
+
 function versturen(): void {
   if (timer) {
     clearTimeout(timer)
@@ -97,6 +170,10 @@ export function track(name: AnalyticsEvent, params: AnalyticsParams = {}): void 
     props[sleutel] = typeof waarde === 'string' ? waarde.slice(0, 100) : waarde
   }
 
+  // Wie tijdens dit bezoek iets op de voorpagina kreeg, telt als schrijver.
+  // Dat is de noemer onder "hoeveel procent schrijft er iets".
+  if (name === 'sentence_posted' || name === 'sentence_promoted') heeftGeschreven = true
+
   wachtrij.push({ name, path: window.location.pathname, props })
 
   if (wachtrij.length >= BUNDEL) {
@@ -109,8 +186,15 @@ export function track(name: AnalyticsEvent, params: AnalyticsParams = {}): void 
 if (typeof window !== 'undefined' && analyticsEnabled) {
   // `pagehide` en niet `beforeunload`: die laatste vuurt op mobiel Safari niet
   // betrouwbaar, en dat is precies waar de meeste bezoekers vandaan komen.
-  window.addEventListener('pagehide', versturen)
+  // Eerst het slotevent in de wachtrij, dan pas legen, anders vertrekt de
+  // bundel zonder de duur van het bezoek erin.
+  window.addEventListener('pagehide', () => {
+    bezoekAfsluiten()
+    versturen()
+  })
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') versturen()
+    if (document.visibilityState !== 'hidden') return
+    bezoekAfsluiten()
+    versturen()
   })
 }

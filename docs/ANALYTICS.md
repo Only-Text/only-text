@@ -7,9 +7,12 @@ toestemmingsbalk, en geen rekening.
 | -------------- | ------------------------------------------------------------------------ |
 | Namen          | [`src/lib/analytics-events.ts`](../src/lib/analytics-events.ts)          |
 | Verzamelen     | [`src/lib/analytics.ts`](../src/lib/analytics.ts)                        |
+| Elk bezoek     | [`src/components/visit-tracker.tsx`](../src/components/visit-tracker.tsx) |
 | Vanaf een serverpagina | [`src/components/track.tsx`](../src/components/track.tsx)         |
 | Binnenkomst    | [`src/app/api/event/route.ts`](../src/app/api/event/route.ts)            |
-| Tabel en rapport | [`supabase/migrations/0010_events.sql`](../supabase/migrations/0010_events.sql) |
+| Tabel          | [`supabase/migrations/0010_events.sql`](../supabase/migrations/0010_events.sql) |
+| Rapport        | [`supabase/migrations/0011_event_report.sql`](../supabase/migrations/0011_event_report.sql) |
+| Grafieken      | [`src/components/hand-chart.tsx`](../src/components/hand-chart.tsx)      |
 | Bekijken       | [`src/app/private/events/page.tsx`](../src/app/private/events/page.tsx)  |
 
 ## Kijken
@@ -19,6 +22,27 @@ toestemmingsbalk, en geen rekening.
 Met `&days=30` voor een ander venster (1 tot 60). De pagina staat op `noindex`,
 `/private/` staat in robots.txt, en zonder de juiste sleutel zegt hij "Nothing
 to see here". Dezelfde sleutel als `/api/agent/digest`.
+
+Wat er staat: de trechter van openen tot geschreven zin, waar bezoekers vandaan
+kwamen, land en apparaat, hoe lang ze bleven, wie zijn zin zag sneuvelen en of
+die daarna deelde, waarom zinnen werden geweigerd, de drukste pagina's en het
+verloop per dag.
+
+De grafieken staan in [`hand-chart.tsx`](../src/components/hand-chart.tsx) en
+zijn met de pen getekend: staven met arcering in plaats van een vlakke vulling,
+een trechter die per trede laat zien hoeveel er afhaakten, en een doorlopende
+haal langs de dagen. Geen grafiekbibliotheek. De kleinste weegt meer dan deze
+hele site, en belangrijker: die tekent wiskundig rechte assen, en dat zou de
+enige rechte lijn van het hele project zijn.
+
+De ruis komt uit dezelfde deterministische generator als de kaders
+(`seedFrom` in [`hand-drawn.tsx`](../src/components/hand-drawn.tsx)). Dat moet
+ook: met `Math.random()` tekent de server een ander pad dan de browser en klapt
+de hydratie eruit.
+
+De breedte van een grafiek is begrensd, niet de hoogte. Met een `maxHeight`
+vecht de begrenzing tegen de verhouding van de viewBox: de tekening krimpt dan
+om in de hoogte te passen en blijft met witruimte ernaast halverwege hangen.
 
 ## Waarom dit geen Google Analytics is
 
@@ -46,6 +70,30 @@ gewoon verkeer (één op de duizend inserts), want een cronjob heeft het gratis
 plan niet.
 
 ## De events
+
+### Elk bezoek, op elke pagina
+
+| Event       | Wanneer                      | Erbij                              |
+| ----------- | ---------------------------- | ---------------------------------- |
+| `page_open` | Een pagina geopend           | `referrer`, `device`, `page`, `path` |
+| `visit_end` | Het tabblad ging weg         | `seconds`, `pages`, `wrote`        |
+
+Deze twee komen uit `VisitTracker` in de layout en gelden dus ook op /about,
+/records en /press, die verder geen clientcode hebben. De inzichtpagina zelf
+meet niet mee.
+
+`referrer` staat alleen op de eerste pagina van een bezoek: bij de tweede is de
+verwijzer de site zelf, en dan zou `internal` het echte kanaal overschreeuwen.
+Alleen de hostnaam, nooit de volledige URL, want zoekpagina's zetten de zoekterm
+daarin. `device` is `phone`, `tablet` of `desktop`, afgeleid uit de vensterbreedte
+en bewust niet uit de user agent: dat is een lange unieke tekenreeks waarmee je
+bezoekers kunt herkennen, en dat wil deze meting niet kunnen.
+
+`visit_end` vuurt bij het eerste van `pagehide` of "tabblad naar de
+achtergrond", één keer per pagina-lading. De duur is daarmee aan de korte kant:
+wie terugkomt na tien minuten in een andere app was er ondertussen niet. Een
+tabblad dat door het systeem wordt afgeschoten meldt zich nooit, dus lees de
+mediaan als een ondergrens.
 
 ### De voorpagina
 
@@ -86,6 +134,22 @@ morgen anders geformuleerd worden zonder dat het rapport breekt.
 | `report_sent`    | Melding verstuurd             | `ok`                                   |
 | `sentence_view`  | Permalink bekeken             | `stood_ms`, `rank`, `reads`, `is_live` |
 | `archive_search` | In het archief gezocht        | `results`, `term_length`               |
+
+## Hoe de percentages gerekend worden
+
+De trechter telt **bezoeken en geen klikken**: het aantal verschillende
+sessie-id's dat een bepaald event maakte. Wie vier zinnen achter elkaar schrijft
+telt dus één keer. De noemer is het aantal sessies met een `page_open`, niet het
+totaal aantal events. Dat laatste zou meebewegen met hoe actief bezoekers zijn,
+en dat is precies wat je probeert te meten.
+
+- **typed_pct**: sessies met `write_start` gedeeld door sessies met `page_open`.
+- **wrote_pct**: sessies met `sentence_posted` of `sentence_promoted`, gedeeld
+  door datzelfde getal.
+
+Onder "Everything, counted" staan wél de ruwe aantallen per event, met het
+aantal bezoeken erachter. Die twee kolommen horen te verschillen; staan ze
+gelijk, dan doet iedereen alles precies één keer en klopt er iets niet.
 
 ## Een event toevoegen
 

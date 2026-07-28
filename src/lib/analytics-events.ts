@@ -12,6 +12,9 @@
  * geen formaliteit; andersom komt het event er nooit in.
  */
 export const ANALYTICS_EVENTS = [
+  /* Elk bezoek, op elke pagina */
+  'page_open', // Een pagina geopend. Draagt herkomst en apparaat.
+  'visit_end', // Het tabblad ging weg. Draagt de duur van het bezoek.
   /* Voorpagina */
   'board_view', // Voorpagina geladen, met de standen van dat moment.
   'takeover_watched', // Iemand anders nam over terwijl deze bezoeker keek.
