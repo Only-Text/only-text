@@ -26,6 +26,13 @@ export const dynamic = 'force-dynamic'
 export async function GET() {
   const board = await getBoard()
   return NextResponse.json(board, {
-    headers: { 'cache-control': 'public, s-maxage=1, stale-while-revalidate=59' },
+    headers: {
+      'cache-control': 'public, s-maxage=1, stale-while-revalidate=59',
+      // De insluitbare zin draait op de site van iemand anders en haalt dit op
+      // vanaf een ander domein. Zonder deze regel blokkeert de browser dat en
+      // werkt de widget nergens. Het antwoord is toch al openbaar: het staat
+      // ook gewoon op de voorpagina.
+      'access-control-allow-origin': '*',
+    },
   })
 }

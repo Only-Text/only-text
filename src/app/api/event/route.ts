@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { countryFrom } from '@/lib/client-hash'
+import { countryFrom, clientIpFrom, hashClient } from '@/lib/client-hash'
 import { ANALYTICS_EVENTS } from '@/lib/analytics-events'
 import { createServiceClient } from '@/lib/supabase'
 
@@ -55,7 +55,42 @@ function snoei(props: Record<string, string | number | boolean> | undefined) {
   return uit
 }
 
+/**
+ * Wie niet meegeteld wil worden.
+ *
+ * In de praktijk is dat de maker: zolang er twintig bezoeken per uur zijn, zet
+ * hij met zijn eigen kijken de trechter op /what-people-do scheef, en dat is
+ * precies de meting waar hij op wil sturen.
+ *
+ * Het staat in de omgeving als hash en niet als adres, om dezelfde reden dat de
+ * rest van de site dat doet: een IP is een persoonsgegeven, ook je eigen, en
+ * ook in een omgevingsvariabele. Uitrekenen doen we hier wel, opslaan nog steeds
+ * niet. Een hash vergelijken is geen bewaren.
+ *
+ * Let op als het niet lijkt te werken: een IP van thuis verandert vanzelf zodra
+ * de provider hem verlengt, en op mobiel netwerk is hij sowieso anders. Blijf je
+ * jezelf terugzien in de cijfers, dan is dat bijna altijd de reden.
+ */
+const NIET_MEETELLEN = new Set(
+  (process.env.ANALYTICS_IGNORE_HASHES ?? '')
+    .split(',')
+    .map((h) => h.trim().toLowerCase())
+    .filter(Boolean),
+)
+
+function meetellen(headers: Headers): boolean {
+  if (NIET_MEETELLEN.size === 0) return true
+  try {
+    return !NIET_MEETELLEN.has(hashClient(clientIpFrom(headers)))
+  } catch {
+    // Ontbrekende pepper mag een meting niet omgooien.
+    return true
+  }
+}
+
 export async function POST(request: Request) {
+  if (!meetellen(request.headers)) return new NextResponse(null, { status: 204 })
+
   let payload: z.infer<typeof PayloadSchema>
   try {
     payload = PayloadSchema.parse(await request.json())

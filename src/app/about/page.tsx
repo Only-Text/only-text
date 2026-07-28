@@ -71,6 +71,16 @@ export default function AboutPage() {
           immediately, before anyone looks at it.
         </p>
 
+        <p className="hand text-[1.02rem] font-bold">Put it on your own site</p>
+        <p className="hand text-[1rem]">
+          One line, and whatever sentence is standing here shows up on your page too, updating
+          while people take it from each other. No frame, no cookies, no tracking, and it borrows
+          your own typeface rather than bringing one along.
+        </p>
+        <p className="meta on-rule overflow-x-auto text-[0.85rem]">
+          <code>&lt;script src=&quot;https://only-text.com/embed.js&quot;&gt;&lt;/script&gt;</code>
+        </p>
+
         <p className="meta text-[0.85rem]">
           Made with a database, some paper, and no images at all. There is a{' '}
           <Link href="/raw" className="underline underline-offset-4">
