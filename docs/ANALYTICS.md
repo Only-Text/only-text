@@ -13,15 +13,21 @@ toestemmingsbalk, en geen rekening.
 | Tabel          | [`supabase/migrations/0010_events.sql`](../supabase/migrations/0010_events.sql) |
 | Rapport        | [`supabase/migrations/0011_event_report.sql`](../supabase/migrations/0011_event_report.sql) |
 | Grafieken      | [`src/components/hand-chart.tsx`](../src/components/hand-chart.tsx)      |
-| Bekijken       | [`src/app/private/events/page.tsx`](../src/app/private/events/page.tsx)  |
+| Bekijken       | [`src/app/what-people-do/page.tsx`](../src/app/what-people-do/page.tsx)  |
 
 ## Kijken
 
-`https://only-text.com/private/events?key=<AGENT_KEY>`
+`https://only-text.com/what-people-do`
 
-Met `&days=30` voor een ander venster (1 tot 60). De pagina staat op `noindex`,
-`/private/` staat in robots.txt, en zonder de juiste sleutel zegt hij "Nothing
-to see here". Dezelfde sleutel als `/api/agent/digest`.
+Openbaar, zonder sleutel, en opgenomen in de sitemap. Met `?days=30` voor een
+ander venster (1 tot 60).
+
+Dat het openbaar is, is een keuze en geen slordigheid. Er zit geen enkel
+persoonsgegeven in: het zijn aantallen, landcodes en verwijzende hostnamen,
+allemaal geaggregeerd. Op een site die zijn eigen cijfers al publiceert op
+`/stats` en niemand om een account vraagt, is een dashboard achter een slot juist
+het vreemde element. Terugdraaien is één `if` in de pagina plus `/what-people-do`
+weer in robots.txt en uit de sitemap.
 
 Wat er staat: de trechter van openen tot geschreven zin, waar bezoekers vandaan
 kwamen, land en apparaat, hoe lang ze bleven, wie zijn zin zag sneuvelen en of
@@ -29,11 +35,21 @@ die daarna deelde, waarom zinnen werden geweigerd, de drukste pagina's en het
 verloop per dag.
 
 De grafieken staan in [`hand-chart.tsx`](../src/components/hand-chart.tsx) en
-zijn met de pen getekend: staven met arcering in plaats van een vlakke vulling,
+zijn met potlood getekend: staven met arcering in plaats van een vlakke vulling,
 een trechter die per trede laat zien hoeveel er afhaakten, en een doorlopende
 haal langs de dagen. Geen grafiekbibliotheek. De kleinste weegt meer dan deze
 hele site, en belangrijker: die tekent wiskundig rechte assen, en dat zou de
 enige rechte lijn van het hele project zijn.
+
+Potlood en geen pen zit in drie dingen: de kleur is grafiet (`--ink-soft`) en
+niet inktzwart, elke haal wordt twee keer getrokken met een minieme afwijking en
+verschillende dekking zodat de rand zacht wordt, en vlakken worden gearceerd in
+plaats van gevuld. Alle tekst in de grafieken staat in `--font-hand`, hetzelfde
+handschrift als de rest van de site.
+
+Het label van een staaf staat links en niet erboven. Erboven leek logischer maar
+botste met de regel eronder zodra er ook nog "zoveel haakten hier af" bij kwam,
+en dan loopt de hele trechter over zichzelf heen.
 
 De ruis komt uit dezelfde deterministische generator als de kaders
 (`seedFrom` in [`hand-drawn.tsx`](../src/components/hand-drawn.tsx)). Dat moet
@@ -79,8 +95,9 @@ plan niet.
 | `visit_end` | Het tabblad ging weg         | `seconds`, `pages`, `wrote`        |
 
 Deze twee komen uit `VisitTracker` in de layout en gelden dus ook op /about,
-/records en /press, die verder geen clientcode hebben. De inzichtpagina zelf
-meet niet mee.
+/records en /press, die verder geen clientcode hebben. Ook /what-people-do telt
+mee: die pagina staat openbaar tussen de andere, en hem overslaan zou "drukste
+pagina's" een onwaarheid maken.
 
 `referrer` staat alleen op de eerste pagina van een bezoek: bij de tweede is de
 verwijzer de site zelf, en dan zou `internal` het echte kanaal overschreeuwen.

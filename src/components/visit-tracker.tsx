@@ -21,9 +21,9 @@ export function VisitTracker() {
   const vorige = useRef<string | null>(null)
 
   useEffect(() => {
-    // De inzichtpagina meet zichzelf niet. Anders bestaat het drukste pad van
-    // de hele site uit jou die naar de cijfers zit te kijken.
-    if (!pad || pad.startsWith('/private')) return
+    // Ook /what-people-do telt gewoon mee. Die pagina staat openbaar tussen de
+    // andere, en hem overslaan zou "drukste pagina's" een onwaarheid maken.
+    if (!pad) return
     if (vorige.current === pad) return
     vorige.current = pad
     trackPageOpen(pad)

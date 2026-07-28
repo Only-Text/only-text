@@ -32,8 +32,8 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      { userAgent: '*', allow: '/', disallow: ['/api/', '/private/'] },
-      ...crawlers.map((userAgent) => ({ userAgent, allow: '/', disallow: ['/api/', '/private/'] })),
+      { userAgent: '*', allow: '/', disallow: ['/api/'] },
+      ...crawlers.map((userAgent) => ({ userAgent, allow: '/', disallow: ['/api/'] })),
     ],
     sitemap: `${SITE}/sitemap.xml`,
     host: SITE,

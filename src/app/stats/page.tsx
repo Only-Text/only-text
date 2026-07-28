@@ -106,6 +106,9 @@ export default async function StatsPage() {
         <Link href="/" className="marginalia text-[0.9rem] hover:text-(--ink)">
           back to the front
         </Link>
+        <Link href="/what-people-do" className="marginalia text-[0.9rem] hover:text-(--ink)">
+          what people do
+        </Link>
         <Link href="/press" className="marginalia text-[0.9rem] hover:text-(--ink)">
           for press
         </Link>

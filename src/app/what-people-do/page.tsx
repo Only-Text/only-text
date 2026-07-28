@@ -10,20 +10,24 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'What people do',
-  robots: { index: false, follow: false },
+  description:
+    'Who turns up on only-text.com, where they come from, how long they stay, and how many of them actually write a sentence. Drawn by hand, counted without cookies.',
 }
 
 /**
- * De cijfers, voor jou.
+ * De cijfers, openbaar.
  *
  * Dit is de tegenhanger van /stats. Die pagina is persmateriaal en toont wat de
- * site heeft gedaan; deze toont wat bezoekers hebben gedaan, en dat is niets
- * voor buiten. Vandaar de sleutel in de URL, `noindex`, en een regel in
- * robots.txt. Geen van die drie is op zichzelf genoeg, samen wel.
+ * site heeft gedaan; deze toont wat bezoekers hebben gedaan. Dat stond eerst
+ * achter een sleutel, en dat hoeft niet: er zit geen enkel persoonsgegeven in.
+ * Wat je hier ziet zijn aantallen, landen en verwijzende hostnamen, allemaal
+ * geaggregeerd. Op een site die zijn eigen cijfers al openbaar publiceert en
+ * niemand vraagt om een account, is een dashboard achter een slot juist het
+ * vreemde element.
  *
- * De grafieken zijn met de pen getekend en niet met een bibliotheek. Dat is
+ * De grafieken zijn met potlood getekend en niet met een bibliotheek. Dat is
  * geen koketterie: dit is dezelfde site, op hetzelfde papier, in hetzelfde
- * handschrift. Een strak staafdiagram van een grafiekbibliotheek zou hier de
+ * handschrift. Een strak staafdiagram uit een grafiekbibliotheek zou hier de
  * enige rechte lijn van het hele project zijn.
  *
  * Bewust geen automatische verversing. Een pagina die zichzelf bijwerkt nodigt
@@ -76,23 +80,12 @@ type Report = {
   busiest_paths: { path: string; count: number; visits: number }[]
 }
 
-type Props = { searchParams: Promise<{ key?: string; days?: string }> }
+type Props = { searchParams: Promise<{ days?: string }> }
 
-export default async function EventsPage({ searchParams }: Props) {
-  const { key, days } = await searchParams
-  const sleutel = process.env.AGENT_KEY
-
-  if (!sleutel || key !== sleutel) {
-    return (
-      <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-8 sm:py-16">
-        <Sheet>
-          <p className="hand text-[1.05rem]">Nothing to see here.</p>
-        </Sheet>
-      </main>
-    )
-  }
-
+export default async function WhatPeopleDoPage({ searchParams }: Props) {
+  const { days } = await searchParams
   const venster = Math.min(Math.max(Number(days) || 7, 1), 60)
+
   const supabase = createServiceClient()
   const { data, error } = await supabase.rpc('get_event_report', { p_days: venster })
 
@@ -101,7 +94,6 @@ export default async function EventsPage({ searchParams }: Props) {
       <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-8 sm:py-16">
         <Sheet>
           <p className="hand text-[1.05rem]">The numbers are not available right now.</p>
-          <p className="meta text-[0.85rem]">{error?.message ?? 'no data'}</p>
         </Sheet>
       </main>
     )
@@ -131,7 +123,7 @@ export default async function EventsPage({ searchParams }: Props) {
 
         {leeg && (
           <p className="hand text-[1.05rem]">
-            Nothing measured yet in this window. Open the front page and come back.
+            Nothing measured yet in this window. Come back in a bit.
           </p>
         )}
 
@@ -168,34 +160,32 @@ export default async function EventsPage({ searchParams }: Props) {
               the query in there.
             </p>
 
-            <Kop>What they were on</Kop>
-            <div className="grid gap-x-8 sm:grid-cols-2">
-              <div>
-                <p className="meta text-[0.85rem]">Country</p>
-                {r.countries.length > 0 ? (
-                  <HandBars
-                    seed="landen"
-                    data={r.countries.map((x) => ({
-                      label: countryName(x.country) ?? x.country,
-                      waarde: x.count,
-                    }))}
-                  />
-                ) : (
-                  <p className="meta text-[0.9rem]">Nothing recorded yet.</p>
-                )}
-              </div>
-              <div>
-                <p className="meta text-[0.85rem]">Device</p>
-                {r.devices.length > 0 ? (
-                  <HandBars
-                    seed="apparaten"
-                    data={r.devices.map((x) => ({ label: x.device, waarde: x.count }))}
-                  />
-                ) : (
-                  <p className="meta text-[0.9rem]">Nothing recorded yet.</p>
-                )}
-              </div>
-            </div>
+            <Kop>Which countries</Kop>
+            {r.countries.length > 0 ? (
+              <HandBars
+                seed="landen"
+                data={r.countries.map((x) => ({
+                  label: countryName(x.country) ?? x.country,
+                  waarde: x.count,
+                }))}
+              />
+            ) : (
+              <p className="meta text-[0.9rem]">Nothing recorded yet.</p>
+            )}
+
+            <Kop>On what</Kop>
+            {r.devices.length > 0 ? (
+              <HandBars
+                seed="apparaten"
+                data={r.devices.map((x) => ({ label: x.device, waarde: x.count }))}
+              />
+            ) : (
+              <p className="meta text-[0.9rem]">Nothing recorded yet.</p>
+            )}
+            <p className="meta text-[0.85rem]">
+              Taken from the width of the window, not from the browser&rsquo;s user agent. That
+              string is long enough to recognise people by, and this is not meant to.
+            </p>
 
             <Kop>How long they stayed</Kop>
             <p className="hand text-[1rem]">
@@ -219,8 +209,14 @@ export default async function EventsPage({ searchParams }: Props) {
             </p>
 
             <Kop>Losing, and telling people</Kop>
-            <Regel label="Watched someone else take over" waarde={formatNumber(r.losing.takeover_watched)} />
-            <Regel label="Watched their own sentence go" waarde={formatNumber(r.losing.sentence_lost)} />
+            <Regel
+              label="Watched someone else take over"
+              waarde={formatNumber(r.losing.takeover_watched)}
+            />
+            <Regel
+              label="Watched their own sentence go"
+              waarde={formatNumber(r.losing.sentence_lost)}
+            />
             <Regel
               label="Median time those sentences stood"
               waarde={
@@ -296,21 +292,30 @@ export default async function EventsPage({ searchParams }: Props) {
         )}
 
         <p className="meta text-[0.8rem]">
-          Nothing here is a cookie and nothing here leaves the building. Rows older than sixty days
-          are deleted. Other windows:{' '}
+          No cookies were set to count any of this, and none of it is shared with anyone. Rows older
+          than sixty days are deleted. Other windows:{' '}
           {[1, 7, 30, 60].map((d, i) => (
             <span key={d}>
               {i > 0 && ' · '}
-              <Link
-                href={`/private/events?key=${key}&days=${d}`}
-                className="underline underline-offset-4"
-              >
+              <Link href={`/what-people-do?days=${d}`} className="underline underline-offset-4">
                 {d}d
               </Link>
             </span>
           ))}
         </p>
       </Sheet>
+
+      <nav className="mt-10 flex flex-wrap gap-x-6 gap-y-2 pl-1">
+        <Link href="/" className="marginalia text-[0.9rem] hover:text-(--ink)">
+          back to the front
+        </Link>
+        <Link href="/stats" className="marginalia text-[0.9rem] hover:text-(--ink)">
+          the numbers
+        </Link>
+        <Link href="/about" className="marginalia text-[0.9rem] hover:text-(--ink)">
+          what is this
+        </Link>
+      </nav>
     </main>
   )
 }
