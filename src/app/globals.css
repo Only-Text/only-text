@@ -392,12 +392,24 @@ body {
   border: 0;
 }
 
+/* De knipperende cursor knippert met `visibility`, niet met `opacity`.
+   ---------------------------------------------------------------------------
+   Een opacity-animatie draait bij Chrome op de compositor, en daarvoor moet het
+   element een eigen laag krijgen. Alles wat daar in de tekenvolgorde bovenop
+   ligt gaat mee die laag in, en in zo'n laag mag de browser geen subpixel-
+   antialiasing meer gebruiken: hij weet niet welke kleur eronder zit. De regel
+   met `from:` en de knop staan ná het tekstveld en dus erbovenop, en werden
+   daardoor merkbaar waziger op het moment dat het veld scherp stond — precies
+   dan dus, als je zit te typen en er het meest naar kijkt.
+
+   `visibility` wordt nooit door de compositor afgehandeld. Met step-end is het
+   resultaat op het scherm identiek: aan, uit, aan. */
 .cursor-blink {
   animation: blink 1.1s step-end infinite;
 }
 @keyframes blink {
   50% {
-    opacity: 0;
+    visibility: hidden;
   }
 }
 
@@ -422,6 +434,6 @@ body {
   }
   .cursor-blink {
     animation: none;
-    opacity: 1;
+    visibility: visible;
   }
 }
