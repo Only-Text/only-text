@@ -4,10 +4,10 @@
  * Bij een animatie is "ziet er nep uit" het echte falen, en dat is precies wat
  * geen enkele test ziet. Wat wel te controleren is, is of de baan doet wat hij
  * belooft: op de eerste letter beginnen, op de laatste eindigen, onderweg
- * daadwerkelijk heen en weer gaan, en het papier niet verlaten. Dat zijn de
- * dingen die bij de vorige versie fout zaten.
+ * daadwerkelijk heen en weer gaan, niets laten staan, en — de reden dat dit
+ * bestand er is — nooit iets weghalen op een plek waar de gum nog niet geweest
+ * is. Dat waren stuk voor stuk echte fouten.
  *
- *     node --experimental-strip-types scripts/test-erase.mjs
  *     npx tsx scripts/test-erase.mjs
  */
 
@@ -32,6 +32,10 @@ function bijna(a, b, marge, wat) {
 const REGEL = 44
 const BLOK = 560
 
+/** De halve breedte van het gummetje: 94px op een breed scherm, 74px daaronder. */
+const HALVE_GUM = 47
+const HALVE_GUM_MOBIEL = 37
+
 /** Doet alsof de browser deze regels heeft afgebroken. */
 function vlakken(breedtes) {
   return breedtes.map((b, i) => ({
@@ -42,89 +46,118 @@ function vlakken(breedtes) {
   }))
 }
 
+function maak(breedtes, halveGum = HALVE_GUM) {
+  return planErase(vlakken(breedtes), REGEL * breedtes.length, halveGum)
+}
+
 /** Loopt de hele animatie af in kleine stapjes. */
-function afspelen(plan, stap = 1 / 240) {
+function afspelen(p, stap = 1 / 240) {
   const punten = []
-  for (let k = 0; k <= plan.einde + 1e-9; k += stap) {
-    punten.push({ k, ...houding(k, plan.regels, plan.einde) })
+  for (let k = 0; k <= p.einde + 1e-9; k += stap) {
+    punten.push({ k, ...houding(k, p.regels, p.einde) })
   }
   return punten
 }
 
+const MATEN = [[180], [BLOK], [BLOK, 300], [BLOK, BLOK, BLOK, 200]]
+
 /* -------------------------------------------------------------------------- */
 
-console.log('\nEén korte zin')
+console.log('\nWeg is pas weg als de gum eroverheen is')
 {
-  const plan = planErase(vlakken([180]), REGEL)
-  const punten = afspelen(plan)
-  const r = plan.regels[0]
+  // Dit is de fout die op de site te zien was: de grens liep met een eigen,
+  // langere baan dan de gum, terwijl de gum onderweg terugveert. Op het diepste
+  // punt van een haal lag de grens tachtig pixels vóór het midden van de gum,
+  // en dan komt de zachte rand eronder vandaan: je zag letters vervagen op een
+  // plek waar de gum nog niet geweest was.
+  for (const halveGum of [HALVE_GUM, HALVE_GUM_MOBIEL]) {
+    for (const breedtes of MATEN) {
+      const p = maak(breedtes, halveGum)
+      let ergste = -Infinity
+      let ergsteRegel = -1
 
-  ok(plan.regels.length === 1, 'één regel')
-  bijna(punten[0].x, r.links, 1, 'begint op de eerste letter')
-  bijna(punten.find((p) => p.k >= r.tot).x, r.rechts, 1, 'eindigt op de laatste letter')
-  ok(plan.einde < 0.75, `kort is ook echt kort (${plan.einde.toFixed(2)}s)`)
+      p.regels.forEach((r, i) => {
+        for (let k = r.van; k <= r.tot; k += 1 / 480) {
+          // De rechterkant van de zachte rand tegenover de rechterkant van de gum.
+          const buiten = grens(r, k) + RAND - (houding(k, p.regels, p.einde).x + halveGum)
+          if (buiten > ergste) {
+            ergste = buiten
+            ergsteRegel = i
+          }
+        }
+      })
 
-  // De hele regel moet weg zijn, en geen letter eerder.
-  bijna(grens(r, 0), r.links - RAND, 0.01, 'aan het begin staat er nog niets weggegomd')
-  ok(grens(r, r.tot) >= r.rechts, 'aan het eind is de laatste letter weg')
+      ok(
+        ergste <= 0,
+        `gum ${halveGum * 2}px, [${breedtes}]: de rand blijft ${(-ergste).toFixed(0)}px binnen de gum` +
+          (ergste > 0 ? ` — steekt ${ergste.toFixed(0)}px uit op regel ${ergsteRegel}` : ''),
+      )
+    }
+  }
 }
 
 console.log('\nEr blijft niets staan')
 {
-  // Dit ging mis: de veeg hangt achter de grens aan, van `grens - STAART` tot
-  // `grens + RAND`. Stopte de grens op de laatste letter, dan lag die band
-  // daarna voor altijd over het laatste stukje tekst en bleven er twee letters
-  // als grijze schim staan.
-  for (const breedtes of [[180], [BLOK], [BLOK, 300], [BLOK, BLOK, 240]]) {
-    const plan = planErase(vlakken(breedtes), REGEL * breedtes.length)
+  // De veeg hangt achter de grens aan, van `grens - STAART` tot `grens + RAND`.
+  // Stopte de grens op de laatste letter, dan lag die band daarna voor altijd
+  // over het laatste stukje tekst en bleven er letters als grijze schim staan.
+  for (const breedtes of MATEN) {
+    const p = maak(breedtes)
     let schoon = true
-    for (const r of plan.regels) {
-      // De achterkant van de veegband moet voorbij de laatste letter liggen.
-      if (grens(r, plan.einde) - STAART < r.rechts) schoon = false
+    for (const r of p.regels) {
+      if (grens(r, p.einde) - STAART < r.rechts) schoon = false
     }
     ok(schoon, `[${breedtes}] geen veeg over de laatste letters`)
   }
 }
 
+console.log('\nEén korte zin')
+{
+  const p = maak([180])
+  const punten = afspelen(p)
+  const r = p.regels[0]
+
+  ok(p.regels.length === 1, 'één regel')
+  bijna(punten[0].x, r.links, 1, 'begint op de eerste letter')
+  bijna(punten.find((q) => q.k >= r.tot).x, r.rechts, 1, 'eindigt op de laatste letter')
+  bijna(grens(r, 0), r.links, 0.01, 'aan het begin staat er nog niets weggegomd')
+  ok(grens(r, r.tot) >= r.rechts, 'aan het eind is de laatste letter weg')
+}
+
 console.log('\nEen zin van drie regels')
 {
-  const plan = planErase(vlakken([BLOK, BLOK, 240]), REGEL * 3)
-  ok(plan.regels.length === 3, 'drie regels')
+  const p = maak([BLOK, BLOK, 240])
+  ok(p.regels.length === 3, 'drie regels')
 
   // Elke regel begint links en eindigt rechts van díé regel, niet van het blok.
-  plan.regels.forEach((r, i) => {
-    bijna(houding(r.van, plan.regels, plan.einde).x, r.links, 1, `regel ${i}: start op de eerste letter`)
-    bijna(houding(r.tot, plan.regels, plan.einde).x, r.rechts, 1, `regel ${i}: stopt op de laatste letter`)
+  p.regels.forEach((r, i) => {
+    bijna(houding(r.van, p.regels, p.einde).x, r.links, 1, `regel ${i}: start op de eerste letter`)
+    bijna(houding(r.tot, p.regels, p.einde).x, r.rechts, 1, `regel ${i}: stopt op de laatste letter`)
   })
 
-  // De laatste regel is korter, dus ook sneller weg.
-  const duur = plan.regels.map((r) => r.tot - r.van)
+  const duur = p.regels.map((r) => r.tot - r.van)
   ok(duur[2] < duur[0], `de korte regel duurt korter (${duur[2].toFixed(2)}s < ${duur[0].toFixed(2)}s)`)
 
   // De banden sluiten aan: geen gat, geen overlap.
-  for (let i = 1; i < plan.regels.length; i++) {
-    bijna(plan.regels[i].boven, plan.regels[i - 1].onder, 0.01, `band ${i} sluit aan op ${i - 1}`)
+  for (let i = 1; i < p.regels.length; i++) {
+    bijna(p.regels[i].boven, p.regels[i - 1].onder, 0.01, `band ${i} sluit aan op ${i - 1}`)
   }
-  ok(plan.regels[0].boven === 0, 'de eerste band begint bovenaan')
-  bijna(plan.regels[2].onder, REGEL * 3, 0.01, 'de laatste band loopt tot onderaan')
+  ok(p.regels[0].boven === 0, 'de eerste band begint bovenaan')
+  bijna(p.regels[2].onder, REGEL * 3, 0.01, 'de laatste band loopt tot onderaan')
 
   // Tussen twee regels gaat de gum van het papier af.
-  const tussenin = (plan.regels[0].tot + plan.regels[1].van) / 2
-  const h = houding(tussenin, plan.regels, plan.einde)
+  const tussenin = (p.regels[0].tot + p.regels[1].van) / 2
+  const h = houding(tussenin, p.regels, p.einde)
   ok(h.schaal > 1.02, 'wordt opgetild bij de sprong naar de volgende regel')
-  // Niet boven beide regels uit: de gum zakt gewoon naar de volgende regel toe.
-  // Wat hij wél moet doen is er in een boog naartoe, niet in een rechte lijn.
-  const recht = (plan.regels[0].midden + plan.regels[1].midden) / 2
+  const recht = (p.regels[0].midden + p.regels[1].midden) / 2
   ok(h.y < recht - 6, `boogt bij de sprong omhoog (${h.y.toFixed(1)} < ${recht.toFixed(1)})`)
 }
 
 console.log('\nDe beweging zelf')
 {
-  const plan = planErase(vlakken([BLOK]), REGEL)
-  const punten = afspelen(plan).filter((p) => p.k <= plan.regels[0].tot)
+  const p = maak([BLOK])
+  const punten = afspelen(p).filter((q) => q.k <= p.regels[0].tot)
 
-  // Dit is het punt van de hele herbouw: gaat hij daadwerkelijk terug, of
-  // schuift hij alleen wat langzamer door.
   let terug = 0
   let grootsteStapTerug = 0
   for (let i = 1; i < punten.length; i++) {
@@ -138,58 +171,51 @@ console.log('\nDe beweging zelf')
   ok(grootsteStapTerug < -0.2, 'en niet zo weinig dat je het niet ziet')
 
   // De grens mag daarbij nooit meebewegen: gegomde inkt komt niet terug.
-  const r = plan.regels[0]
+  const r = p.regels[0]
   let vorige = -Infinity
   let monotoon = true
-  for (const p of punten) {
-    const g = grens(r, p.k)
+  for (const q of afspelen(p)) {
+    const g = grens(r, q.k)
     if (g < vorige - 1e-9) monotoon = false
     vorige = g
   }
   ok(monotoon, 'de grens loopt alleen vooruit')
 
-  ok(
-    punten.some((p) => Math.abs(p.hoek + 6) > 2),
-    'kantelt mee met de haal',
-  )
+  ok(punten.some((q) => Math.abs(q.hoek + 6) > 2), 'kantelt mee met de haal')
 }
 
 console.log('\nBlijft op het papier')
 {
-  // De tekst staat 116px van de linkerrand van het vel en er is 24px over
-  // rechts. De gum is 94px breed, dus 47px aan weerszijden van zijn midden.
+  // De tekst staat 116px van de linkerrand van het vel en er is 24px over rechts.
   const LINKERMARGE = 116
   const RECHTERMARGE = 24
-  const HALVE_GUM = 47
 
-  for (const breedtes of [[180], [BLOK], [BLOK, 300], [BLOK, BLOK, BLOK, 200]]) {
-    const plan = planErase(vlakken(breedtes), REGEL * breedtes.length)
-    const punten = afspelen(plan)
-    const linkst = Math.min(...punten.map((p) => p.x))
-    const rechtst = Math.max(...punten.map((p) => p.x))
+  for (const breedtes of MATEN) {
+    const p = maak(breedtes)
+    const punten = afspelen(p)
+    const linkst = Math.min(...punten.map((q) => q.x))
+    const rechtst = Math.max(...punten.map((q) => q.x))
 
     ok(
       linkst - HALVE_GUM > -LINKERMARGE,
       `[${breedtes}] komt links niet van het vel af (${(linkst - HALVE_GUM).toFixed(0)}px, marge ${LINKERMARGE})`,
     )
-    // Rechts is het krap: bij een regel die tot de kantlijn doorloopt móét de
-    // gum eroverheen om de laatste letter te raken. Een stukje uitsteken is
-    // precies wat een hand doet; een halve gum eroverheen niet meer.
+    // Bij een regel die tot de kantlijn doorloopt móét de gum eroverheen om de
+    // laatste letter te raken. Een stukje uitsteken is wat een hand doet.
     const uitsteek = rechtst + HALVE_GUM - (BLOK + RECHTERMARGE)
     ok(uitsteek < HALVE_GUM / 2, `[${breedtes}] steekt rechts ${uitsteek.toFixed(0)}px buiten het vel`)
-    ok(plan.einde <= 3, `[${breedtes}] duurt hooguit 3s (${plan.einde.toFixed(2)}s)`)
   }
 }
 
 console.log('\nEén hand, één snelheid')
 {
-  // Hier zat de tweede fout: een bovengrens op de totale duur perste de langste
-  // zin samen, waardoor die merkbaar sneller gegomd werd dan een korte. Meer
-  // tekst hoort langer te duren, nooit sneller te gaan.
+  // Een bovengrens op de totale duur perste de langste zin samen, waardoor die
+  // merkbaar sneller gegomd werd dan een korte. Meer tekst hoort langer te
+  // duren, nooit sneller te gaan.
   const tempo = (breedtes) => {
-    const plan = planErase(vlakken(breedtes), REGEL * breedtes.length)
-    const px = plan.regels.reduce((a, r) => a + (r.rechts - r.links), 0)
-    const tijd = plan.regels.reduce((a, r) => a + (r.tot - r.van), 0)
+    const p = maak(breedtes)
+    const px = p.regels.reduce((a, r) => a + (r.rechts - r.links), 0)
+    const tijd = p.regels.reduce((a, r) => a + (r.tot - r.van), 0)
     return px / tijd
   }
 
@@ -197,40 +223,42 @@ console.log('\nEén hand, één snelheid')
   const vier = tempo([BLOK, BLOK, BLOK, 200])
   const lang = tempo([BLOK])
 
-  // De snelheid verschilt alleen nog door het afronden op hele halen.
   ok(
     Math.abs(vier - lang) / lang < 0.05,
     `vier regels gaan even snel als één (${vier.toFixed(0)} vs ${lang.toFixed(0)} px/s)`,
   )
   // Een kort woord mag wél trager: MINSTE_HALEN geeft ook twee woorden twee
-  // halen, want één veeg over een woord van drie letters is geen gommen. Wat
-  // niet mag is dat korte tekst juist sneller weggaat dan lange.
-  ok(
-    kort <= lang * 1.05,
-    `een kort woord wordt niet afgeraffeld (${kort.toFixed(0)} vs ${lang.toFixed(0)} px/s)`,
-  )
+  // halen. Wat niet mag is dat korte tekst juist sneller weggaat dan lange.
+  ok(kort <= lang * 1.05, `een kort woord wordt niet afgeraffeld (${kort.toFixed(0)} vs ${lang.toFixed(0)} px/s)`)
 
-  // En meer tekst duurt dan ook echt langer.
-  const duur = (b) => planErase(vlakken(b), REGEL * b.length).einde
-  ok(duur([BLOK]) > duur([180]), 'een volle regel duurt langer dan een kort woord')
-  ok(duur([BLOK, BLOK, BLOK, 200]) > duur([BLOK, 300]), 'vier regels duren langer dan twee')
+  ok(maak([BLOK]).einde > maak([180]).einde, 'een volle regel duurt langer dan een kort woord')
+  ok(maak([BLOK, BLOK, BLOK, 200]).einde > maak([BLOK, 300]).einde, 'vier regels duren langer dan twee')
+
+  console.log('  --- duur per zinlengte ---')
+  for (const breedtes of MATEN) {
+    console.log(`       [${breedtes}] ${maak(breedtes).einde.toFixed(2)}s`)
+  }
 }
 
 console.log('\nRafelranden')
 {
-  ok(planErase([], 0) === null, 'niets te gommen geeft null')
-  ok(planErase([{ top: 0, bottom: 0, left: 0, right: 0 }], 0) === null, 'lege vlakken tellen niet')
+  ok(planErase([], 0, HALVE_GUM) === null, 'niets te gommen geeft null')
+  ok(
+    planErase([{ top: 0, bottom: 0, left: 0, right: 0 }], 0, HALVE_GUM) === null,
+    'lege vlakken tellen niet',
+  )
 
   // Twee vlakken op dezelfde hoogte horen bij één regel.
-  const plan = planErase(
+  const p = planErase(
     [
       { top: 4, bottom: 40, left: 0, right: 120 },
       { top: 5, bottom: 40, left: 128, right: 300 },
     ],
     REGEL,
+    HALVE_GUM,
   )
-  ok(plan.regels.length === 1, 'twee vlakken op dezelfde regel worden er één')
-  ok(plan.regels[0].rechts === 300, 'en die regel loopt tot het verste vlak')
+  ok(p.regels.length === 1, 'twee vlakken op dezelfde regel worden er één')
+  ok(p.regels[0].rechts === 300, 'en die regel loopt tot het verste vlak')
 }
 
 console.log(gezakt === 0 ? '\nAlles klopt.\n' : `\n${gezakt} controle(s) gezakt.\n`)

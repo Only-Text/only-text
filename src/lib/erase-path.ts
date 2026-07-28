@@ -119,8 +119,12 @@ export function planErase(stukken: Vlak[], hoogte: number, halveGum: number): Pl
   const terugslag = Math.max(8, halveGum - RAND - SPELING)
   const pixelsPerHaal = terugslag * HAAL_PER_TERUGSLAG
 
+  // Naar boven afronden, niet naar het dichtstbijzijnde. Bij afronden krijgt
+  // een regel van 2,5 haal er twee, en dan gaat díé regel merkbaar sneller dan
+  // een lange — precies het verschil in snelheid dat hierboven wordt bestreden,
+  // maar dan binnengeslopen via de afronding.
   const halen = rauw.map((r) =>
-    Math.max(MINSTE_HALEN, Math.round((r.right - r.left) / pixelsPerHaal)),
+    Math.max(MINSTE_HALEN, Math.ceil((r.right - r.left) / pixelsPerHaal)),
   )
 
   // Hier stond een bovengrens op de totale duur: een lange zin werd evenredig
