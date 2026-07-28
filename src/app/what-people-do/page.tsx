@@ -5,6 +5,7 @@ import { HandBars, HandFunnel, HandLine } from '@/components/hand-chart'
 import { Sheet } from '@/components/sheet'
 import { formatDuration, formatNumber, countryName } from '@/lib/format'
 import { createServiceClient } from '@/lib/supabase'
+import { deelLabel, gebeurtenisLabel, weigeringLabel } from '@/lib/analytics-labels'
 
 export const dynamic = 'force-dynamic'
 
@@ -243,7 +244,7 @@ export default async function WhatPeopleDoPage({ searchParams }: Props) {
                 <HandBars
                   seed="kanalen"
                   data={r.share_channels.map((s) => ({
-                    label: `${s.channel}${s.place ? ` · ${s.place}` : ''}`,
+                    label: deelLabel(s.channel, s.place),
                     waarde: s.count,
                   }))}
                 />
@@ -255,7 +256,7 @@ export default async function WhatPeopleDoPage({ searchParams }: Props) {
                 <Kop>Why sentences bounced</Kop>
                 <HandBars
                   seed="weigeringen"
-                  data={r.refusals.map((s) => ({ label: s.reason ?? 'unknown', waarde: s.count }))}
+                  data={r.refusals.map((s) => ({ label: weigeringLabel(s.reason), waarde: s.count }))}
                 />
               </>
             )}
@@ -289,7 +290,7 @@ export default async function WhatPeopleDoPage({ searchParams }: Props) {
             {r.by_name.map((e) => (
               <Regel
                 key={e.name}
-                label={e.name}
+                label={gebeurtenisLabel(e.name)}
                 waarde={`${formatNumber(e.count)} (${formatNumber(e.sessions)} ${e.sessions === 1 ? 'visit' : 'visits'})`}
               />
             ))}
@@ -297,8 +298,8 @@ export default async function WhatPeopleDoPage({ searchParams }: Props) {
         )}
 
         <p className="meta text-[0.8rem]">
-          No cookies were set to count any of this, and none of it is shared with anyone. Rows older
-          than sixty days are deleted. Other windows:{' '}
+          No cookies were set to count any of this, and none of it is shared with anyone. Other
+          windows:{' '}
           {[1, 7, 30, 60].map((d, i) => (
             <span key={d}>
               {i > 0 && ' · '}
