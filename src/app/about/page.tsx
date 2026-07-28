@@ -6,6 +6,7 @@ import { Sheet } from '@/components/sheet'
 export const metadata: Metadata = {
   title: 'What is this · only-text.com',
   description: 'The rules, the limits, and what happens to your words.',
+  alternates: { canonical: '/about' },
 }
 
 export default function AboutPage() {

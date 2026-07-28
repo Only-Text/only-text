@@ -6,9 +6,30 @@ import { Track } from '@/components/track'
 import { formatDuration, formatMoment } from '@/lib/format'
 import { getArchive } from '@/lib/data'
 
-export const metadata: Metadata = {
-  title: 'Everything ever written · only-text.com',
-  description: 'Every sentence that has ever stood on the front page, and how long it lasted.',
+/**
+ * Zoeken en doorbladeren maken adressen die geen eigen pagina zijn.
+ *
+ * `?q=` en `?before=` leveren telkens een andere selectie van dezelfde zinnen
+ * op. Laat je die los indexeren, dan staat elke zin in tientallen bijna gelijke
+ * lijsten en concurreert het archief met zijn eigen permalinks — terwijl de
+ * permalink nu juist de pagina is die iemand wil vinden. Dus: één canonical
+ * naar het kale archief, en de selecties zelf blijven buiten de index maar
+ * worden wel afgelopen, zodat de zinnen erachter gewoon gevonden worden.
+ */
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ before?: string; q?: string }>
+}): Promise<Metadata> {
+  const { before, q } = await searchParams
+  const selectie = Boolean(before || q)
+
+  return {
+    title: 'Everything ever written · only-text.com',
+    description: 'Every sentence that has ever stood on the front page, and how long it lasted.',
+    alternates: { canonical: '/archive' },
+    ...(selectie ? { robots: { index: false, follow: true } } : {}),
+  }
 }
 
 export const revalidate = 30

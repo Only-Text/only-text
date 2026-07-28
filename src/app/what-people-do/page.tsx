@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: 'What people do',
   description:
     'Who turns up on only-text.com, where they come from, how long they stay, and how many of them actually write a sentence. Drawn by hand, counted without cookies.',
+  alternates: { canonical: '/what-people-do' },
 }
 
 /**

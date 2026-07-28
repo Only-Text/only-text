@@ -20,6 +20,8 @@ import { Share } from '@/components/share'
 
 export const revalidate = 3600
 
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://only-text.com'
+
 type Props = { params: Promise<{ id: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,6 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: kort,
     description: `${duur} One sentence at a time, on only-text.com.`,
+    alternates: { canonical: `/m/${message.id}` },
     openGraph: {
       type: 'article',
       title: kort,
@@ -55,8 +58,48 @@ export default async function MessagePage({ params }: Props) {
   const { message, previous, next } = found
   const land = countryName(message.country)
 
+  /* Dit is de pagina die gedeeld wordt en dus de pagina die geciteerd wordt.
+     Wie hem overneemt moet drie dingen kunnen weten zonder de opmaak te hoeven
+     lezen: wat er stond, wie het schreef, en wanneer. Daarom staat de zin hier
+     als `text` en niet alleen als koptekst, en staat `expires` op het moment
+     dat hij van de voorpagina viel — dat is precies wat dat veld betekent en
+     het is het enige getal op deze pagina dat iets zegt.
+
+     `inLanguage` staat er bewust niet bij. Mensen typen hier in elke taal die
+     ze spreken en we raden er niet naar. */
+  const postJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SocialMediaPosting',
+    '@id': `${SITE}/m/${message.id}#post`,
+    url: `${SITE}/m/${message.id}`,
+    mainEntityOfPage: `${SITE}/m/${message.id}`,
+    isPartOf: { '@id': `${SITE}#website` },
+    headline: message.body,
+    text: message.body,
+    datePublished: message.created_at,
+    ...(message.ended_at ? { expires: message.ended_at } : {}),
+    author: { '@type': 'Person', name: message.author_name ?? 'Anonymous' },
+    publisher: { '@id': `${SITE}#publisher` },
+    image: `${SITE}/api/og/${message.id}`,
+    ...(message.views > 0
+      ? {
+          interactionStatistic: {
+            '@type': 'InteractionCounter',
+            interactionType: 'https://schema.org/ReadAction',
+            userInteractionCount: message.views,
+          },
+        }
+      : {}),
+  }
+
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-8 sm:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(postJsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
       {/* Welke zinnen worden er eigenlijk doorgestuurd? Als dat vooral de zinnen
           zijn die het lang volhielden, is de standtijd het verhaal; zijn het
           korte, dan is de grap het verhaal. Deze cijfers komen uit de gecachete

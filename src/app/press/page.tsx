@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: 'For press',
   description:
     'What only-text.com is, in a paragraph you can paste, with numbers you can check and permission to use anything on the site.',
+  alternates: { canonical: '/press' },
 }
 
 export const revalidate = 300

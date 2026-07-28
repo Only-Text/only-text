@@ -51,8 +51,62 @@ export const metadata: Metadata = {
     description: 'One sentence. It belongs to whoever typed last.',
     images: ['/og-default.png'],
   },
-  robots: { index: true, follow: true },
-  alternates: { canonical: '/', types: { 'application/rss+xml': `${SITE}/feed.xml` } },
+  // Zonder de tweede regel knipt Google het fragment af op ongeveer 160 tekens
+  // en toont hij de deelafbeelding als miniatuur. Op een site waar de hele
+  // inhoud één zin is, is dat fragment de zin: mag het volledig getoond worden,
+  // dan staat er in het zoekresultaat precies wat er op de pagina staat. Dat
+  // geldt net zo goed voor de antwoordmachines, die zich aan dezelfde limieten
+  // houden bij het citeren.
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' },
+  },
+  // Let op: geen `canonical` hier. Metadata erft naar beneden door, dus een
+  // canonical in de wortel maakt van elke pagina in de site een dubbele van de
+  // voorpagina — inclusief elke permalink, wat precies de pagina's zijn waarvan
+  // we willen dat ze gevonden worden. Elke pagina zet zijn eigen.
+  alternates: { types: { 'application/rss+xml': `${SITE}/feed.xml` } },
+}
+
+/**
+ * Wat deze site is, in de vorm waarin een machine het overneemt.
+ *
+ * De helft van het verkeer is geen mens, en het deel daarvan dat antwoorden
+ * samenstelt leest liever een graaf dan een alinea. Hier staat dus wie de
+ * uitgever is, waar het account staat dat erbij hoort, en dat er in het archief
+ * gezocht kan worden. Alles wat erin staat is elders op de site na te lopen.
+ */
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE}#website`,
+      url: SITE,
+      name: 'only-text.com',
+      description:
+        'A website that is one sentence long. It belongs to whoever typed last, and what counts is how long it survives.',
+      inLanguage: 'en',
+      publisher: { '@id': `${SITE}#publisher` },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: `${SITE}/archive?q={search_term_string}`,
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE}#publisher`,
+      name: 'only-text.com',
+      url: SITE,
+      description: 'One sentence at a time, written by whoever turns up.',
+      sameAs: ['https://bsky.app/profile/only-text.bsky.social'],
+    },
+  ],
 }
 
 export const viewport: Viewport = {
@@ -71,6 +125,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Skip to the sentence
         </a>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd).replace(/</g, '\\u003c'),
+          }}
+        />
         <BaselineCalibrator />
         <VisitTracker />
         {children}

@@ -1,8 +1,13 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import { LiveBoard } from '@/components/live-board'
 import { Sheet } from '@/components/sheet'
 import { getBoard } from '@/lib/data'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 /**
  * Eén seconde.

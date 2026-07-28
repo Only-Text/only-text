@@ -9,6 +9,37 @@ export const metadata: Metadata = {
   title: 'The numbers',
   description:
     'How many sentences have stood on only-text.com, who is holding the record, and how long the average one survives.',
+  alternates: { canonical: '/stats' },
+}
+
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://only-text.com'
+
+/**
+ * De cijfers, ook als gegevensverzameling.
+ *
+ * Wie een getal van deze site overneemt wil weten hoe oud het is en of hij het
+ * mag gebruiken. Dat staat hier allebei, met de JSON-versie als distributie
+ * erbij, zodat het antwoord op "hoeveel zinnen heeft only-text gehad" ergens
+ * vandaan komt in plaats van uit een gok.
+ */
+const datasetJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  '@id': `${SITE}/stats#dataset`,
+  name: 'only-text.com in numbers',
+  description:
+    'Public figures for only-text.com: sentences written, people who wrote them, countries they came from, the longest reign, and how long the average sentence survives.',
+  url: `${SITE}/stats`,
+  isAccessibleForFree: true,
+  license: 'https://creativecommons.org/publicdomain/zero/1.0/',
+  creator: { '@id': `${SITE}#publisher` },
+  distribution: [
+    {
+      '@type': 'DataDownload',
+      encodingFormat: 'application/json',
+      contentUrl: `${SITE}/stats.json`,
+    },
+  ],
 }
 
 export const revalidate = 60
@@ -36,6 +67,13 @@ export default async function StatsPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-8 sm:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(datasetJsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
+
       <Sheet tilt={-0.4}>
         <header>
           <h1 className="meta text-[0.8rem] leading-(--line-h) tracking-wide">

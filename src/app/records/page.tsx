@@ -8,6 +8,7 @@ import { getRecords, type ArchiveItem } from '@/lib/data'
 export const metadata: Metadata = {
   title: 'Records · only-text.com',
   description: 'The sentences that lasted longest, the ones that lasted least, and the totals.',
+  alternates: { canonical: '/records' },
 }
 
 export const revalidate = 60
