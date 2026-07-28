@@ -91,13 +91,27 @@ plan niet.
 
 | Event       | Wanneer                      | Erbij                              |
 | ----------- | ---------------------------- | ---------------------------------- |
-| `page_open` | Een pagina geopend           | `referrer`, `device`, `page`, `path` |
+| `page_open` | Een pagina geopend           | `referrer`, `device`, `page`       |
 | `visit_end` | Het tabblad ging weg         | `seconds`, `pages`, `wrote`        |
 
 Deze twee komen uit `VisitTracker` in de layout en gelden dus ook op /about,
 /records en /press, die verder geen clientcode hebben. Ook /what-people-do telt
 mee: die pagina staat openbaar tussen de andere, en hem overslaan zou "drukste
 pagina's" een onwaarheid maken.
+
+Het pad zit niet in de eigenschappen maar in de kolom `path`, en `track()` haalt
+het uit de adresbalk. Daar loopt het ook langs `bekendPad()`: alles wat geen
+bestaande pagina is wordt `/404`. Zonder die filter telt elke bot die /wp-admin
+probeert mee in "drukste pagina's", en dat gebeurde op de eerste dag al met
+`/ai-summarizer`. Erger was dat het pad rechtstreeks uit de adresbalk kwam:
+iedereen kon er zelf regels mee in het openbare rapport zetten. Permalinks
+houden hun nummer en /design houdt zijn naam, want wélke bekeken wordt is juist
+het punt.
+
+Nieuwe pagina toegevoegd? Dan moet hij in `ECHTE_PADEN` in
+[`lib/analytics.ts`](../src/lib/analytics.ts), anders verdwijnt hij in de
+`/404`-emmer. Filteren bij de aanroeper werkt niet: die raakt alleen een
+eigenschap en laat de kolom ongemoeid.
 
 `referrer` staat alleen op de eerste pagina van een bezoek: bij de tweede is de
 verwijzer de site zelf, en dan zou `internal` het echte kanaal overschreeuwen.
