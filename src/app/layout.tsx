@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Shantell_Sans } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 
 import { BaselineCalibrator } from '@/components/baseline-calibrator'
 import { VisitTracker } from '@/components/visit-tracker'
@@ -134,6 +135,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <BaselineCalibrator />
         <VisitTracker />
         {children}
+        <Analytics />
       </body>
     </html>
   )
